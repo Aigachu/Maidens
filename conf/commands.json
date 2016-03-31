@@ -1,0 +1,18 @@
+{
+  "ping": {
+    "oplevel": 2,
+    "allowed_channels": "all",
+    "allowed_servers": "all",
+    "excluded_channels": "none",
+    "excluded_servers": "none",
+    "cooldown": "none"
+  },
+  "pong": {
+    "oplevel": 1,
+    "allowed_channels": "all",
+    "allowed_servers": "all",
+    "excluded_channels": "none",
+    "excluded_servers": "none",
+    "cooldown": "none"
+  }
+}
