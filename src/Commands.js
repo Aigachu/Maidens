@@ -131,33 +131,6 @@ Commands[ "chname" ] = {
   }
 }
 
-/**
- * Implements the *chcom* command.
- * @params  {[none]}
- * @result  {[message]} [Sora answers asking if she's needed.]
- */
-Commands[ "chcom" ] = {
-  fn: function( bot, params, msg ) {
-
-    if(tools.validate_parameters(params, 2)) {
-
-      var command_to_modify = params[0];
-
-      for (var key in params) {
-        if(params.hasOwnProperty(key)) {
-          if(COMMANDS_DEFAULT_CONFIG[params[key].slice(2)] != null) {
-            var index = params.indexOf(params[key]);
-            tools.updateCommandConfig(command_to_modify, params[key].slice(2), params[index + 1]);
-          }
-        }
-      }
-
-    } else {
-      bot.sendMessage(msg.channel, "Mmm...Did you make a mistake?\n The `chcom` command is pretty complex! Try checking out the description of the command.");
-    }
-  }
-}
-
 /* === Commands End! === */
 
 /* === Command Properties Configuration === */
