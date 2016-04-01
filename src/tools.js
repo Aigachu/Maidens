@@ -10,6 +10,8 @@
  * Sora likes it when it's clean, so keep it tidy!
  */
 
+/* === Functions Start === */
+
 /**
  * Implements the custom function: extractID
  * @param  {[type]} tag [A discord string representing a user's Tag (highlighted string).]
@@ -32,5 +34,7 @@ exports.printUserTag = function(variable) {
     return "<@" + variable + ">";
   }
 };
+
+/* === Functions End === */
 
 
