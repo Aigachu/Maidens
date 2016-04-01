@@ -28,7 +28,7 @@ var CommandsLib = require("./src/Commands.js");
 /* === Variables Start === */
 
 var Commands = CommandsLib.commands;
-var CommandPrefix = config.commandPrefix;
+var CommandPrefix = config.command_prefix;
 
 /* === Variables End === */
 

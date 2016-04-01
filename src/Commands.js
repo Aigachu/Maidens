@@ -94,22 +94,35 @@ Commands[ "pong" ] = {
 
 /**
  * Implements the *chcom* command.
- * @todo : documentation of this command.
  * @params  {[none]}
  * @result  {[message]} [Sora answers asking if she's needed.]
  */
-Commands[ "chcom" ] = {
-  fn: function( bot, params, msg ) {
+// Commands[ "chcom" ] = {
+//   fn: function( bot, params, msg ) {
 
-    bot.sendMessage(msg.channel, "Mm?...Anything you might need from me, " + tools.printUserTag(msg.author) + "?");
+//     bot.sendMessage(msg.channel, "Mm?...Anything you might need from me, " + tools.printUserTag(msg.author) + "?");
 
-  }
-}
+//   }
+// }
 
 /* === Commands End! === */
 
 /* === Command Properties Configuration === */
 
+// The default values for a new command.
+// Commands that have no configuration declaration in the commands.json configuration file will be given these values by default.
+var default_commands_config = {
+  oplevel: 2,
+  allowed_channels: 'all',
+  allowed_servers: 'all',
+  excluded_channels: 'none',
+  excluded_servers: 'none',
+  cooldown: 'none',
+  aliases: 'none'
+};
+
+// Path to the commands configuration file.
+// Use this file to configure command parameters from the list above.
 var COMMANDS_CONFIGURATION_FILE = './conf/commands.json';
 
 // Write new command configuration values to the JSON file.
@@ -120,24 +133,15 @@ jsonfile.readFile(COMMANDS_CONFIGURATION_FILE, function(err, obj) {
     console.log(err);
 
     // Friendly Message from Sora telling us that she will generate a commands configuration file.
-    console.log("Sora: There doesn't seem to be a commands configuration file or there was an error reading it.\nSora: Not to worry, I will generate a default one. You can go ahead and set the command properties afterwards.")
+    console.log("Sora: There doesn't seem to be a commands configuration file or there was an error reading it.\nSora: Not to worry, I will generate a default one. You can go ahead and set the command properties afterwards.");
 
     // We will now proceed to generate a default commands configuration file.
     var command_properties = {};
 
-    var default_commands_object = {
-      oplevel: 0,
-      allowed_channels: 'all',
-      allowed_servers: 'all',
-      excluded_channels: 'none',
-      excluded_servers: 'none',
-      cooldown: 'none',
-    };
-
     // Loops in the Commands array and generates a default configuration entry for each of them.
     for (var key in Commands) {
       if(Commands.hasOwnProperty(key)) {
-        command_properties[key] = default_commands_object;
+        command_properties[key] = default_commands_config;
       }
     }
 
@@ -153,18 +157,40 @@ jsonfile.readFile(COMMANDS_CONFIGURATION_FILE, function(err, obj) {
     for (var key in Commands) {
       if(Commands.hasOwnProperty(key)) {
         if(command_properties[key] == null) {
-          console.log("\nSora: The following command has no configuration definition: " + key + ".\nSora: I will give it a default definition in the configuration file.")
-          command_properties[key] = default_commands_object;
+          console.log("\nSora: The following command has no configuration definition: " + key + ".\nSora: I will give it a default definition in the configuration file.");
+          command_properties[key] = default_commands_config;
         }
       }
     }
 
-    // Loops through the configurations object and deletes any command configuration declarations that are not for commands currently in the code.
+    // Loops through the configurations object to tidy up before saving. 
     for (var key in command_properties) {
       if(command_properties.hasOwnProperty(key)) {
+        // Deletes any command configuration declarations that are not for commands currently in the code.
         if(Commands[key] == null) {
-          console.log("\nSora: The following command definition does not have a corresponding command in my code: " + key + ".\nSora: I will remove it from the configuration file.")
+          console.log("\nSora: The following command definition does not have a corresponding command in my code: " + key + ".\nSora: I will remove it from the configuration file.");
           delete command_properties[key];
+        } else {
+          // Loops through the default configuration object to delete any parameters that are not set in the default configuration.
+          // Parameters not in the default configuration will not be in *any* configuration.
+          for (var param in command_properties[key]) {
+            if(command_properties[key].hasOwnProperty(param)) {
+              if(default_commands_config[param] == null) {
+                // console.log("Sora: The following configuration parameter seems to have been removed from the default command configuration: " + param + "\nSora: I will proceed to remove it from all command configurations.");
+                delete command_properties[key][param];
+              }
+            }
+          }
+
+          // Loops through the default configuration object to set any new configuration parameters to older commands that may not have them.
+          for (var param in default_commands_config) {
+            if(default_commands_config.hasOwnProperty(param)) {
+              if(command_properties[key][param] == null) {
+                // console.log("Sora: The following configuration parameter seems to have been added to the default command configuration: " + param + "\nSora: I will proceed to add it to all command configurations with the default value.");
+                command_properties[key][param] = default_commands_config[param];
+              }
+            }
+          }
         }
       }
     }
