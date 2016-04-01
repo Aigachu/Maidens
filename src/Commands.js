@@ -20,6 +20,19 @@ var jsonfile = require("jsonfile");
 
 /* === Requires END === */
 
+/* === Default Command Configuration Paramater Values === */
+// The default values for a new command.
+// Commands that have no configuration declaration in the commands.json configuration file will be given these values by default.
+var COMMANDS_DEFAULT_CONFIG = {
+  oplevel: 2,
+  description: '',
+  allowed_channels: 'all',
+  allowed_servers: 'all',
+  excluded_channels: 'none',
+  excluded_servers: 'none',
+  cooldown: 'none',
+  aliases: 'none'
+};
 
 /* === Commands Start! === */
 
@@ -93,33 +106,61 @@ Commands[ "pong" ] = {
 }
 
 /**
+ * Implements the *chname* command.
+ * @params  {[none]}
+ * @result  {[message]} [Sora changes her display name. Don't worry, she will always be Sora to us. ;)]
+ */
+Commands[ "chname" ] = {
+  fn: function( bot, params, msg ) {
+    if(tools.validate_parameters(params)) {
+
+      var newName = msg.content.substring(msg.content.indexOf(params[0]), msg.content.length);
+
+      bot.setUsername(newName).catch(function(err){
+        if(err) {
+          bot.sendMessage( msg.channel, "There seems to have been an error.\nAllow me to format it for you.\n\n```" + err + "```\nI have logged the console with more information.");
+          console.log(err);
+        } else {
+          bot.sendMessage( msg.channel, "Got it! I'll change my name right now.");
+        }
+      });
+
+    } else {
+      bot.sendMessage( msg.channel, "You seem to have forgotten a parameter. Please tell me what to change my display name to!");
+    }
+  }
+}
+
+/**
  * Implements the *chcom* command.
  * @params  {[none]}
  * @result  {[message]} [Sora answers asking if she's needed.]
  */
-// Commands[ "chcom" ] = {
-//   fn: function( bot, params, msg ) {
+Commands[ "chcom" ] = {
+  fn: function( bot, params, msg ) {
 
-//     bot.sendMessage(msg.channel, "Mm?...Anything you might need from me, " + tools.printUserTag(msg.author) + "?");
+    if(tools.validate_parameters(params, 2)) {
 
-//   }
-// }
+      var command_to_modify = params[0];
+
+      for (var key in params) {
+        if(params.hasOwnProperty(key)) {
+          if(COMMANDS_DEFAULT_CONFIG[params[key].slice(2)] != null) {
+            var index = params.indexOf(params[key]);
+            tools.updateCommandConfig(command_to_modify, params[key].slice(2), params[index + 1]);
+          }
+        }
+      }
+
+    } else {
+      bot.sendMessage(msg.channel, "Mmm...Did you make a mistake?\n The `chcom` command is pretty complex! Try checking out the description of the command.");
+    }
+  }
+}
 
 /* === Commands End! === */
 
 /* === Command Properties Configuration === */
-
-// The default values for a new command.
-// Commands that have no configuration declaration in the commands.json configuration file will be given these values by default.
-var default_commands_config = {
-  oplevel: 2,
-  allowed_channels: 'all',
-  allowed_servers: 'all',
-  excluded_channels: 'none',
-  excluded_servers: 'none',
-  cooldown: 'none',
-  aliases: 'none'
-};
 
 // Path to the commands configuration file.
 // Use this file to configure command parameters from the list above.
@@ -141,7 +182,7 @@ jsonfile.readFile(COMMANDS_CONFIGURATION_FILE, function(err, obj) {
     // Loops in the Commands array and generates a default configuration entry for each of them.
     for (var key in Commands) {
       if(Commands.hasOwnProperty(key)) {
-        command_properties[key] = default_commands_config;
+        command_properties[key] = COMMANDS_DEFAULT_CONFIG;
       }
     }
 
@@ -158,7 +199,7 @@ jsonfile.readFile(COMMANDS_CONFIGURATION_FILE, function(err, obj) {
       if(Commands.hasOwnProperty(key)) {
         if(command_properties[key] == null) {
           console.log("\nSora: The following command has no configuration definition: " + key + ".\nSora: I will give it a default definition in the configuration file.");
-          command_properties[key] = default_commands_config;
+          command_properties[key] = COMMANDS_DEFAULT_CONFIG;
         }
       }
     }
@@ -175,7 +216,7 @@ jsonfile.readFile(COMMANDS_CONFIGURATION_FILE, function(err, obj) {
           // Parameters not in the default configuration will not be in *any* configuration.
           for (var param in command_properties[key]) {
             if(command_properties[key].hasOwnProperty(param)) {
-              if(default_commands_config[param] == null) {
+              if(COMMANDS_DEFAULT_CONFIG[param] == null) {
                 // console.log("Sora: The following configuration parameter seems to have been removed from the default command configuration: " + param + "\nSora: I will proceed to remove it from all command configurations.");
                 delete command_properties[key][param];
               }
@@ -183,11 +224,11 @@ jsonfile.readFile(COMMANDS_CONFIGURATION_FILE, function(err, obj) {
           }
 
           // Loops through the default configuration object to set any new configuration parameters to older commands that may not have them.
-          for (var param in default_commands_config) {
-            if(default_commands_config.hasOwnProperty(param)) {
+          for (var param in COMMANDS_DEFAULT_CONFIG) {
+            if(COMMANDS_DEFAULT_CONFIG.hasOwnProperty(param)) {
               if(command_properties[key][param] == null) {
                 // console.log("Sora: The following configuration parameter seems to have been added to the default command configuration: " + param + "\nSora: I will proceed to add it to all command configurations with the default value.");
-                command_properties[key][param] = default_commands_config[param];
+                command_properties[key][param] = COMMANDS_DEFAULT_CONFIG[param];
               }
             }
           }

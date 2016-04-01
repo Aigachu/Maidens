@@ -61,17 +61,21 @@ sora.on("message", function (msg) {
   /* === COMMANDS TREATMENT START === */
   for (var key in Commands) {
     if (Commands.hasOwnProperty(key)) {
-      var params = msg.content.split(" "); // Divide text into distinct parameters.
-      var command = params[0].toUpperCase();
-      if(command === (CommandPrefix + key).toUpperCase() && msg.author.id !== sora.user.id) {
+      var split = msg.content.split(" "); // Divide text into distinct parameters.
+      if(split[0] === CommandPrefix && split[1]) {
+        var command = split[1].toUpperCase();
+        if(command === key.toUpperCase() && msg.author.id !== sora.user.id) {
+          var params = split; 
+          params.splice(0, 2);
 
-        // @todo : create a function that handles the treatment of the denial flag
-        // this will be good to avoid copy pasting and modification in multiple places
-        var DENIAL_FLAG = false;
+          // @todo : create a function that handles the treatment of the denial flag
+          // this will be good to avoid copy pasting and modification in multiple places
+          var DENIAL_FLAG = false;
 
-        // Run Command if it passed approval.
-        if(!DENIAL_FLAG) {
-          Commands[key].fn(sora, params, msg);
+          // Run Command if it passed approval.
+          if(!DENIAL_FLAG) {
+            Commands[key].fn(sora, params, msg);
+          }
         }
       }
     }
