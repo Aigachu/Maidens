@@ -59,6 +59,13 @@ exports.printUserTag = function(variable) {
   }
 };
 
+/**
+ * [updateCommandConfig description]
+ * @param  {[type]} command [description]
+ * @param  {[type]} param   [description]
+ * @param  {[type]} value   [description]
+ * @return {[type]}         [description]
+ */
 exports.updateCommandConfig = function(command, param, value) {
 	var COMMANDS_CONFIGURATION_FILE = './conf/commands.json';
 
