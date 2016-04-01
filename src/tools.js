@@ -10,7 +10,31 @@
  * Sora likes it when it's clean, so keep it tidy!
  */
 
+/* === Requires Start === */
+
+// Get jsonfile module ; Used to facilitate json reading and writing.
+var jsonfile = require("jsonfile");
+
+/* === Requires Stop === */
+
 /* === Functions Start === */
+
+/**
+ * Implements the custom function: extractID
+ * @param  {[type]} tag [A discord string representing a user's Tag (highlighted string).]
+ * @return {[type]}     [ID from the tag string.]
+ */
+exports.validate_parameters = function(params, min_param_count, max_param_count) {
+	min_param_count = typeof min_param_count !== 'undefined' ? min_param_count : 1;
+
+  if (max_param_count !== null && !params[min_param_count - 1] || params[max_param_count]){
+  	return false;
+  } else if(!max_param_count && !params[min_param_count - 1]) {
+  	return false;
+  } else {
+  	return true;
+  }
+};
 
 /**
  * Implements the custom function: extractID
@@ -33,6 +57,26 @@ exports.printUserTag = function(variable) {
   } else {
     return "<@" + variable + ">";
   }
+};
+
+exports.updateCommandConfig = function(command, param, value) {
+	var COMMANDS_CONFIGURATION_FILE = './conf/commands.json';
+
+	jsonfile.readFile(COMMANDS_CONFIGURATION_FILE, function(err, obj) {
+		if(err) { // THIS SHOULDN'T HAPPEN
+			console.log(err);
+		} else {
+			properties = obj;
+
+			properties[command][param] = value;
+
+			jsonfile.writeFile(COMMANDS_CONFIGURATION_FILE, properties, {spaces: 2}, function (err) {
+	      if(err) {
+	        console.error(err);
+	      }
+    	});
+		}
+	});
 };
 
 /* === Functions End === */

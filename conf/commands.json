@@ -1,15 +1,37 @@
 {
   "ping": {
+    "oplevel": 2,
+    "allowed_channels": "all",
+    "allowed_servers": "all",
+    "excluded_channels": "none",
+    "excluded_servers": "none",
+    "cooldown": "none",
+    "aliases": "none",
+    "description": ""
+  },
+  "pong": {
     "oplevel": 0,
     "allowed_channels": "all",
     "allowed_servers": "all",
     "excluded_channels": "none",
     "excluded_servers": "none",
     "cooldown": "none",
-    "aliases": "none"
+    "aliases": "none",
+    "description": ""
   },
-  "pong": {
-    "oplevel": 0,
+  "chname": {
+    "oplevel": 2,
+    "allowed_channels": "all",
+    "allowed_servers": "all",
+    "excluded_channels": "none",
+    "excluded_servers": "none",
+    "cooldown": "none",
+    "aliases": "none",
+    "description": ""
+  },
+  "chcom": {
+    "oplevel": 2,
+    "description": "",
     "allowed_channels": "all",
     "allowed_servers": "all",
     "excluded_channels": "none",
