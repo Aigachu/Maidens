@@ -20,20 +20,6 @@ var jsonfile = require("jsonfile");
 
 /* === Requires END === */
 
-/* === Default Command Configuration Paramater Values === */
-// The default values for a new command.
-// Commands that have no configuration declaration in the commands.json configuration file will be given these values by default.
-var COMMANDS_DEFAULT_CONFIG = {
-  oplevel:            2,
-  description:        '',
-  allowed_channels:   'all',
-  allowed_servers:    'all',
-  excluded_channels:  'none',
-  excluded_servers:   'none',
-  cooldown:           'none',
-  aliases:            'none'
-};
-
 /* === Commands Start! === */
 
 /**
@@ -172,5 +158,3 @@ Commands.coin = {
 
 // Export the Commands object for use in `sora.js`
 exports.Commands = Commands;
-
-exports.CommandDefaultConfig = COMMANDS_DEFAULT_CONFIG;

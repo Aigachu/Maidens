@@ -5,48 +5,47 @@
     "announcement_channel": "",
     "timeout_role_name": "Timeout",
     "admin_roles": [],
-    "enabled": true,
-    "command_override": true,
+    "override_all_commands": true,
     "commands": {
       "ping": {
         "oplevel": 2,
         "description": "",
         "allowed_channels": "all",
-        "allowed_servers": "all",
         "excluded_channels": "none",
-        "excluded_servers": "none",
         "cooldown": "none",
-        "aliases": "none"
+        "aliases": "none",
+        "enabled": true,
+        "override": false
       },
       "pong": {
-        "oplevel": 1,
+        "oplevel": 2,
         "description": "",
         "allowed_channels": "all",
-        "allowed_servers": "all",
         "excluded_channels": "none",
-        "excluded_servers": "none",
         "cooldown": "none",
-        "aliases": "none"
+        "aliases": "none",
+        "enabled": true,
+        "override": false
       },
       "chname": {
-        "oplevel": 2,
+        "oplevel": 0,
         "description": "",
         "allowed_channels": "all",
-        "allowed_servers": "all",
         "excluded_channels": "none",
-        "excluded_servers": "none",
         "cooldown": "none",
-        "aliases": "none"
+        "aliases": "none",
+        "enabled": true,
+        "override": false
       },
       "coin": {
-        "oplevel": 2,
+        "oplevel": 0,
         "description": "",
         "allowed_channels": "all",
-        "allowed_servers": "all",
         "excluded_channels": "none",
-        "excluded_servers": "none",
         "cooldown": "none",
-        "aliases": "none"
+        "aliases": "none",
+        "enabled": true,
+        "override": false
       }
     }
   },
@@ -56,48 +55,47 @@
     "announcement_channel": "",
     "timeout_role_name": "Timeout",
     "admin_roles": [],
-    "enabled": true,
-    "command_override": false,
+    "override_all_commands": false,
     "commands": {
       "ping": {
-        "oplevel": 2,
+        "oplevel": 0,
         "description": "",
         "allowed_channels": "all",
-        "allowed_servers": "all",
         "excluded_channels": "none",
-        "excluded_servers": "none",
         "cooldown": "none",
-        "aliases": "none"
+        "aliases": "none",
+        "enabled": true,
+        "override": false
       },
       "pong": {
-        "oplevel": 2,
+        "oplevel": 0,
         "description": "",
         "allowed_channels": "all",
-        "allowed_servers": "all",
         "excluded_channels": "none",
-        "excluded_servers": "none",
         "cooldown": "none",
-        "aliases": "none"
+        "aliases": "none",
+        "enabled": true,
+        "override": false
       },
       "chname": {
-        "oplevel": 2,
+        "oplevel": 0,
         "description": "",
         "allowed_channels": "all",
-        "allowed_servers": "all",
         "excluded_channels": "none",
-        "excluded_servers": "none",
         "cooldown": "none",
-        "aliases": "none"
+        "aliases": "none",
+        "enabled": true,
+        "override": false
       },
       "coin": {
-        "oplevel": 2,
+        "oplevel": 0,
         "description": "",
         "allowed_channels": "all",
-        "allowed_servers": "all",
         "excluded_channels": "none",
-        "excluded_servers": "none",
         "cooldown": "none",
-        "aliases": "none"
+        "aliases": "none",
+        "enabled": true,
+        "override": false
       }
     }
   },
@@ -107,48 +105,47 @@
     "announcement_channel": "",
     "timeout_role_name": "Timeout",
     "admin_roles": [],
-    "enabled": true,
-    "command_override": false,
+    "override_all_commands": false,
     "commands": {
       "ping": {
-        "oplevel": 2,
+        "oplevel": 0,
         "description": "",
         "allowed_channels": "all",
-        "allowed_servers": "all",
         "excluded_channels": "none",
-        "excluded_servers": "none",
         "cooldown": "none",
-        "aliases": "none"
+        "aliases": "none",
+        "enabled": true,
+        "override": false
       },
       "pong": {
-        "oplevel": 2,
+        "oplevel": 0,
         "description": "",
         "allowed_channels": "all",
-        "allowed_servers": "all",
         "excluded_channels": "none",
-        "excluded_servers": "none",
         "cooldown": "none",
-        "aliases": "none"
+        "aliases": "none",
+        "enabled": true,
+        "override": false
       },
       "chname": {
-        "oplevel": 2,
+        "oplevel": 1,
         "description": "",
         "allowed_channels": "all",
-        "allowed_servers": "all",
         "excluded_channels": "none",
-        "excluded_servers": "none",
         "cooldown": "none",
-        "aliases": "none"
+        "aliases": "none",
+        "enabled": true,
+        "override": true
       },
       "coin": {
-        "oplevel": 2,
+        "oplevel": 0,
         "description": "",
         "allowed_channels": "all",
-        "allowed_servers": "all",
         "excluded_channels": "none",
-        "excluded_servers": "none",
         "cooldown": "none",
-        "aliases": "none"
+        "aliases": "none",
+        "enabled": true,
+        "override": false
       }
     }
   }

@@ -1,41 +1,33 @@
 {
   "ping": {
-    "oplevel": 2,
+    "oplevel": 0,
     "description": "",
     "allowed_channels": "all",
-    "allowed_servers": "all",
     "excluded_channels": "none",
-    "excluded_servers": "none",
     "cooldown": "none",
     "aliases": "none"
   },
   "pong": {
-    "oplevel": 2,
+    "oplevel": 0,
     "description": "",
     "allowed_channels": "all",
-    "allowed_servers": "all",
     "excluded_channels": "none",
-    "excluded_servers": "none",
     "cooldown": "none",
     "aliases": "none"
   },
   "chname": {
-    "oplevel": 2,
+    "oplevel": 0,
     "description": "",
     "allowed_channels": "all",
-    "allowed_servers": "all",
     "excluded_channels": "none",
-    "excluded_servers": "none",
     "cooldown": "none",
     "aliases": "none"
   },
   "coin": {
-    "oplevel": 2,
+    "oplevel": 0,
     "description": "",
     "allowed_channels": "all",
-    "allowed_servers": "all",
     "excluded_channels": "none",
-    "excluded_servers": "none",
     "cooldown": "none",
     "aliases": "none"
   }
