@@ -22,7 +22,6 @@ var jsonfile = require("jsonfile");
 
 // Get all defined commands in the `Commands.js` file.
 var Commands = require("../src/Commands.js").Commands;
-var COMMANDS_DEFAULT_CONFIG = require("../src/Commands.js").CommandDefaultConfig;
 
 /* === Requires Stop === */
 
@@ -38,6 +37,36 @@ var SERVERS_CONFIGURATION_FILE_PATH = './conf/servers_properties.json';
 
 // Command/Reactions Cooldowns Array
 var COOLDOWNS = [];
+
+/* === Default Command Configuration Paramater Values === */
+// The default values for a new command.
+// Commands that have no configuration declaration in the commands_properties.json configuration file will be given these values by default.
+var COMMANDS_DEFAULT_CONFIG = {
+  oplevel:            2,
+  description:        '',
+  allowed_channels:   'all',
+  excluded_channels:  'none',
+  cooldown:           'none',
+  aliases:            'none'
+};
+
+/* === Default Server Configuration Paramater Values === */
+// The default values for a new server.
+// Servers that have no configuration declaration in the servers_properties.json configuration file will be given these values by default.
+var SERVERS_DEFAULT_CONFIG = {
+  name:                   "",
+  general_channel:        "",
+  announcement_channel:   "",
+  timeout_role_name:      "Timeout",
+  admin_roles:            [],
+  override_all_commands:  false
+};
+
+var server_specific_command_params = {
+  enabled: '',
+  override: ''
+};
+
 
 /* === Variables End === */
 
@@ -180,19 +209,6 @@ exports.loadServConf = function(bot) {
 
   var servers = bot.servers;
 
-  /* === Default Command Configuration Paramater Values === */
-  // The default values for a new command.
-  // Commands that have no configuration declaration in the commands.json configuration file will be given these values by default.
-  var SERVERS_DEFAULT_CONFIG = {
-    name:                 "",
-    general_channel:      "",
-    announcement_channel: "",
-    timeout_role_name:    "Timeout",
-    admin_roles:          [],
-    enabled:              true,
-    command_override:     false
-  };
-
   // Get commands configuration properties.
   // You are now in tools.js, so you need to add a dot to indicate a return to the other directory.
 
@@ -206,6 +222,13 @@ exports.loadServConf = function(bot) {
   }
 
   SERVERS_DEFAULT_CONFIG.commands = commands_configuration;
+
+  for( var comm in SERVERS_DEFAULT_CONFIG['commands'] ) {
+    if(SERVERS_DEFAULT_CONFIG['commands'].hasOwnProperty(comm)) {
+      SERVERS_DEFAULT_CONFIG['commands'][comm].enabled = true;
+      SERVERS_DEFAULT_CONFIG['commands'][comm].override = false;
+    }
+  }
 
   jsonfile.readFile(SERVERS_CONFIGURATION_FILE_PATH, function(err, obj) {
     if(err) { // If the file is not found or another error occurs...
@@ -314,13 +337,15 @@ exports.loadServConf = function(bot) {
                   // Parameters not in the default configuration will not be in *any* configuration.
                   for (var param in server_properties[key]['commands'][comm]) {
                     if(server_properties[key]['commands'][comm].hasOwnProperty(param)) {
-                      if(COMMANDS_DEFAULT_CONFIG[param] == null) {
+                      if(COMMANDS_DEFAULT_CONFIG[param] == null && !(param in server_specific_command_params)) {
                         // console.log("Sora: The following configuration parameter seems to have been removed from the default command configuration: " + param + "\nSora: I will proceed to remove it from all command configurations.");
                         delete server_properties[key]['commands'][comm][param];
                       }
                       // sync the global properties to servers where they are not overriden.
-                      if(!server_properties[key]['command_override'] && server_properties[key]['commands'][comm][param] != commands_configuration[comm][param]) {
-                        server_properties[key]['commands'][comm][param] = commands_configuration[comm][param];
+                      if(!server_properties[key]['override_all_commands']) {
+                        if(!server_properties[key]['commands'][comm]['override'] && server_properties[key]['commands'][comm][param] != commands_configuration[comm][param] && !(param in server_specific_command_params)) {
+                          server_properties[key]['commands'][comm][param] = commands_configuration[comm][param];
+                        }
                       }
                     }
                   }
@@ -448,44 +473,53 @@ exports.authCommand = function(bot, msg, key) {
   // Within the function, you are now in tools.js, so you need to add a dot to indicate a return to the other directory.
   var commands_configuration = require('.' + COMMANDS_CONFIGURATION_FILE_PATH);
 
+  // Get servers configuration properties.
+  // Within the function, you are now in tools.js, so you need to add a dot to indicate a return to the other directory.
+  var servers_configuration = require('.' + SERVERS_CONFIGURATION_FILE_PATH);
+
   // Load the command's configurations.
-  var command_config_obj = commands_configuration[key];
+  var command_validation_obj = commands_configuration[key];
+
+  // Check if the command is overriden in the current server.
+  if(servers_configuration[msg.channel.server.id]['override_all_commands'] || servers_configuration[msg.channel.server.id]['commands'][key]['override']) {
+    command_validation_obj = servers_configuration[msg.channel.server.id]['commands'][key];
+  }
 
   // If the message author is a God, Sora will not verify anything. Auto-Auth.
   if(!(msg.author.id in config.gods)) {
 
     // Check OP Level
-    if(command_config_obj.oplevel === 2) {
+    if(command_validation_obj.oplevel === 2) {
       return false;
     }
 
-    if(command_config_obj.oplevel === 1) {
+    if(command_validation_obj.oplevel === 1) {
       if(!(msg.author.id in config.admins)) {
         return false;
       }
     }
 
-    // Check Allowed Servers
-    if(command_config_obj.allowed_servers !== 'all') {
-      if(!(msg.channel.server.id in command_config_obj.allowed_servers)) {
+    // Check Allowed Channels
+    if(command_validation_obj.allowed_channels !== 'all') {
+      if(!(msg.channel.id in command_validation_obj.allowed_channels)) {
         return false;
       }
     }
 
-    // Check Allowed Channels
-    if(command_config_obj.allowed_channels !== 'all') {
-      if(!(msg.channel.id in command_config_obj.allowed_channels)) {
+    // Check Excluded Channels
+    if(command_validation_obj.excluded_channels !== 'all') {
+      if((msg.channel.id in command_validation_obj.excluded_channels)) {
         return false;
       }
     }
 
     // Check Cooldown (if any)
-    if(command_config_obj.cooldown !== 'none') {
+    if(command_validation_obj.cooldown !== 'none') {
      if(COOLDOWNS[key]) {
 
       if(!COOLDOWNS['announce_cd_' + key]) {
 
-        bot.sendMessage(msg.channel, "Hmm. The `" + key + "` command seems to be on cooldown.\nThe cooldown time is **" + command_config_obj.cooldown + "** seconds. It will be available shortly.", function(error, message) {
+        bot.sendMessage(msg.channel, "Hmm. The `" + key + "` command seems to be on cooldown.\nThe cooldown time is **" + command_validation_obj.cooldown + "** seconds. It will be available shortly.", function(error, message) {
           // Delete the cooldown warning after five seconds.
           setTimeout(function(){ bot.deleteMessage(message); }, 1000 * 5);
         });
@@ -493,7 +527,7 @@ exports.authCommand = function(bot, msg, key) {
         COOLDOWNS['announce_cd_' + key] = true;
 
         if(typeof Commands[key] !== 'undefined') {
-          setTimeout(function(){ COOLDOWNS['announce_cd_' + key] = false; /* console.log("Removed cooldown for " + key); */ }, 1000 * command_config_obj.cooldown);
+          setTimeout(function(){ COOLDOWNS['announce_cd_' + key] = false; /* console.log("Removed cooldown for " + key); */ }, 1000 * command_validation_obj.cooldown);
         } else {
           setTimeout(function(){ COOLDOWNS['announce_cd_' + key] = false; /* console.log("Removed cooldown for " + key); */ }, 1000 * 15);
         }
@@ -508,7 +542,7 @@ exports.authCommand = function(bot, msg, key) {
       COOLDOWNS[key] = true;
 
         if(typeof Commands[key] !== 'undefined') {
-          setTimeout(function(){ COOLDOWNS[key] = false; console.log("Removed cooldown for " + key); }, 1000 * command_config_obj.cooldown);
+          setTimeout(function(){ COOLDOWNS[key] = false; console.log("Removed cooldown for " + key); }, 1000 * command_validation_obj.cooldown);
         } else {
           setTimeout(function(){ COOLDOWNS[key] = false; console.log("Removed cooldown for " + key); }, 1000 * 15);
         }
