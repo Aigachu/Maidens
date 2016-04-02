@@ -437,7 +437,7 @@ exports.isCommand = function(msg) {
     }
 
     // Check if the second word in the message is
-    if(key in Commands) {
+    if(key in commands) {
       // console.log("Sora: This is a command.");
       return key;
     }
