@@ -18,6 +18,10 @@ var tools = require("./tools.js");
 // Get jsonfile module ; Used to facilitate json reading and writing.
 var jsonfile = require("jsonfile");
 
+// Get commands configuration properties.
+// You are now in tools.js, so you need to add a dot to indicate a return to the other directory.
+var commands_configuration = require('./conf/commands_properties.json');
+
 /* === Requires END === */
 
 /* === Commands Start! === */
@@ -123,7 +127,7 @@ commands.chname = {
  * @result  {[message]} [Sora changes her display name. Don't worry, she will always be Sora to us. ;)]
  */
 commands.coin = {
-  fn: function( bot, params, msg, msgServer, serverRoles, authorRoles ) {
+  fn: function( bot, params, msg ) {
     if(tools.val(params, 0)) {
       var flip = Math.floor(Math.random() * 2) + 1;
 
@@ -152,6 +156,8 @@ commands.coin = {
         bot.sendMessage(msg.channel, "<@" + msg.author.id + "> obtained **" + flip + "** !");
         bot.stopTyping(msg.channel);
       }, 1000 * rand.timeout);
+    } else {
+      bot.sendMessage( msg.channel, "You seem to have made a mistake with your command. Try using the `help` command! I can remind you about the way a command is used.");
     }
   }
 }
@@ -162,34 +168,12 @@ commands.coin = {
  * @result  {[message]} [Sora changes her display name. Don't worry, she will always be Sora to us. ;)]
  */
 commands.help = {
-  fn: function( bot, params, msg, msgServer, serverRoles, authorRoles ) {
-    var flip = Math.floor(Math.random() * 2) + 1;
-
-    flip = ((flip == 1) ? 'Heads' : 'Tails');
-
-    var flip_types = [];
-    flip_types.push({
-      message: "_Coinflip emulation has begun. Just a moment..._",
-      timeout: 2
-    });
-    flip_types.push({
-      message: "_Coinflip emulation has begun. Looks like..._",
-      timeout: 1
-    });
-    flip_types.push({
-      message: "_Coinflip emulation has begun. The coin spins_\nWait for it...",
-      timeout: 5
-    });
-
-    var rand = flip_types[Math.floor(Math.random() * flip_types.length)];
-
-    bot.sendMessage(msg.channel, rand.message);
-    bot.startTyping(msg.channel);
-
-    setTimeout(function(){
-      bot.sendMessage(msg.channel, "<@" + msg.author.id + "> obtained **" + flip + "** !");
-      bot.stopTyping(msg.channel);
-    }, 1000 * rand.timeout);
+  fn: function( bot, params, msg ) {
+    if(tools.val(params)) {
+      // Do stuff
+    } else {
+      bot.sendMessage( msg.channel, "Hmm. I wish I could...But you didn't specify what you needed help with!");
+    }
   }
 }
 

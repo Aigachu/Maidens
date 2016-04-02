@@ -73,44 +73,6 @@ var server_specific_command_params = {
 /* === Functions Start === */
 
 /**
- * Implements the custom function: extractID
- * @param  {[type]} tag [A discord string representing a user's Tag (highlighted string).]
- * @return {[type]}     [ID from the tag string.]
- */
-exports.val = function(params, count) {
-	count = typeof count !== 'undefined' ? count : 1;
-
-  if( !params[count] ) {
-  	return false;
-  } else {
-  	return true;
-  }
-};
-
-/**
- * Implements the custom function: extractID
- * @param  {[type]} tag [A discord string representing a user's Tag (highlighted string).]
- * @return {[type]}     [ID from the tag string.]
- */
-exports.extractID = function(tag) {
-  return tag.slice(2, -1);
-};
-
-/**
- * Implements the custom function: printUserTag
- * @param  {[object/string]} variable [Can be either a user object]
- * @return {[string]}                 [String that will be interpreted by discord to tag user. i.e. "<@77517077325287424>"]
- */
-exports.printUserTag = function(variable) {
-  // Conditional check to verify if the variable is an object (user) or not.
-  if(variable.username) {
-    return "<@" + variable.id + ">";
-  } else {
-    return "<@" + variable + ">";
-  }
-};
-
-/**
  * [loadCommConf description]
  * @return {[type]} [description]
  */
@@ -401,6 +363,44 @@ exports.updateCommandConfig = function(command, param, value) {
     	});
 		}
 	});
+};
+
+/**
+ * Implements the custom function: extractID
+ * @param  {[type]} tag [A discord string representing a user's Tag (highlighted string).]
+ * @return {[type]}     [ID from the tag string.]
+ */
+exports.val = function(params, count) {
+  count = typeof count !== 'undefined' ? count : 1;
+
+  if( count == 0 && params[count + 1] ) {
+    return false;
+  } else if(!params[count]) {
+    return true;
+  }
+};
+
+/**
+ * Implements the custom function: extractID
+ * @param  {[type]} tag [A discord string representing a user's Tag (highlighted string).]
+ * @return {[type]}     [ID from the tag string.]
+ */
+exports.extractID = function(tag) {
+  return tag.slice(2, -1);
+};
+
+/**
+ * Implements the custom function: printUserTag
+ * @param  {[object/string]} variable [Can be either a user object]
+ * @return {[string]}                 [String that will be interpreted by discord to tag user. i.e. "<@77517077325287424>"]
+ */
+exports.printUserTag = function(variable) {
+  // Conditional check to verify if the variable is an object (user) or not.
+  if(variable.username) {
+    return "<@" + variable.id + ">";
+  } else {
+    return "<@" + variable + ">";
+  }
 };
 
 /**
