@@ -37,12 +37,12 @@ var COMMANDS_DEFAULT_CONFIG = {
 /* === Commands Start! === */
 
 /**
- * COMMANDS ARRAY
+ * COMMANDS Object
  * Holds COMMANDS objects.
  * Defines actions taken when certain commands are called in chat.
  * @type {Array}
  */
-var Commands = [];
+var Commands = {};
 
 /**
  * Commands Description
@@ -84,7 +84,7 @@ var Commands = [];
  * @params  {[none]}
  * @result  {[message]} [Sora answers asking if she's needed.]
  */
-Commands[ "ping" ] = {
+Commands.ping = {
   fn: function( bot, params, msg ) {
 
     bot.sendMessage(msg.channel, "Yes, " + tools.printUserTag(msg.author) + "? What can I do for you?");
@@ -97,7 +97,7 @@ Commands[ "ping" ] = {
  * @params  {[none]}
  * @result  {[message]} [Sora answers asking if she's needed.]
  */
-Commands[ "pong" ] = {
+Commands.pong = {
   fn: function( bot, params, msg ) {
 
     bot.sendMessage(msg.channel, "Mm?...Anything you might need from me, " + tools.printUserTag(msg.author) + "?");
@@ -110,7 +110,7 @@ Commands[ "pong" ] = {
  * @params  {[none]}
  * @result  {[message]} [Sora changes her display name. Don't worry, she will always be Sora to us. ;)]
  */
-Commands[ "chname" ] = {
+Commands.chname = {
   fn: function( bot, params, msg ) {
     if(tools.validate_parameters(params)) {
 
@@ -131,93 +131,46 @@ Commands[ "chname" ] = {
   }
 }
 
+/**
+ * Implements the *coin* command.
+ * @params  {[none]}
+ * @result  {[message]} [Sora changes her display name. Don't worry, she will always be Sora to us. ;)]
+ */
+Commands.coin = {
+  fn: function( bot, params, msg, msgServer, serverRoles, authorRoles ) {
+    var flip = Math.floor(Math.random() * 2) + 1;
+
+    flip = ((flip == 1) ? 'Heads' : 'Tails');
+
+    var flip_types = [];
+    flip_types.push({
+      message: "_Coinflip emulation has begun. Just a moment..._",
+      timeout: 2
+    });
+    flip_types.push({
+      message: "_Coinflip emulation has begun. Looks like..._",
+      timeout: 1
+    });
+    flip_types.push({
+      message: "_Coinflip emulation has begun. The coin spins_\nWait for it...",
+      timeout: 5
+    });
+
+    var rand = flip_types[Math.floor(Math.random() * flip_types.length)];
+
+    bot.sendMessage(msg.channel, rand.message);
+    bot.startTyping(msg.channel);
+
+    setTimeout(function(){
+      bot.sendMessage(msg.channel, "<@" + msg.author.id + "> obtained **" + flip + "** !");
+      bot.stopTyping(msg.channel);
+    }, 1000 * rand.timeout);
+  }
+}
+
 /* === Commands End! === */
 
-/* === Command Properties Configuration === */
-
-// Path to the commands configuration file.
-// Use this file to configure command parameters from the list above.
-var COMMANDS_CONFIGURATION_FILE = './conf/commands.json';
-
-// Write new command configuration values to the JSON file.
-jsonfile.readFile(COMMANDS_CONFIGURATION_FILE, function(err, obj) {
-  if(err) { // If the file is not found or another error occurs...
-    // This is most likely to happen if the file is not found.
-    // In this case, log the error.
-    console.log(err);
-
-    // Friendly Message from Sora telling us that she will generate a commands configuration file.
-    console.log("Sora: There doesn't seem to be a commands configuration file or there was an error reading it.\nSora: Not to worry, I will generate a default one. You can go ahead and set the command properties afterwards.");
-
-    // We will now proceed to generate a default commands configuration file.
-    var command_properties = {};
-
-    // Loops in the Commands array and generates a default configuration entry for each of them.
-    for (var key in Commands) {
-      if(Commands.hasOwnProperty(key)) {
-        command_properties[key] = COMMANDS_DEFAULT_CONFIG;
-      }
-    }
-
-    jsonfile.writeFile(COMMANDS_CONFIGURATION_FILE, command_properties, {spaces: 2}, function (err) {
-      if(err) {
-        console.error(err)
-      }
-    });
-  } else { // If the file is found and successfully loaded...
-    var command_properties = obj;
-
-    // Loops in the Commands array and generates a default configuration entry for each command that does not yet have an entry.
-    for (var key in Commands) {
-      if(Commands.hasOwnProperty(key)) {
-        if(command_properties[key] == null) {
-          console.log("\nSora: The following command has no configuration definition: " + key + ".\nSora: I will give it a default definition in the configuration file.");
-          command_properties[key] = COMMANDS_DEFAULT_CONFIG;
-        }
-      }
-    }
-
-    // Loops through the configurations object to tidy up before saving. 
-    for (var key in command_properties) {
-      if(command_properties.hasOwnProperty(key)) {
-        // Deletes any command configuration declarations that are not for commands currently in the code.
-        if(Commands[key] == null) {
-          console.log("\nSora: The following command definition does not have a corresponding command in my code: " + key + ".\nSora: I will remove it from the configuration file.");
-          delete command_properties[key];
-        } else {
-          // Loops through the default configuration object to delete any parameters that are not set in the default configuration.
-          // Parameters not in the default configuration will not be in *any* configuration.
-          for (var param in command_properties[key]) {
-            if(command_properties[key].hasOwnProperty(param)) {
-              if(COMMANDS_DEFAULT_CONFIG[param] == null) {
-                // console.log("Sora: The following configuration parameter seems to have been removed from the default command configuration: " + param + "\nSora: I will proceed to remove it from all command configurations.");
-                delete command_properties[key][param];
-              }
-            }
-          }
-
-          // Loops through the default configuration object to set any new configuration parameters to older commands that may not have them.
-          for (var param in COMMANDS_DEFAULT_CONFIG) {
-            if(COMMANDS_DEFAULT_CONFIG.hasOwnProperty(param)) {
-              if(command_properties[key][param] == null) {
-                // console.log("Sora: The following configuration parameter seems to have been added to the default command configuration: " + param + "\nSora: I will proceed to add it to all command configurations with the default value.");
-                command_properties[key][param] = COMMANDS_DEFAULT_CONFIG[param];
-              }
-            }
-          }
-        }
-      }
-    }
-
-    jsonfile.writeFile(COMMANDS_CONFIGURATION_FILE, command_properties, {spaces: 2}, function (err) {
-      if(err) {
-        console.error(err)
-      }
-    });
-  }
-})
-
-/* === Command Properties End === */
-
 // Export the Commands object for use in `sora.js`
-exports.commands = Commands;
+exports.Commands = Commands;
+
+exports.CommandDefaultConfig = COMMANDS_DEFAULT_CONFIG;
