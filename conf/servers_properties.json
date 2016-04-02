@@ -5,7 +5,7 @@
     "announcement_channel": "",
     "timeout_role_name": "Timeout",
     "admin_roles": [],
-    "override_all_commands": true,
+    "override_all_commands": false,
     "commands": {
       "ping": {
         "oplevel": 2,
@@ -28,7 +28,7 @@
         "override": false
       },
       "chname": {
-        "oplevel": 0,
+        "oplevel": 1,
         "description": "",
         "allowed_channels": "all",
         "excluded_channels": "none",
@@ -39,6 +39,16 @@
       },
       "coin": {
         "oplevel": 0,
+        "description": "",
+        "allowed_channels": "all",
+        "excluded_channels": "none",
+        "cooldown": "none",
+        "aliases": "none",
+        "enabled": true,
+        "override": false
+      },
+      "help": {
+        "oplevel": 2,
         "description": "",
         "allowed_channels": "all",
         "excluded_channels": "none",
@@ -58,7 +68,7 @@
     "override_all_commands": false,
     "commands": {
       "ping": {
-        "oplevel": 0,
+        "oplevel": 2,
         "description": "",
         "allowed_channels": "all",
         "excluded_channels": "none",
@@ -68,7 +78,7 @@
         "override": false
       },
       "pong": {
-        "oplevel": 0,
+        "oplevel": 2,
         "description": "",
         "allowed_channels": "all",
         "excluded_channels": "none",
@@ -78,7 +88,7 @@
         "override": false
       },
       "chname": {
-        "oplevel": 0,
+        "oplevel": 1,
         "description": "",
         "allowed_channels": "all",
         "excluded_channels": "none",
@@ -89,6 +99,16 @@
       },
       "coin": {
         "oplevel": 0,
+        "description": "",
+        "allowed_channels": "all",
+        "excluded_channels": "none",
+        "cooldown": "none",
+        "aliases": "none",
+        "enabled": true,
+        "override": false
+      },
+      "help": {
+        "oplevel": 2,
         "description": "",
         "allowed_channels": "all",
         "excluded_channels": "none",
@@ -108,7 +128,7 @@
     "override_all_commands": false,
     "commands": {
       "ping": {
-        "oplevel": 0,
+        "oplevel": 2,
         "description": "",
         "allowed_channels": "all",
         "excluded_channels": "none",
@@ -118,7 +138,7 @@
         "override": false
       },
       "pong": {
-        "oplevel": 0,
+        "oplevel": 2,
         "description": "",
         "allowed_channels": "all",
         "excluded_channels": "none",
@@ -135,10 +155,20 @@
         "cooldown": "none",
         "aliases": "none",
         "enabled": true,
-        "override": true
+        "override": false
       },
       "coin": {
         "oplevel": 0,
+        "description": "",
+        "allowed_channels": "all",
+        "excluded_channels": "none",
+        "cooldown": "none",
+        "aliases": "none",
+        "enabled": true,
+        "override": false
+      },
+      "help": {
+        "oplevel": 2,
         "description": "",
         "allowed_channels": "all",
         "excluded_channels": "none",

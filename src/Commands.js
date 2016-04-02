@@ -28,7 +28,7 @@ var jsonfile = require("jsonfile");
  * Defines actions taken when certain commands are called in chat.
  * @type {Array}
  */
-var Commands = {};
+var commands = {};
 
 /**
  * Commands Description
@@ -70,7 +70,7 @@ var Commands = {};
  * @params  {[none]}
  * @result  {[message]} [Sora answers asking if she's needed.]
  */
-Commands.ping = {
+commands.ping = {
   fn: function( bot, params, msg ) {
 
     bot.sendMessage(msg.channel, "Yes, " + tools.printUserTag(msg.author) + "? What can I do for you?");
@@ -83,7 +83,7 @@ Commands.ping = {
  * @params  {[none]}
  * @result  {[message]} [Sora answers asking if she's needed.]
  */
-Commands.pong = {
+commands.pong = {
   fn: function( bot, params, msg ) {
 
     bot.sendMessage(msg.channel, "Mm?...Anything you might need from me, " + tools.printUserTag(msg.author) + "?");
@@ -96,9 +96,9 @@ Commands.pong = {
  * @params  {[none]}
  * @result  {[message]} [Sora changes her display name. Don't worry, she will always be Sora to us. ;)]
  */
-Commands.chname = {
+commands.chname = {
   fn: function( bot, params, msg ) {
-    if(tools.validate_parameters(params)) {
+    if(tools.val(params)) {
 
       var newName = msg.content.substring(msg.content.indexOf(params[0]), msg.content.length);
 
@@ -122,7 +122,46 @@ Commands.chname = {
  * @params  {[none]}
  * @result  {[message]} [Sora changes her display name. Don't worry, she will always be Sora to us. ;)]
  */
-Commands.coin = {
+commands.coin = {
+  fn: function( bot, params, msg, msgServer, serverRoles, authorRoles ) {
+    if(tools.val(params, 0)) {
+      var flip = Math.floor(Math.random() * 2) + 1;
+
+      flip = ((flip == 1) ? 'Heads' : 'Tails');
+
+      var flip_types = [];
+      flip_types.push({
+        message: "_Coinflip emulation has begun. Just a moment..._",
+        timeout: 2
+      });
+      flip_types.push({
+        message: "_Coinflip emulation has begun. Looks like..._",
+        timeout: 1
+      });
+      flip_types.push({
+        message: "_Coinflip emulation has begun. The coin spins_\nWait for it...",
+        timeout: 5
+      });
+
+      var rand = flip_types[Math.floor(Math.random() * flip_types.length)];
+
+      bot.sendMessage(msg.channel, rand.message);
+      bot.startTyping(msg.channel);
+
+      setTimeout(function(){
+        bot.sendMessage(msg.channel, "<@" + msg.author.id + "> obtained **" + flip + "** !");
+        bot.stopTyping(msg.channel);
+      }, 1000 * rand.timeout);
+    }
+  }
+}
+
+/**
+ * Implements the *coin* command.
+ * @params  {[none]}
+ * @result  {[message]} [Sora changes her display name. Don't worry, she will always be Sora to us. ;)]
+ */
+commands.help = {
   fn: function( bot, params, msg, msgServer, serverRoles, authorRoles ) {
     var flip = Math.floor(Math.random() * 2) + 1;
 
@@ -157,4 +196,4 @@ Commands.coin = {
 /* === Commands End! === */
 
 // Export the Commands object for use in `sora.js`
-exports.Commands = Commands;
+exports.commands = commands;
