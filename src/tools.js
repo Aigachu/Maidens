@@ -21,7 +21,7 @@ var config = require("../conf/main.json");
 var jsonfile = require("jsonfile");
 
 // Get all defined commands in the `Commands.js` file.
-var Commands = require("../src/Commands.js").Commands;
+var commands = require("../src/commands.js").commands;
 
 /* === Requires Stop === */
 
@@ -77,12 +77,10 @@ var server_specific_command_params = {
  * @param  {[type]} tag [A discord string representing a user's Tag (highlighted string).]
  * @return {[type]}     [ID from the tag string.]
  */
-exports.validate_parameters = function(params, min_param_count, max_param_count) {
-	min_param_count = typeof min_param_count !== 'undefined' ? min_param_count : 1;
+exports.val = function(params, count) {
+	count = typeof count !== 'undefined' ? count : 1;
 
-  if (max_param_count !== null && !params[min_param_count - 1] || params[max_param_count]){
-  	return false;
-  } else if(!max_param_count && !params[min_param_count - 1]) {
+  if( !params[count] ) {
   	return false;
   } else {
   	return true;
@@ -133,8 +131,8 @@ exports.loadCommConf = function() {
       var command_properties = {};
 
       // Loops in the Commands array and generates a default configuration entry for each of them.
-      for (var key in Commands) {
-        if(Commands.hasOwnProperty(key)) {
+      for (var key in commands) {
+        if(commands.hasOwnProperty(key)) {
           command_properties[key] = COMMANDS_DEFAULT_CONFIG;
         }
       }
@@ -148,8 +146,8 @@ exports.loadCommConf = function() {
       var command_properties = obj;
 
       // Loops in the Commands array and generates a default configuration entry for each command that does not yet have an entry.
-      for (var key in Commands) {
-        if(Commands.hasOwnProperty(key)) {
+      for (var key in commands) {
+        if(commands.hasOwnProperty(key)) {
           if(command_properties[key] == null) {
             console.log("\nSora: The following command has no configuration definition: " + key + ".\nSora: I will give it a default definition in the configuration file.");
             command_properties[key] = COMMANDS_DEFAULT_CONFIG;
@@ -161,7 +159,7 @@ exports.loadCommConf = function() {
       for (var key in command_properties) {
         if(command_properties.hasOwnProperty(key)) {
           // Deletes any command configuration declarations of commands that have been removed.
-          if(Commands[key] == null) {
+          if(commands[key] == null) {
             console.log("\nSora: The following command definition does not have a corresponding command in my code: " + key + ".\nSora: I will remove it from the configuration file.");
             delete command_properties[key];
           } else {
@@ -315,11 +313,13 @@ exports.loadServConf = function(bot) {
             }
 
             // Loops in the server configuration's commands object and generates a default configuration entry for each command that does not yet have an entry.
-            for (var comm in Commands) {
-              if(Commands.hasOwnProperty(comm)) {
+            for (var comm in commands) {
+              if(commands.hasOwnProperty(comm)) {
                 if(server_properties[key]['commands'][comm] == null) {
                   console.log("\nSora: The following command has no configuration definition in the "+ server_properties[key]['name'] +" server: " + comm + ".\nSora: I will give it a default definition in the configuration file.");
                   server_properties[key]['commands'][comm] = COMMANDS_DEFAULT_CONFIG;
+                  server_properties[key]['commands'][comm].enabled = true;
+                  server_properties[key]['commands'][comm].override = false;
                 }
               }
             }
@@ -328,7 +328,7 @@ exports.loadServConf = function(bot) {
             for (var comm in server_properties[key]['commands']) {
               if(server_properties[key]['commands'].hasOwnProperty(comm)) {
                 // Deletes any command configuration declarations of commands that have been removed.
-                if(Commands[comm] == null) {
+                if(commands[comm] == null) {
                   // console.log("\nSora: The following command definition does not have a corresponding command in my code: " + comm + ".\nSora: I will remove it from the configuration file.");
                   delete server_properties[key]['commands'][comm];
                 } else {
@@ -453,8 +453,8 @@ exports.isCommand = function(msg) {
  * @return {[type]}     [description]
  */
 exports.removeCooldown = function(key) {
-  if(typeof Commands[key] !== 'undefined') {
-    setTimeout(function(){ COOLDOWNS[key] = false; console.log("Removed cooldown for " + key); }, 1000 * Commands[key].cooldown);
+  if(typeof commands[key] !== 'undefined') {
+    setTimeout(function(){ COOLDOWNS[key] = false; console.log("Removed cooldown for " + key); }, 1000 * commands[key].cooldown);
   } else {
     setTimeout(function(){ COOLDOWNS[key] = false; console.log("Removed cooldown for " + key); }, 1000 * 15);
   }

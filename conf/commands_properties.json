@@ -1,6 +1,6 @@
 {
   "ping": {
-    "oplevel": 0,
+    "oplevel": 2,
     "description": "",
     "allowed_channels": "all",
     "excluded_channels": "none",
@@ -8,7 +8,7 @@
     "aliases": "none"
   },
   "pong": {
-    "oplevel": 0,
+    "oplevel": 2,
     "description": "",
     "allowed_channels": "all",
     "excluded_channels": "none",
@@ -16,7 +16,7 @@
     "aliases": "none"
   },
   "chname": {
-    "oplevel": 0,
+    "oplevel": 1,
     "description": "",
     "allowed_channels": "all",
     "excluded_channels": "none",
@@ -25,6 +25,14 @@
   },
   "coin": {
     "oplevel": 0,
+    "description": "",
+    "allowed_channels": "all",
+    "excluded_channels": "none",
+    "cooldown": "none",
+    "aliases": "none"
+  },
+  "help": {
+    "oplevel": 2,
     "description": "",
     "allowed_channels": "all",
     "excluded_channels": "none",

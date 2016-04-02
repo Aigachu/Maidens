@@ -21,7 +21,7 @@ var config = require("./conf/main.json");
 var tools = require("./src/tools.js");
 
 // Get all defined commands in the `Commands.js` file.
-var Commands = require("./src/Commands.js").Commands;
+var commands = require("./src/commands.js").commands;
 
 /* === Requires END === */
 
@@ -87,7 +87,7 @@ sora.on("message", function (msg) {
 
       // Run Command if it passed approval.
       if(tools.authCommand(sora, msg, key)) {
-        Commands[key].fn(sora, params, msg);
+        commands[key].fn(sora, params, msg);
       }
 
     }
