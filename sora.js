@@ -34,6 +34,15 @@ var sora = new Discord.Client();
 
 sora.on("ready", function () {
   console.log("\nSora: I am now properly linked to the Discord infrastructure. Enjoy!");
+
+  /* === On-Boot Tasks === */
+  // Loads and modifies the command configuration file.
+  tools.loadCommConf();
+
+  // Loads and modifies the server configuration file.
+  tools.loadServConf(sora);
+
+  /* === On-Boot Tasks END === */
 })
 
 // When Sora disconnects from Discord.
@@ -44,15 +53,6 @@ sora.on("disconnected", function () {
   //exit node.js with an error
   process.exit(1);
 });
-
-/* === On-Boot Tasks === */
-// Loads and modifies the command configuration file.
-tools.loadCommConf();
-
-// Loads and modifies the server configuration file.
-// tools.loadServConf();
-
-/* === On-Boot Tasks END === */
 
 /**
  * Event that fires when Sora receives a message.

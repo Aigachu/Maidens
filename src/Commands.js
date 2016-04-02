@@ -24,14 +24,14 @@ var jsonfile = require("jsonfile");
 // The default values for a new command.
 // Commands that have no configuration declaration in the commands.json configuration file will be given these values by default.
 var COMMANDS_DEFAULT_CONFIG = {
-  oplevel: 2,
-  description: '',
-  allowed_channels: 'all',
-  allowed_servers: 'all',
-  excluded_channels: 'none',
-  excluded_servers: 'none',
-  cooldown: 'none',
-  aliases: 'none'
+  oplevel:            2,
+  description:        '',
+  allowed_channels:   'all',
+  allowed_servers:    'all',
+  excluded_channels:  'none',
+  excluded_servers:   'none',
+  cooldown:           'none',
+  aliases:            'none'
 };
 
 /* === Commands Start! === */

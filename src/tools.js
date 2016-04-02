@@ -24,12 +24,17 @@ var jsonfile = require("jsonfile");
 var Commands = require("../src/Commands.js").Commands;
 var COMMANDS_DEFAULT_CONFIG = require("../src/Commands.js").CommandDefaultConfig;
 
-// Get commands configuration properties.
-var commands_configuration = require("../conf/commands_properties.json");
-
 /* === Requires Stop === */
 
 /* === Variables Start === */
+
+// Path to the commands configuration file.
+// Use this file to configure command parameters from the list above.
+var COMMANDS_CONFIGURATION_FILE_PATH = './conf/commands_properties.json';
+
+// Path to the commands configuration file.
+// Use this file to configure server parameters from the list above.
+var SERVERS_CONFIGURATION_FILE_PATH = './conf/servers_properties.json';
 
 // Command/Reactions Cooldowns Array
 var COOLDOWNS = [];
@@ -81,12 +86,8 @@ exports.printUserTag = function(variable) {
 exports.loadCommConf = function() {
   /* === Command Properties Configuration === */
 
-  // Path to the commands configuration file.
-  // Use this file to configure command parameters from the list above.
-  var COMMANDS_CONFIGURATION_FILE = './conf/commands_properties.json';
-
   // Write new command configuration values to the JSON file.
-  jsonfile.readFile(COMMANDS_CONFIGURATION_FILE, function(err, obj) {
+  jsonfile.readFile(COMMANDS_CONFIGURATION_FILE_PATH, function(err, obj) {
     if(err) { // If the file is not found or another error occurs...
       // This is most likely to happen if the file is not found.
       // In this case, log the error.
@@ -105,7 +106,7 @@ exports.loadCommConf = function() {
         }
       }
 
-      jsonfile.writeFile(COMMANDS_CONFIGURATION_FILE, command_properties, {spaces: 2}, function (err) {
+      jsonfile.writeFile(COMMANDS_CONFIGURATION_FILE_PATH, command_properties, {spaces: 2}, function (err) {
         if(err) {
           console.error(err)
         }
@@ -155,13 +156,13 @@ exports.loadCommConf = function() {
         }
       }
 
-      jsonfile.writeFile(COMMANDS_CONFIGURATION_FILE, command_properties, {spaces: 2}, function (err) {
+      jsonfile.writeFile(COMMANDS_CONFIGURATION_FILE_PATH, command_properties, {spaces: 2}, function (err) {
         if(err) {
           console.error(err)
         }
       });
     }
-  })
+  });
 
   /* === Command Properties End === */
 }
@@ -172,7 +173,66 @@ exports.loadCommConf = function() {
  * @return {[type]}     [description]
  */
 exports.loadServConf = function(bot) {
+
   var servers = bot.servers;
+
+  jsonfile.readFile(SERVERS_CONFIGURATION_FILE_PATH, function(err, obj) {
+    if(err) { // If the file is not found or another error occurs...
+      // This is most likely to happen if the file is not found.
+      // In this case, log the error.
+      console.log(err);
+
+      // Friendly Message from Sora telling us that she will generate a commands configuration file.
+      console.log("Sora: There doesn't seem to be a servers configuration file or there was an error reading it.\nSora: Not to worry, I will generate a default one. You can go ahead and set the servers properties afterwards.");
+
+      // We will now proceed to generate a default server configuration file.
+      var server_properties = {};
+
+      // Get commands configuration properties.
+      // You are now in tools.js, so you need to add a dot to indicate a return to the other directory.
+      var commands_configuration = require('.' + COMMANDS_CONFIGURATION_FILE_PATH);
+
+      // Now for each server, we will create a definition in the file with default values.
+      for(key in servers) {
+        if(servers.hasOwnProperty(key) && key != 'limit' && key != 'length') {
+          var base_property = {
+            name:                 servers[key].name,
+            general_channel:      "",
+            announcement_channel: "",
+            timeout_role_name:    "Timeout",
+            admin_roles:          []
+          };
+
+          base_property.commands = commands_configuration;
+
+          for(command_key in base_property['commands']) {
+            if(base_property['commands'].hasOwnProperty(command_key)) {
+              base_property['commands'][command_key]["enabled"] = true;
+              base_property['commands'][command_key]["override"] = false;
+            }
+          }
+
+          server_properties[servers[key].id] = base_property;
+        }
+      }
+
+      jsonfile.writeFile(SERVERS_CONFIGURATION_FILE_PATH, server_properties, {spaces: 2}, function (err) {
+        if(err) {
+          console.error(err)
+        }
+      });
+
+    } else {
+
+    }
+  });
+
+  // for(key in servers) {
+  //   if(servers.hasOwnProperty(key)) {
+  //     console.log(servers[key]);
+  //   }
+  // }
+
 }
 
 /**
@@ -183,9 +243,7 @@ exports.loadServConf = function(bot) {
  * @return {[type]}         [description]
  */
 exports.updateCommandConfig = function(command, param, value) {
-	var COMMANDS_CONFIGURATION_FILE = './conf/commands.json';
-
-	jsonfile.readFile(COMMANDS_CONFIGURATION_FILE, function(err, obj) {
+	jsonfile.readFile(COMMANDS_CONFIGURATION_FILE_PATH, function(err, obj) {
 		if(err) { // THIS SHOULDN'T HAPPEN
 			console.log(err);
 		} else {
@@ -193,7 +251,7 @@ exports.updateCommandConfig = function(command, param, value) {
 
 			properties[command][param] = value;
 
-			jsonfile.writeFile(COMMANDS_CONFIGURATION_FILE, properties, {spaces: 2}, function (err) {
+			jsonfile.writeFile(COMMANDS_CONFIGURATION_FILE_PATH, properties, {spaces: 2}, function (err) {
 	      if(err) {
 	        console.error(err);
 	      }
@@ -210,6 +268,10 @@ exports.updateCommandConfig = function(command, param, value) {
  * @return {[type]}         [description]
  */
 exports.isCommand = function(msg) {
+  // Get commands configuration properties.
+  // You are now in tools.js, so you need to add a dot to indicate a return to the other directory.
+  var commands_configuration = require('.' + COMMANDS_CONFIGURATION_FILE_PATH);
+
   // Divide text into distinct parameters.
   var split = msg.content.split(" ");
 
@@ -263,6 +325,10 @@ exports.removeCooldown = function(key) {
  * @return {[type]}         [description]
  */
 exports.authCommand = function(bot, msg, key) {
+
+  // Get commands configuration properties.
+  // Within the function, you are now in tools.js, so you need to add a dot to indicate a return to the other directory.
+  var commands_configuration = require('.' + COMMANDS_CONFIGURATION_FILE_PATH);
 
   // Load the command's configurations.
   var command_config_obj = commands_configuration[key];
