@@ -1,35 +1,32 @@
 {
   "ping": {
     "oplevel": 2,
+    "description": "",
     "allowed_channels": "all",
     "allowed_servers": "all",
     "excluded_channels": "none",
     "excluded_servers": "none",
     "cooldown": "none",
-    "description": "",
-    "aliases": [
-      "pung",
-      "pyng"
-    ]
+    "aliases": "none"
   },
   "pong": {
-    "oplevel": 1,
+    "oplevel": 2,
+    "description": "",
     "allowed_channels": "all",
     "allowed_servers": "all",
     "excluded_channels": "none",
     "excluded_servers": "none",
-    "cooldown": 5,
-    "description": "",
+    "cooldown": "none",
     "aliases": "none"
   },
   "chname": {
     "oplevel": 2,
+    "description": "",
     "allowed_channels": "all",
     "allowed_servers": "all",
     "excluded_channels": "none",
     "excluded_servers": "none",
     "cooldown": "none",
-    "description": "",
     "aliases": "none"
   },
   "coin": {

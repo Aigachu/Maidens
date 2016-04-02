@@ -5,45 +5,38 @@
     "announcement_channel": "",
     "timeout_role_name": "Timeout",
     "admin_roles": [],
+    "enabled": true,
+    "command_override": true,
     "commands": {
       "ping": {
         "oplevel": 2,
+        "description": "",
         "allowed_channels": "all",
         "allowed_servers": "all",
         "excluded_channels": "none",
         "excluded_servers": "none",
         "cooldown": "none",
-        "description": "",
-        "aliases": [
-          "pung",
-          "pyng"
-        ],
-        "enabled": true,
-        "override": false
+        "aliases": "none"
       },
       "pong": {
         "oplevel": 1,
-        "allowed_channels": "all",
-        "allowed_servers": "all",
-        "excluded_channels": "none",
-        "excluded_servers": "none",
-        "cooldown": 5,
         "description": "",
-        "aliases": "none",
-        "enabled": true,
-        "override": false
-      },
-      "chname": {
-        "oplevel": 2,
         "allowed_channels": "all",
         "allowed_servers": "all",
         "excluded_channels": "none",
         "excluded_servers": "none",
         "cooldown": "none",
+        "aliases": "none"
+      },
+      "chname": {
+        "oplevel": 2,
         "description": "",
-        "aliases": "none",
-        "enabled": true,
-        "override": false
+        "allowed_channels": "all",
+        "allowed_servers": "all",
+        "excluded_channels": "none",
+        "excluded_servers": "none",
+        "cooldown": "none",
+        "aliases": "none"
       },
       "coin": {
         "oplevel": 2,
@@ -53,9 +46,7 @@
         "excluded_channels": "none",
         "excluded_servers": "none",
         "cooldown": "none",
-        "aliases": "none",
-        "enabled": true,
-        "override": false
+        "aliases": "none"
       }
     }
   },
@@ -65,45 +56,38 @@
     "announcement_channel": "",
     "timeout_role_name": "Timeout",
     "admin_roles": [],
+    "enabled": true,
+    "command_override": false,
     "commands": {
       "ping": {
         "oplevel": 2,
+        "description": "",
         "allowed_channels": "all",
         "allowed_servers": "all",
         "excluded_channels": "none",
         "excluded_servers": "none",
         "cooldown": "none",
-        "description": "",
-        "aliases": [
-          "pung",
-          "pyng"
-        ],
-        "enabled": true,
-        "override": false
+        "aliases": "none"
       },
       "pong": {
-        "oplevel": 1,
+        "oplevel": 2,
+        "description": "",
         "allowed_channels": "all",
         "allowed_servers": "all",
         "excluded_channels": "none",
         "excluded_servers": "none",
-        "cooldown": 5,
-        "description": "",
-        "aliases": "none",
-        "enabled": true,
-        "override": false
+        "cooldown": "none",
+        "aliases": "none"
       },
       "chname": {
         "oplevel": 2,
+        "description": "",
         "allowed_channels": "all",
         "allowed_servers": "all",
         "excluded_channels": "none",
         "excluded_servers": "none",
         "cooldown": "none",
-        "description": "",
-        "aliases": "none",
-        "enabled": true,
-        "override": false
+        "aliases": "none"
       },
       "coin": {
         "oplevel": 2,
@@ -113,9 +97,7 @@
         "excluded_channels": "none",
         "excluded_servers": "none",
         "cooldown": "none",
-        "aliases": "none",
-        "enabled": true,
-        "override": false
+        "aliases": "none"
       }
     }
   },
@@ -125,45 +107,38 @@
     "announcement_channel": "",
     "timeout_role_name": "Timeout",
     "admin_roles": [],
+    "enabled": true,
+    "command_override": false,
     "commands": {
       "ping": {
         "oplevel": 2,
+        "description": "",
         "allowed_channels": "all",
         "allowed_servers": "all",
         "excluded_channels": "none",
         "excluded_servers": "none",
         "cooldown": "none",
-        "description": "",
-        "aliases": [
-          "pung",
-          "pyng"
-        ],
-        "enabled": true,
-        "override": false
+        "aliases": "none"
       },
       "pong": {
-        "oplevel": 1,
+        "oplevel": 2,
+        "description": "",
         "allowed_channels": "all",
         "allowed_servers": "all",
         "excluded_channels": "none",
         "excluded_servers": "none",
-        "cooldown": 5,
-        "description": "",
-        "aliases": "none",
-        "enabled": true,
-        "override": false
+        "cooldown": "none",
+        "aliases": "none"
       },
       "chname": {
         "oplevel": 2,
+        "description": "",
         "allowed_channels": "all",
         "allowed_servers": "all",
         "excluded_channels": "none",
         "excluded_servers": "none",
         "cooldown": "none",
-        "description": "",
-        "aliases": "none",
-        "enabled": true,
-        "override": false
+        "aliases": "none"
       },
       "coin": {
         "oplevel": 2,
@@ -173,9 +148,7 @@
         "excluded_channels": "none",
         "excluded_servers": "none",
         "cooldown": "none",
-        "aliases": "none",
-        "enabled": true,
-        "override": false
+        "aliases": "none"
       }
     }
   }
