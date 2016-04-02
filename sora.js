@@ -21,14 +21,11 @@ var config = require("./conf/main.json");
 var tools = require("./src/tools.js");
 
 // Get all defined commands in the `Commands.js` file.
-var CommandsLib = require("./src/Commands.js");
+var Commands = require("./src/Commands.js").Commands;
 
 /* === Requires END === */
 
 /* === Variables Start === */
-
-var Commands = CommandsLib.commands;
-var CommandPrefix = config.command_prefix;
 
 /* === Variables End === */
 
@@ -48,38 +45,48 @@ sora.on("disconnected", function () {
   process.exit(1);
 });
 
+/* === On-Boot Tasks === */
+// Loads and modifies the command configuration file.
+tools.loadCommConf();
+
+// Loads and modifies the server configuration file.
+// tools.loadServConf();
+
+/* === On-Boot Tasks END === */
+
 /**
  * Event that fires when Sora receives a message.
  * @param  {Object} msg)
  * @todo : add example msg object reference to Wiki.
  */
 sora.on("message", function (msg) {
-  // This object will contain any necessary items that need to be used in commands.
-  // This can include the server object, roles, and more.
-  var variables = {};
 
   /* === COMMANDS TREATMENT START === */
-  for (var key in Commands) {
-    if (Commands.hasOwnProperty(key)) {
-      var split = msg.content.split(" "); // Divide text into distinct parameters.
-      if(split[0] === CommandPrefix && split[1]) {
-        var command = split[1].toUpperCase();
-        if(command === key.toUpperCase() && msg.author.id !== sora.user.id) {
-          var params = split; 
-          params.splice(0, 2);
 
-          // @todo : create a function that handles the treatment of the denial flag
-          // this will be good to avoid copy pasting and modification in multiple places
-          var DENIAL_FLAG = false;
+  // Only hop in here and treat commands if this isn't Sora's own message!
+  if(msg.author.id !== sora.user.id) {
+    var key = "";
 
-          // Run Command if it passed approval.
-          if(!DENIAL_FLAG) {
-            Commands[key].fn(sora, params, msg);
-          }
-        }
+    if(key = tools.isCommand(msg)) {
+
+      // Initialize the parameters variable as an array with all words in the message seperate by a space.
+      var params = msg.content.split(" ");
+
+      // Remove the first two elements of the array, which in the case that this is a command, are the following:
+      // params[0] = $sora.
+      // params[1] = command_key.
+      params.splice(0, 2);
+
+      // Now, the params array only contains the parameters of the command.
+
+      // Run Command if it passed approval.
+      if(tools.authCommand(sora, msg, key)) {
+        Commands[key].fn(sora, params, msg);
       }
+
     }
   }
+
   /* === COMMANDS TREATMENT END === */
 });
 
