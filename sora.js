@@ -39,8 +39,14 @@ sora.on("ready", function () {
   // Loads and modifies the command configuration file.
   tools.loadCommConf();
 
-  // Loads and modifies the server configuration file.
-  tools.loadServConf(sora);
+  setTimeout(function(){
+    if(!tools.loadServConf(sora)) {
+      console.log("Sora: The server configuration file needs a command configuration file to be generated. Please re-run the code!");
+
+      //exit node.js with an error
+      process.exit(0);
+    }
+  }, 300);
 
   /* === On-Boot Tasks END === */
 })
