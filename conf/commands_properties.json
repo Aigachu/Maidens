@@ -16,7 +16,7 @@
     "aliases": "none"
   },
   "chname": {
-    "oplevel": 1,
+    "oplevel": 2,
     "description": "",
     "allowed_channels": "all",
     "excluded_channels": "none",
@@ -24,7 +24,7 @@
     "aliases": "none"
   },
   "coin": {
-    "oplevel": 0,
+    "oplevel": 2,
     "description": "",
     "allowed_channels": "all",
     "excluded_channels": "none",
@@ -32,6 +32,14 @@
     "aliases": "none"
   },
   "help": {
+    "oplevel": 2,
+    "description": "",
+    "allowed_channels": "all",
+    "excluded_channels": "none",
+    "cooldown": "none",
+    "aliases": "none"
+  },
+  "helpagain": {
     "oplevel": 2,
     "description": "",
     "allowed_channels": "all",

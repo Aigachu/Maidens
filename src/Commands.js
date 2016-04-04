@@ -18,10 +18,6 @@ var tools = require("./tools.js");
 // Get jsonfile module ; Used to facilitate json reading and writing.
 var jsonfile = require("jsonfile");
 
-// Get commands configuration properties.
-// You are now in tools.js, so you need to add a dot to indicate a return to the other directory.
-var commands_configuration = require('./conf/commands_properties.json');
-
 /* === Requires END === */
 
 /* === Commands Start! === */
@@ -168,6 +164,21 @@ commands.coin = {
  * @result  {[message]} [Sora changes her display name. Don't worry, she will always be Sora to us. ;)]
  */
 commands.help = {
+  fn: function( bot, params, msg ) {
+    if(tools.val(params)) {
+      // Do stuff
+    } else {
+      bot.sendMessage( msg.channel, "Hmm. I wish I could...But you didn't specify what you needed help with!");
+    }
+  }
+}
+
+/**
+ * Implements the *coin* command.
+ * @params  {[none]}
+ * @result  {[message]} [Sora changes her display name. Don't worry, she will always be Sora to us. ;)]
+ */
+commands.helpagain = {
   fn: function( bot, params, msg ) {
     if(tools.val(params)) {
       // Do stuff
