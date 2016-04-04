@@ -17,11 +17,7 @@ var Discord = require("discord.js");
 // Put the credentials of the newly created account into `conf/main.json` found at the same level as this file.
 var config = require("./conf/main.json");
 
-// Get custom coded functions saved in the `tools.js` file.
-var tools = require("./src/tools.js");
-
-// Get all defined commands in the `Commands.js` file.
-var commands = require("./src/commands.js").commands;
+var loader = require("./src/loader.js");
 
 /* === Requires END === */
 
@@ -37,19 +33,25 @@ sora.on("ready", function () {
 
   /* === On-Boot Tasks === */
   // Loads and modifies the command configuration file.
-  tools.loadCommConf();
+  if(loader.loadCommConf()) {
+    setTimeout(function(){
+      if(!loader.loadServConf(sora)) {
+        console.log("Sora: The server configuration file needs a command configuration file to be generated. Please re-run the code!");
 
-  setTimeout(function(){
-    if(!tools.loadServConf(sora)) {
-      console.log("Sora: The server configuration file needs a command configuration file to be generated. Please re-run the code!");
+        //exit node.js with an error
+        process.exit(0);
+      } else {
+        // Get custom coded functions saved in the `tools.js` file.
+        var tools = require("./src/tools.js");
 
-      //exit node.js with an error
-      process.exit(0);
-    }
-  }, 300);
+        // Get all defined commands in the `Commands.js` file.
+        var commands = require("./src/commands.js").commands;
+      }
+    }, 500);
+  }
 
   /* === On-Boot Tasks END === */
-})
+});
 
 // When Sora disconnects from Discord.
 sora.on("disconnected", function () {

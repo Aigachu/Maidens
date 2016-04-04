@@ -28,7 +28,7 @@
         "override": false
       },
       "chname": {
-        "oplevel": 1,
+        "oplevel": 2,
         "description": "",
         "allowed_channels": "all",
         "excluded_channels": "none",
@@ -38,7 +38,7 @@
         "override": false
       },
       "coin": {
-        "oplevel": 0,
+        "oplevel": 2,
         "description": "",
         "allowed_channels": "all",
         "excluded_channels": "none",
@@ -48,6 +48,16 @@
         "override": false
       },
       "help": {
+        "oplevel": 2,
+        "description": "",
+        "allowed_channels": "all",
+        "excluded_channels": "none",
+        "cooldown": "none",
+        "aliases": "none",
+        "enabled": true,
+        "override": false
+      },
+      "helpagain": {
         "oplevel": 2,
         "description": "",
         "allowed_channels": "all",
@@ -88,7 +98,7 @@
         "override": false
       },
       "chname": {
-        "oplevel": 1,
+        "oplevel": 2,
         "description": "",
         "allowed_channels": "all",
         "excluded_channels": "none",
@@ -98,7 +108,7 @@
         "override": false
       },
       "coin": {
-        "oplevel": 0,
+        "oplevel": 2,
         "description": "",
         "allowed_channels": "all",
         "excluded_channels": "none",
@@ -108,6 +118,16 @@
         "override": false
       },
       "help": {
+        "oplevel": 2,
+        "description": "",
+        "allowed_channels": "all",
+        "excluded_channels": "none",
+        "cooldown": "none",
+        "aliases": "none",
+        "enabled": true,
+        "override": false
+      },
+      "helpagain": {
         "oplevel": 2,
         "description": "",
         "allowed_channels": "all",
@@ -148,7 +168,7 @@
         "override": false
       },
       "chname": {
-        "oplevel": 1,
+        "oplevel": 2,
         "description": "",
         "allowed_channels": "all",
         "excluded_channels": "none",
@@ -158,7 +178,7 @@
         "override": false
       },
       "coin": {
-        "oplevel": 0,
+        "oplevel": 2,
         "description": "",
         "allowed_channels": "all",
         "excluded_channels": "none",
@@ -168,6 +188,16 @@
         "override": false
       },
       "help": {
+        "oplevel": 2,
+        "description": "",
+        "allowed_channels": "all",
+        "excluded_channels": "none",
+        "cooldown": "none",
+        "aliases": "none",
+        "enabled": true,
+        "override": false
+      },
+      "helpagain": {
         "oplevel": 2,
         "description": "",
         "allowed_channels": "all",
