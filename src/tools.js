@@ -21,7 +21,7 @@ var config = require("../conf/main.json");
 var jsonfile = require("jsonfile");
 
 // Get all defined commands in the `Commands.js` file.
-var commands = require("../src/commands.js").commands;
+var commands = require("./commands.js").commands;
 
 /* === Requires Stop === */
 
@@ -34,6 +34,10 @@ var COMMANDS_CONFIGURATION_FILE_PATH = './conf/commands_properties.json';
 // Path to the commands configuration file.
 // Use this file to configure server parameters from the list above.
 var SERVERS_CONFIGURATION_FILE_PATH = './conf/servers_properties.json';
+
+// Path to the commands file.
+// Use this file to get the list of all commands object.
+var COMMANDS_FILE_PATH = './commands.js';
 
 // Command/Reactions Cooldowns Array
 var COOLDOWNS = [];
@@ -68,9 +72,10 @@ exports.updateCommandConfig = function(command, param, value) {
 };
 
 /**
- * Implements the custom function: extractID
- * @param  {[type]} tag [A discord string representing a user's Tag (highlighted string).]
- * @return {[type]}     [ID from the tag string.]
+ * [val description]
+ * @param  {[type]} params [description]
+ * @param  {[type]} count  [description]
+ * @return {[type]}        [description]
  */
 exports.val = function(params, count) {
   count = typeof count !== 'undefined' ? count : 1;
@@ -106,6 +111,22 @@ exports.printUserTag = function(variable) {
 };
 
 /**
+ * [getCommandConfig description]
+ * @return {[type]} [description]
+ */
+exports.getCommandConfig = function() {
+  return require('.' + COMMANDS_CONFIGURATION_FILE_PATH);
+}
+
+/**
+ * [getServerConfig description]
+ * @return {[type]} [description]
+ */
+exports.getServerConfig = function() {
+  return require('.' + SERVERS_CONFIGURATION_FILE_PATH);
+}
+
+/**
  * [isCommand description]
  * @param  {[type]} command [description]
  * @param  {[type]} param   [description]
@@ -116,6 +137,9 @@ exports.isCommand = function(msg) {
   // Get commands configuration properties.
   // You are now in tools.js, so you need to add a dot to indicate a return to the other directory.
   var commands_configuration = require('.' + COMMANDS_CONFIGURATION_FILE_PATH);
+
+  // Get all defined commands in the `Commands.js` file.
+  var commands = require(COMMANDS_FILE_PATH).commands;
 
   // Divide text into distinct parameters.
   var split = msg.content.split(" ");

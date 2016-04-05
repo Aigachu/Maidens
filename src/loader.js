@@ -42,7 +42,7 @@ var SERVERS_DEFAULT_CONFIG = {
 
 var server_specific_command_params = {
   enabled: '',
-  override: ''
+  overridden: ''
 };
 
 /**
@@ -161,7 +161,7 @@ exports.loadServConf = function(bot) {
   for( var comm in SERVERS_DEFAULT_CONFIG['commands'] ) {
     if(SERVERS_DEFAULT_CONFIG['commands'].hasOwnProperty(comm)) {
       SERVERS_DEFAULT_CONFIG['commands'][comm].enabled = true;
-      SERVERS_DEFAULT_CONFIG['commands'][comm].override = false;
+      SERVERS_DEFAULT_CONFIG['commands'][comm].overridden = false;
     }
   }
 
@@ -256,7 +256,7 @@ exports.loadServConf = function(bot) {
                   console.log("\nSora: The following command has no configuration definition in the "+ server_properties[key]['name'] +" server: " + comm + ".\nSora: I will give it a default definition in the configuration file.");
                   server_properties[key]['commands'][comm] = COMMANDS_DEFAULT_CONFIG;
                   server_properties[key]['commands'][comm].enabled = true;
-                  server_properties[key]['commands'][comm].override = false;
+                  server_properties[key]['commands'][comm].overridden = false;
                 }
               }
             }
@@ -280,7 +280,7 @@ exports.loadServConf = function(bot) {
                       }
                       // sync the global properties to servers where they are not overriden.
                       if(!server_properties[key]['override_all_commands']) {
-                        if(!server_properties[key]['commands'][comm]['override'] && server_properties[key]['commands'][comm][param] != commands_configuration[comm][param] && !(param in server_specific_command_params)) {
+                        if(!server_properties[key]['commands'][comm]['overridden'] && server_properties[key]['commands'][comm][param] != commands_configuration[comm][param] && !(param in server_specific_command_params)) {
                           server_properties[key]['commands'][comm][param] = commands_configuration[comm][param];
                         }
                       }

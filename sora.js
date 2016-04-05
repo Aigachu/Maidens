@@ -17,6 +17,7 @@ var Discord = require("discord.js");
 // Put the credentials of the newly created account into `conf/main.json` found at the same level as this file.
 var config = require("./conf/main.json");
 
+// @todo doc
 var loader = require("./src/loader.js");
 
 /* === Requires END === */
@@ -46,6 +47,43 @@ sora.on("ready", function () {
 
         // Get all defined commands in the `Commands.js` file.
         var commands = require("./src/commands.js").commands;
+
+        /**
+         * Event that fires when Sora receives a message.
+         * @param  {Object} msg)
+         * @todo : add example msg object reference to Wiki.
+         */
+        sora.on("message", function (msg) {
+
+          /* === COMMANDS TREATMENT START === */
+
+          // Only hop in here and treat commands if this isn't Sora's own message!
+          if(msg.author.id !== sora.user.id) {
+            var key = "";
+
+            if(key = tools.isCommand(msg)) {
+
+              // Initialize the parameters variable as an array with all words in the message seperate by a space.
+              var params = msg.content.split(" ");
+
+              // Remove the first two elements of the array, which in the case that this is a command, are the following:
+              // params[0] = $sora.
+              // params[1] = command_key.
+              params.splice(0, 2);
+
+              // Now, the params array only contains the parameters of the command.
+
+              // Run Command if it passed approval.
+              if(tools.authCommand(sora, msg, key)) {
+                commands[key].fn(sora, params, msg);
+              }
+
+            }
+          }
+
+          /* === COMMANDS TREATMENT END === */
+        });
+
       }
     }, 500);
   }
@@ -60,42 +98,6 @@ sora.on("disconnected", function () {
 
   //exit node.js with an error
   process.exit(1);
-});
-
-/**
- * Event that fires when Sora receives a message.
- * @param  {Object} msg)
- * @todo : add example msg object reference to Wiki.
- */
-sora.on("message", function (msg) {
-
-  /* === COMMANDS TREATMENT START === */
-
-  // Only hop in here and treat commands if this isn't Sora's own message!
-  if(msg.author.id !== sora.user.id) {
-    var key = "";
-
-    if(key = tools.isCommand(msg)) {
-
-      // Initialize the parameters variable as an array with all words in the message seperate by a space.
-      var params = msg.content.split(" ");
-
-      // Remove the first two elements of the array, which in the case that this is a command, are the following:
-      // params[0] = $sora.
-      // params[1] = command_key.
-      params.splice(0, 2);
-
-      // Now, the params array only contains the parameters of the command.
-
-      // Run Command if it passed approval.
-      if(tools.authCommand(sora, msg, key)) {
-        commands[key].fn(sora, params, msg);
-      }
-
-    }
-  }
-
-  /* === COMMANDS TREATMENT END === */
 });
 
 // Login to Discord after processing all the code above.

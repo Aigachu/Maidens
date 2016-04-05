@@ -166,24 +166,13 @@ commands.coin = {
 commands.help = {
   fn: function( bot, params, msg ) {
     if(tools.val(params)) {
-      // Do stuff
-    } else {
-      bot.sendMessage( msg.channel, "Hmm. I wish I could...But you didn't specify what you needed help with!");
-    }
-  }
-}
+      var command_config = tools.getCommandConfig();
 
-/**
- * Implements the *coin* command.
- * @params  {[none]}
- * @result  {[message]} [Sora changes her display name. Don't worry, she will always be Sora to us. ;)]
- */
-commands.helpagain = {
-  fn: function( bot, params, msg ) {
-    if(tools.val(params)) {
-      // Do stuff
+      bot.sendMessage(msg.channel, command_config[])
+    } else if(tools.val(params, 0)) {
+      // Print general help text for all commands.
     } else {
-      bot.sendMessage( msg.channel, "Hmm. I wish I could...But you didn't specify what you needed help with!");
+      bot.sendMessage( msg.channel, "Hmm. That doesn't seem to be the proper use of the help command.");
     }
   }
 }
