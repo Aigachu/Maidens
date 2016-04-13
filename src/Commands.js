@@ -220,14 +220,30 @@ commands.dlist = {
     message += '```\n';
 
     for( var server_key in all_servers ) {
-      if( all_servers.hasOwnProperty(server_key) && key != 'limit' && key != 'length') {
-        message += all_servers[server_key].name + "\n";
+      if( all_servers.hasOwnProperty(server_key) && server_key != 'limit' && server_key != 'length') {
+
+        var server = all_servers[server_key];
+        var server_all_channels = server.channels;
+        message += server.name + "\n";
+
+        for (var channel_key in server_all_channels ) {
+          if( server_all_channels.hasOwnProperty(channel_key) && channel_key != 'limit' && channel_key != 'length' ) {
+
+            var channel = server_all_channels[channel_key];
+            message += '-- ' + channel.name + "\n";
+
+          }
+        }
+
+        message += '\n'
       }
     }
 
     message += '```\n';
 
-    console.log(all_servers);
+    bot.sendMessage( msg.channel, message);
+
+    console.log(message);
   }
 }
 
