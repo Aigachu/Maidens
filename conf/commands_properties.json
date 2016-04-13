@@ -5,7 +5,8 @@
     "allowed_channels": "all",
     "excluded_channels": "none",
     "cooldown": "none",
-    "aliases": "none"
+    "aliases": "none",
+    "help_text": "This is a test help text!"
   },
   "pong": {
     "oplevel": 1,
@@ -13,7 +14,8 @@
     "allowed_channels": "all",
     "excluded_channels": "none",
     "cooldown": "none",
-    "aliases": "none"
+    "aliases": "none",
+    "help_text": ""
   },
   "chname": {
     "oplevel": 1,
@@ -21,7 +23,8 @@
     "allowed_channels": "all",
     "excluded_channels": "none",
     "cooldown": "none",
-    "aliases": "none"
+    "aliases": "none",
+    "help_text": ""
   },
   "coin": {
     "oplevel": 1,
@@ -29,7 +32,8 @@
     "allowed_channels": "all",
     "excluded_channels": "none",
     "cooldown": "none",
-    "aliases": "none"
+    "aliases": "none",
+    "help_text": ""
   },
   "help": {
     "oplevel": 1,
@@ -37,6 +41,7 @@
     "allowed_channels": "all",
     "excluded_channels": "none",
     "cooldown": "none",
-    "aliases": "none"
+    "aliases": "none",
+    "help_text": ""
   }
 }
