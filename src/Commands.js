@@ -243,7 +243,6 @@ commands.dlist = {
 
     bot.sendMessage( msg.channel, message);
 
-    console.log(message);
   }
 }
 
