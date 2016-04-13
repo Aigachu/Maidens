@@ -254,8 +254,15 @@ commands.dlist = {
  */
 commands.te = {
   fn: function( bot, params, msg ) {
-    // First Param will be the server
-    // Second Param
+
+    var dimension = params[0];
+
+    var world = params[1];
+
+    bot.LINKED = {
+      servers: "lol",
+      channels: ""
+    };
   }
 }
 
