@@ -81,6 +81,11 @@ sora.on("ready", function () {
             }
           }
 
+          // LOL
+          if(sora.LINKED !== undefined) {
+            console.log("lol");
+          }
+
           /* === COMMANDS TREATMENT END === */
         });
 
