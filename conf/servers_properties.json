@@ -15,7 +15,8 @@
         "cooldown": "none",
         "aliases": "none",
         "enabled": true,
-        "help_text": "This is a test help text!"
+        "help_text": "This is a test help text!",
+        "overridden": false
       },
       "pong": {
         "oplevel": 1,
@@ -25,7 +26,8 @@
         "cooldown": "none",
         "aliases": "none",
         "enabled": true,
-        "help_text": ""
+        "help_text": "",
+        "overridden": false
       },
       "chname": {
         "oplevel": 1,
@@ -35,7 +37,8 @@
         "cooldown": "none",
         "aliases": "none",
         "enabled": true,
-        "help_text": ""
+        "help_text": "",
+        "overridden": false
       },
       "coin": {
         "oplevel": 1,
@@ -45,7 +48,8 @@
         "cooldown": "none",
         "aliases": "none",
         "enabled": true,
-        "help_text": ""
+        "help_text": "",
+        "overridden": false
       },
       "help": {
         "oplevel": 1,
@@ -55,7 +59,30 @@
         "cooldown": "none",
         "aliases": "none",
         "enabled": true,
-        "help_text": ""
+        "help_text": "",
+        "overridden": false
+      },
+      "te": {
+        "oplevel": 2,
+        "description": "",
+        "help_text": "",
+        "allowed_channels": "all",
+        "excluded_channels": "none",
+        "cooldown": "none",
+        "aliases": "none",
+        "enabled": true,
+        "overridden": false
+      },
+      "dlist": {
+        "oplevel": 2,
+        "description": "",
+        "help_text": "",
+        "allowed_channels": "all",
+        "excluded_channels": "none",
+        "cooldown": "none",
+        "aliases": "none",
+        "enabled": true,
+        "overridden": false
       }
     }
   },
@@ -75,7 +102,8 @@
         "cooldown": "none",
         "aliases": "none",
         "enabled": true,
-        "help_text": "This is a test help text!"
+        "help_text": "This is a test help text!",
+        "overridden": false
       },
       "pong": {
         "oplevel": 1,
@@ -85,7 +113,8 @@
         "cooldown": "none",
         "aliases": "none",
         "enabled": true,
-        "help_text": ""
+        "help_text": "",
+        "overridden": false
       },
       "chname": {
         "oplevel": 1,
@@ -95,7 +124,8 @@
         "cooldown": "none",
         "aliases": "none",
         "enabled": true,
-        "help_text": ""
+        "help_text": "",
+        "overridden": false
       },
       "coin": {
         "oplevel": 1,
@@ -105,7 +135,8 @@
         "cooldown": "none",
         "aliases": "none",
         "enabled": true,
-        "help_text": ""
+        "help_text": "",
+        "overridden": false
       },
       "help": {
         "oplevel": 1,
@@ -115,7 +146,30 @@
         "cooldown": "none",
         "aliases": "none",
         "enabled": true,
-        "help_text": ""
+        "help_text": "",
+        "overridden": false
+      },
+      "te": {
+        "oplevel": 2,
+        "description": "",
+        "help_text": "",
+        "allowed_channels": "all",
+        "excluded_channels": "none",
+        "cooldown": "none",
+        "aliases": "none",
+        "enabled": true,
+        "overridden": false
+      },
+      "dlist": {
+        "oplevel": 2,
+        "description": "",
+        "help_text": "",
+        "allowed_channels": "all",
+        "excluded_channels": "none",
+        "cooldown": "none",
+        "aliases": "none",
+        "enabled": true,
+        "overridden": false
       }
     }
   },
@@ -135,7 +189,8 @@
         "cooldown": "none",
         "aliases": "none",
         "enabled": true,
-        "help_text": "This is a test help text!"
+        "help_text": "This is a test help text!",
+        "overridden": false
       },
       "pong": {
         "oplevel": 1,
@@ -145,7 +200,8 @@
         "cooldown": "none",
         "aliases": "none",
         "enabled": true,
-        "help_text": ""
+        "help_text": "",
+        "overridden": false
       },
       "chname": {
         "oplevel": 1,
@@ -155,7 +211,8 @@
         "cooldown": "none",
         "aliases": "none",
         "enabled": true,
-        "help_text": ""
+        "help_text": "",
+        "overridden": false
       },
       "coin": {
         "oplevel": 1,
@@ -165,7 +222,8 @@
         "cooldown": "none",
         "aliases": "none",
         "enabled": true,
-        "help_text": ""
+        "help_text": "",
+        "overridden": false
       },
       "help": {
         "oplevel": 1,
@@ -175,7 +233,30 @@
         "cooldown": "none",
         "aliases": "none",
         "enabled": true,
-        "help_text": ""
+        "help_text": "",
+        "overridden": false
+      },
+      "te": {
+        "oplevel": 2,
+        "description": "",
+        "help_text": "",
+        "allowed_channels": "all",
+        "excluded_channels": "none",
+        "cooldown": "none",
+        "aliases": "none",
+        "enabled": true,
+        "overridden": false
+      },
+      "dlist": {
+        "oplevel": 2,
+        "description": "",
+        "help_text": "",
+        "allowed_channels": "all",
+        "excluded_channels": "none",
+        "cooldown": "none",
+        "aliases": "none",
+        "enabled": true,
+        "overridden": false
       }
     }
   }
