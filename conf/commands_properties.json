@@ -43,5 +43,23 @@
     "cooldown": "none",
     "aliases": "none",
     "help_text": ""
+  },
+  "te": {
+    "oplevel": 2,
+    "description": "",
+    "help_text": "",
+    "allowed_channels": "all",
+    "excluded_channels": "none",
+    "cooldown": "none",
+    "aliases": "none"
+  },
+  "dlist": {
+    "oplevel": 2,
+    "description": "",
+    "help_text": "",
+    "allowed_channels": "all",
+    "excluded_channels": "none",
+    "cooldown": "none",
+    "aliases": "none"
   }
 }

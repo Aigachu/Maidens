@@ -205,6 +205,45 @@ commands.help = {
   }
 }
 
+/**
+ * Implements the *dlist* command.
+ * @params  {[none]}
+ * @result  {[message]} [Sora changes her display name. Don't worry, she will always be Sora to us. ;)]
+ */
+commands.dlist = {
+  fn: function( bot, params, msg ) {
+    // Servers Object
+    var all_servers = bot.servers;
+
+    var message = "Here is the list of all worlds I am linked to, as well as their channels!\n";
+
+    message += '```\n';
+
+    for( var server_key in all_servers ) {
+      if( all_servers.hasOwnProperty(server_key) && key != 'limit' && key != 'length') {
+        message += all_servers[server_key].name + "\n";
+      }
+    }
+
+    message += '```\n';
+
+    console.log(all_servers);
+  }
+}
+
+
+/**
+ * Implements the *thirdeye* command.
+ * @params  {[none]}
+ * @result  {[message]} [Sora changes her display name. Don't worry, she will always be Sora to us. ;)]
+ */
+commands.te = {
+  fn: function( bot, params, msg ) {
+    // First Param will be the server
+    // Second Param
+  }
+}
+
 /* === Commands End! === */
 
 // Export the Commands object for use in `sora.js`
