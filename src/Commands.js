@@ -159,20 +159,48 @@ commands.coin = {
 }
 
 /**
- * Implements the *coin* command.
+ * Implements the *help* command.
  * @params  {[none]}
  * @result  {[message]} [Sora changes her display name. Don't worry, she will always be Sora to us. ;)]
  */
 commands.help = {
   fn: function( bot, params, msg ) {
-    if(tools.val(params)) {
-      var command_config = tools.getCommandConfig();
+    if(tools.val(params, 0)) {
 
-      bot.sendMessage(msg.channel, command_config[])
-    } else if(tools.val(params, 0)) {
       // Print general help text for all commands.
+      bot.sendMessage(msg.channel, 'I *should* print the general help message, but Aigachu hasn\'t written it yet. Lazy bum!');
+
+      return;
+
+    } else if(tools.val(params)) {
+
+      var command_config = tools.getCommandConfig();
+      var command_object = command_config[params[0]];
+
+      if(command_object == undefined) {
+        bot.sendMessage(msg.channel, "I don't think that command exists...");
+
+        return;
+      }
+
+      if(command_object['help_text'].length == 0) {
+
+        bot.sendMessage(msg.channel, "This command doesn't seem to have help text set. Bummer! Hassle Aigachu and tell him to update the documentation! :scream:");
+
+        return;
+
+      } else {
+
+        bot.sendMessage(msg.channel, command_object['help_text']);
+
+        return;
+
+      }
+
     } else {
       bot.sendMessage( msg.channel, "Hmm. That doesn't seem to be the proper use of the help command.");
+
+      return;
     }
   }
 }

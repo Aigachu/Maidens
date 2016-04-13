@@ -22,6 +22,7 @@ var SERVERS_CONFIGURATION_FILE_PATH = './conf/servers_properties.json';
 var COMMANDS_DEFAULT_CONFIG = {
   oplevel:            2,
   description:        '',
+  help_text:          '',
   allowed_channels:   'all',
   excluded_channels:  'none',
   cooldown:           'none',

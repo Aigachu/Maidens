@@ -15,47 +15,47 @@
         "cooldown": "none",
         "aliases": "none",
         "enabled": true,
-        "override": false
+        "help_text": "This is a test help text!"
       },
       "pong": {
-        "oplevel": 21,
+        "oplevel": 1,
         "description": "",
         "allowed_channels": "all",
         "excluded_channels": "none",
         "cooldown": "none",
         "aliases": "none",
         "enabled": true,
-        "override": false
+        "help_text": ""
       },
       "chname": {
-        "oplevel": 21,
+        "oplevel": 1,
         "description": "",
         "allowed_channels": "all",
         "excluded_channels": "none",
         "cooldown": "none",
         "aliases": "none",
         "enabled": true,
-        "override": false
+        "help_text": ""
       },
       "coin": {
-        "oplevel": 2,
+        "oplevel": 1,
         "description": "",
         "allowed_channels": "all",
         "excluded_channels": "none",
         "cooldown": "none",
         "aliases": "none",
         "enabled": true,
-        "override": false
+        "help_text": ""
       },
       "help": {
-        "oplevel": 21,
+        "oplevel": 1,
         "description": "",
         "allowed_channels": "all",
         "excluded_channels": "none",
         "cooldown": "none",
         "aliases": "none",
         "enabled": true,
-        "override": false
+        "help_text": ""
       }
     }
   },
@@ -75,47 +75,47 @@
         "cooldown": "none",
         "aliases": "none",
         "enabled": true,
-        "override": false
+        "help_text": "This is a test help text!"
       },
       "pong": {
-        "oplevel": 21,
+        "oplevel": 1,
         "description": "",
         "allowed_channels": "all",
         "excluded_channels": "none",
         "cooldown": "none",
         "aliases": "none",
         "enabled": true,
-        "override": false
+        "help_text": ""
       },
       "chname": {
-        "oplevel": 21,
+        "oplevel": 1,
         "description": "",
         "allowed_channels": "all",
         "excluded_channels": "none",
         "cooldown": "none",
         "aliases": "none",
         "enabled": true,
-        "override": false
+        "help_text": ""
       },
       "coin": {
-        "oplevel": 2,
+        "oplevel": 1,
         "description": "",
         "allowed_channels": "all",
         "excluded_channels": "none",
         "cooldown": "none",
         "aliases": "none",
         "enabled": true,
-        "override": false
+        "help_text": ""
       },
       "help": {
-        "oplevel": 21,
+        "oplevel": 1,
         "description": "",
         "allowed_channels": "all",
         "excluded_channels": "none",
         "cooldown": "none",
         "aliases": "none",
         "enabled": true,
-        "override": false
+        "help_text": ""
       }
     }
   },
@@ -135,47 +135,47 @@
         "cooldown": "none",
         "aliases": "none",
         "enabled": true,
-        "override": false
+        "help_text": "This is a test help text!"
       },
       "pong": {
-        "oplevel": 21,
+        "oplevel": 1,
         "description": "",
         "allowed_channels": "all",
         "excluded_channels": "none",
         "cooldown": "none",
         "aliases": "none",
         "enabled": true,
-        "override": false
+        "help_text": ""
       },
       "chname": {
-        "oplevel": 21,
+        "oplevel": 1,
         "description": "",
         "allowed_channels": "all",
         "excluded_channels": "none",
         "cooldown": "none",
         "aliases": "none",
         "enabled": true,
-        "override": false
+        "help_text": ""
       },
       "coin": {
-        "oplevel": 2,
+        "oplevel": 1,
         "description": "",
         "allowed_channels": "all",
         "excluded_channels": "none",
         "cooldown": "none",
         "aliases": "none",
         "enabled": true,
-        "override": false
+        "help_text": ""
       },
       "help": {
-        "oplevel": 21,
+        "oplevel": 1,
         "description": "",
         "allowed_channels": "all",
         "excluded_channels": "none",
         "cooldown": "none",
         "aliases": "none",
         "enabled": true,
-        "override": false
+        "help_text": ""
       }
     }
   }
