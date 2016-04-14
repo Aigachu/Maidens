@@ -61,5 +61,16 @@
     "excluded_channels": "none",
     "cooldown": "none",
     "aliases": "none"
+  },
+  "joinserver": {
+    "oplevel": 2,
+    "description": "",
+    "help_text": "",
+    "allowed_channels": "all",
+    "excluded_channels": "none",
+    "cooldown": "none",
+    "aliases": [
+      "join"
+    ]
   }
 }
