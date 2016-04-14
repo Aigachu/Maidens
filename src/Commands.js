@@ -117,6 +117,20 @@ commands.chname = {
   }
 }
 
+commands.joinserver = {
+  fn: function( bot, params, msg ) {
+    if(params[0]) {
+      var resolvable = params[0];
+      bot.joinServer(resolvable);
+
+      //@TODO trycatch for error handling.
+      bot.sendMessage( msg.channel, "I'll create an image of myself in that dimension. ;)");
+    } else {
+      bot.sendMessage( msg.channel, "Seems to be blank. You need a parameter!");
+    }
+  }
+}
+
 /**
  * Implements the *coin* command.
  * @params  {[none]}
@@ -252,7 +266,7 @@ commands.dlist = {
  * @params  {[none]}
  * @result  {[message]} [Sora changes her display name. Don't worry, she will always be Sora to us. ;)]
  */
-commands.te = {
+commands.thirdeye = {
   fn: function( bot, params, msg ) {
 
     var this_dimension = msg.channel.server;
