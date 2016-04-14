@@ -97,6 +97,54 @@ exports.extractID = function(tag) {
 };
 
 /**
+ * [extractParam description]
+ * @param  {[type]} start [description]
+ * @param  {[type]} end   [description]
+ * @param  {[type]} msg   [description]
+ * @return {[type]}       [description]
+ */
+exports.extractParam = function(start, end, msg) {
+  start = msg.content.indexOf(start);
+  end = msg.content.indexOf(end);
+
+  return msg.content.substring(start + 1, end);
+}
+
+/**
+ * [thirdeye description]
+ * @return {[type]} [description]
+ */
+exports.thirdeye = function(bot, msg, link) {
+  var message = "```html\n";
+
+  if(msg.channel.id == link.this_world['id']) {
+
+    message += "<" + link.this_dimension.name + ">\n";
+
+    message += "  <" + msg.author.name + ">" + msg.content + "<\\" + msg.author.name + ">\n";
+
+    message += "<\\" + link.this_dimension.name + ">";
+
+    message += "```\n";
+
+    bot.sendMessage(link.their_world, message);
+
+  }
+
+  if(msg.channel.id == link.their_world['id']) {
+    message += "<" + link.their_dimension.name + ">\n";
+
+    message += "  <" + msg.author.name + ">" + msg.content + "<\\" + msg.author.name + ">\n";
+
+    message += "<\\" + link.their_dimension.name + ">";
+
+    message += "```\n";
+
+    bot.sendMessage(link.this_world, message);
+  }
+}
+
+/**
  * Implements the custom function: printUserTag
  * @param  {[object/string]} variable [Can be either a user object]
  * @return {[string]}                 [String that will be interpreted by discord to tag user. i.e. "<@77517077325287424>"]

@@ -255,14 +255,51 @@ commands.dlist = {
 commands.te = {
   fn: function( bot, params, msg ) {
 
-    var dimension = params[0];
+    var this_dimension = msg.channel.server;
 
-    var world = params[1];
+    var this_world = msg.channel;
 
-    bot.LINKED = {
-      servers: "lol",
-      channels: ""
+    var their_dimension = bot.servers.get("name", tools.extractParam('{', '}', msg));
+
+    var their_world = their_dimension.channels.get("name", tools.extractParam('[', ']', msg));
+
+    bot.THIRDEYE = {
+      this_dimension: this_dimension,
+      this_world: this_world,
+      their_dimension: their_dimension,
+      their_world: their_world,
     };
+
+    var message = "";
+
+    message = "The __**third eye**__, Aigachu?...";
+
+    message += "\n";
+
+    message += "Well alright...But be careful! You wouldn't want to cause a *mess*, now would you? ;) :blue_heart:";
+
+    message += "\n";
+
+    message += "A-And remember that this is a very primitive version of this functionality! Please be careful with using it. :fearful:";
+
+    message += "\n";
+
+    message += "I will now establish a link between the following servers & channels:";
+
+    message += "\n\n```\n";
+
+    message += this_dimension.name + " -- " + this_world.name + "\n";
+
+    message += "\n```";
+
+    message += "\n\n```\n";
+
+    message += their_dimension.name + " -- " + their_world.name + "\n";
+
+    message += "\n```";
+
+    bot.sendMessage( msg.channel, message );
+
   }
 }
 
