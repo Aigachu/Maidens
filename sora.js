@@ -79,11 +79,11 @@ sora.on("ready", function () {
               }
 
             }
-          }
 
-          // LOL
-          if(sora.LINKED !== undefined) {
-            console.log("lol");
+            // LOL
+            if(sora.THIRDEYE !== undefined && !tools.isCommand(msg)) {
+              tools.thirdeye(sora, msg, sora.THIRDEYE);
+            }
           }
 
           /* === COMMANDS TREATMENT END === */
