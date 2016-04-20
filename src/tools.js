@@ -115,30 +115,27 @@ exports.extractParam = function(start, end, msg) {
  * @return {[type]} [description]
  */
 exports.thirdeye = function(bot, msg, link) {
-  var message = "```html\n";
+  var message = "";
 
   if(msg.channel.id == link.this_world['id']) {
 
-    message += "<" + link.this_dimension.name + ">\n";
+    message += "**" + msg.author.name + "**";
 
-    message += "  <" + msg.author.name + ">" + msg.content + "<\\" + msg.author.name + ">\n";
+    message += "  _{" + link.this_dimension.name + "}_\n";
 
-    message += "<\\" + link.this_dimension.name + ">";
-
-    message += "```\n";
+    message += msg.content;
 
     bot.sendMessage(link.their_world, message);
 
   }
 
   if(msg.channel.id == link.their_world['id']) {
-    message += "<" + link.their_dimension.name + ">\n";
 
-    message += "  <" + msg.author.name + ">" + msg.content + "<\\" + msg.author.name + ">\n";
+    message += "**" + msg.author.name + "**";
 
-    message += "<\\" + link.their_dimension.name + ">";
+    message += "  _{" + link.their_dimension.name + "}_\n";
 
-    message += "```\n";
+    message += msg.content;
 
     bot.sendMessage(link.this_world, message);
   }
