@@ -1,6 +1,6 @@
 {
-  "77616475333988352": {
-    "name": "Another World",
+  "150507471155232768": {
+    "name": "Aiga's Haven",
     "general_channel": "",
     "announcement_channel": "",
     "timeout_role_name": "Timeout",
@@ -14,8 +14,8 @@
         "excluded_channels": "none",
         "cooldown": "none",
         "aliases": "none",
-        "enabled": true,
         "help_text": "This is a test help text!",
+        "enabled": true,
         "overridden": false
       },
       "pong": {
@@ -25,8 +25,8 @@
         "excluded_channels": "none",
         "cooldown": "none",
         "aliases": "none",
-        "enabled": true,
         "help_text": "",
+        "enabled": true,
         "overridden": false
       },
       "chname": {
@@ -35,9 +35,11 @@
         "allowed_channels": "all",
         "excluded_channels": "none",
         "cooldown": "none",
-        "aliases": "none",
-        "enabled": true,
+        "aliases": [
+          "setname"
+        ],
         "help_text": "",
+        "enabled": true,
         "overridden": false
       },
       "coin": {
@@ -47,8 +49,8 @@
         "excluded_channels": "none",
         "cooldown": "none",
         "aliases": "none",
-        "enabled": true,
         "help_text": "",
+        "enabled": true,
         "overridden": false
       },
       "help": {
@@ -58,18 +60,7 @@
         "excluded_channels": "none",
         "cooldown": "none",
         "aliases": "none",
-        "enabled": true,
         "help_text": "",
-        "overridden": false
-      },
-      "te": {
-        "oplevel": 2,
-        "description": "",
-        "help_text": "",
-        "allowed_channels": "all",
-        "excluded_channels": "none",
-        "cooldown": "none",
-        "aliases": "none",
         "enabled": true,
         "overridden": false
       },
@@ -94,6 +85,119 @@
         "aliases": [
           "join"
         ],
+        "enabled": true,
+        "overridden": false
+      },
+      "thirdeye": {
+        "oplevel": 2,
+        "description": "",
+        "help_text": "",
+        "allowed_channels": "all",
+        "excluded_channels": "none",
+        "cooldown": "none",
+        "aliases": "none",
+        "enabled": true,
+        "overridden": false
+      }
+    }
+  },
+  "77616475333988352": {
+    "name": "Its Never Too Lit",
+    "general_channel": "",
+    "announcement_channel": "",
+    "timeout_role_name": "Timeout",
+    "admin_roles": [],
+    "override_all_commands": false,
+    "commands": {
+      "ping": {
+        "oplevel": 1,
+        "description": "",
+        "allowed_channels": "all",
+        "excluded_channels": "none",
+        "cooldown": "none",
+        "aliases": "none",
+        "help_text": "This is a test help text!",
+        "enabled": true,
+        "overridden": false
+      },
+      "pong": {
+        "oplevel": 1,
+        "description": "",
+        "allowed_channels": "all",
+        "excluded_channels": "none",
+        "cooldown": "none",
+        "aliases": "none",
+        "help_text": "",
+        "enabled": true,
+        "overridden": false
+      },
+      "chname": {
+        "oplevel": 1,
+        "description": "",
+        "allowed_channels": "all",
+        "excluded_channels": "none",
+        "cooldown": "none",
+        "aliases": [
+          "setname"
+        ],
+        "help_text": "",
+        "enabled": true,
+        "overridden": false
+      },
+      "coin": {
+        "oplevel": 1,
+        "description": "",
+        "allowed_channels": "all",
+        "excluded_channels": "none",
+        "cooldown": "none",
+        "aliases": "none",
+        "help_text": "",
+        "enabled": true,
+        "overridden": false
+      },
+      "help": {
+        "oplevel": 1,
+        "description": "",
+        "allowed_channels": "all",
+        "excluded_channels": "none",
+        "cooldown": "none",
+        "aliases": "none",
+        "help_text": "",
+        "enabled": true,
+        "overridden": false
+      },
+      "dlist": {
+        "oplevel": 2,
+        "description": "",
+        "help_text": "",
+        "allowed_channels": "all",
+        "excluded_channels": "none",
+        "cooldown": "none",
+        "aliases": "none",
+        "enabled": true,
+        "overridden": false
+      },
+      "joinserver": {
+        "oplevel": 2,
+        "description": "",
+        "help_text": "",
+        "allowed_channels": "all",
+        "excluded_channels": "none",
+        "cooldown": "none",
+        "aliases": [
+          "join"
+        ],
+        "enabled": true,
+        "overridden": false
+      },
+      "thirdeye": {
+        "oplevel": 2,
+        "description": "",
+        "help_text": "",
+        "allowed_channels": "all",
+        "excluded_channels": "none",
+        "cooldown": "none",
+        "aliases": "none",
         "enabled": true,
         "overridden": false
       }
@@ -114,8 +218,8 @@
         "excluded_channels": "none",
         "cooldown": "none",
         "aliases": "none",
-        "enabled": true,
         "help_text": "This is a test help text!",
+        "enabled": true,
         "overridden": false
       },
       "pong": {
@@ -125,217 +229,19 @@
         "excluded_channels": "none",
         "cooldown": "none",
         "aliases": "none",
-        "enabled": true,
         "help_text": "",
+        "enabled": true,
         "overridden": false
       },
       "chname": {
         "oplevel": 1,
         "description": "",
-        "allowed_channels": "all",
-        "excluded_channels": "none",
-        "cooldown": "none",
-        "aliases": "none",
-        "enabled": true,
-        "help_text": "",
-        "overridden": false
-      },
-      "coin": {
-        "oplevel": 1,
-        "description": "",
-        "allowed_channels": "all",
-        "excluded_channels": "none",
-        "cooldown": "none",
-        "aliases": "none",
-        "enabled": true,
-        "help_text": "",
-        "overridden": false
-      },
-      "help": {
-        "oplevel": 1,
-        "description": "",
-        "allowed_channels": "all",
-        "excluded_channels": "none",
-        "cooldown": "none",
-        "aliases": "none",
-        "enabled": true,
-        "help_text": "",
-        "overridden": false
-      },
-      "te": {
-        "oplevel": 2,
-        "description": "",
-        "help_text": "",
-        "allowed_channels": "all",
-        "excluded_channels": "none",
-        "cooldown": "none",
-        "aliases": "none",
-        "enabled": true,
-        "overridden": false
-      },
-      "dlist": {
-        "oplevel": 2,
-        "description": "",
-        "help_text": "",
-        "allowed_channels": "all",
-        "excluded_channels": "none",
-        "cooldown": "none",
-        "aliases": "none",
-        "enabled": true,
-        "overridden": false
-      },
-      "joinserver": {
-        "oplevel": 2,
-        "description": "",
-        "help_text": "",
         "allowed_channels": "all",
         "excluded_channels": "none",
         "cooldown": "none",
         "aliases": [
-          "join"
+          "setname"
         ],
-        "enabled": true,
-        "overridden": false
-      }
-    }
-  },
-  "150507471155232768": {
-    "name": "Aiga's Haven",
-    "general_channel": "",
-    "announcement_channel": "",
-    "timeout_role_name": "Timeout",
-    "admin_roles": [],
-    "override_all_commands": false,
-    "commands": {
-      "ping": {
-        "oplevel": 1,
-        "description": "",
-        "allowed_channels": "all",
-        "excluded_channels": "none",
-        "cooldown": "none",
-        "aliases": "none",
-        "enabled": true,
-        "help_text": "This is a test help text!",
-        "overridden": false
-      },
-      "pong": {
-        "oplevel": 1,
-        "description": "",
-        "allowed_channels": "all",
-        "excluded_channels": "none",
-        "cooldown": "none",
-        "aliases": "none",
-        "enabled": true,
-        "help_text": "",
-        "overridden": false
-      },
-      "chname": {
-        "oplevel": 1,
-        "description": "",
-        "allowed_channels": "all",
-        "excluded_channels": "none",
-        "cooldown": "none",
-        "aliases": "none",
-        "enabled": true,
-        "help_text": "",
-        "overridden": false
-      },
-      "coin": {
-        "oplevel": 1,
-        "description": "",
-        "allowed_channels": "all",
-        "excluded_channels": "none",
-        "cooldown": "none",
-        "aliases": "none",
-        "enabled": true,
-        "help_text": "",
-        "overridden": false
-      },
-      "help": {
-        "oplevel": 1,
-        "description": "",
-        "allowed_channels": "all",
-        "excluded_channels": "none",
-        "cooldown": "none",
-        "aliases": "none",
-        "enabled": true,
-        "help_text": "",
-        "overridden": false
-      },
-      "te": {
-        "oplevel": 2,
-        "description": "",
-        "help_text": "",
-        "allowed_channels": "all",
-        "excluded_channels": "none",
-        "cooldown": "none",
-        "aliases": "none",
-        "enabled": true,
-        "overridden": false
-      },
-      "dlist": {
-        "oplevel": 2,
-        "description": "",
-        "help_text": "",
-        "allowed_channels": "all",
-        "excluded_channels": "none",
-        "cooldown": "none",
-        "aliases": "none",
-        "enabled": true,
-        "overridden": false
-      },
-      "joinserver": {
-        "oplevel": 2,
-        "description": "",
-        "help_text": "",
-        "allowed_channels": "all",
-        "excluded_channels": "none",
-        "cooldown": "none",
-        "aliases": [
-          "join"
-        ],
-        "enabled": true,
-        "overridden": false
-      }
-    }
-  },
-  "161878038366257152": {
-    "name": "Sawako's",
-    "general_channel": "",
-    "announcement_channel": "",
-    "timeout_role_name": "Timeout",
-    "admin_roles": [],
-    "override_all_commands": false,
-    "commands": {
-      "ping": {
-        "oplevel": 1,
-        "description": "",
-        "allowed_channels": "all",
-        "excluded_channels": "none",
-        "cooldown": "none",
-        "aliases": "none",
-        "help_text": "This is a test help text!",
-        "enabled": true,
-        "overridden": false
-      },
-      "pong": {
-        "oplevel": 1,
-        "description": "",
-        "allowed_channels": "all",
-        "excluded_channels": "none",
-        "cooldown": "none",
-        "aliases": "none",
-        "help_text": "",
-        "enabled": true,
-        "overridden": false
-      },
-      "chname": {
-        "oplevel": 1,
-        "description": "",
-        "allowed_channels": "all",
-        "excluded_channels": "none",
-        "cooldown": "none",
-        "aliases": "none",
         "help_text": "",
         "enabled": true,
         "overridden": false
@@ -362,17 +268,6 @@
         "enabled": true,
         "overridden": false
       },
-      "te": {
-        "oplevel": 2,
-        "description": "",
-        "help_text": "",
-        "allowed_channels": "all",
-        "excluded_channels": "none",
-        "cooldown": "none",
-        "aliases": "none",
-        "enabled": true,
-        "overridden": false
-      },
       "dlist": {
         "oplevel": 2,
         "description": "",
@@ -394,6 +289,17 @@
         "aliases": [
           "join"
         ],
+        "enabled": true,
+        "overridden": false
+      },
+      "thirdeye": {
+        "oplevel": 2,
+        "description": "",
+        "help_text": "",
+        "allowed_channels": "all",
+        "excluded_channels": "none",
+        "cooldown": "none",
+        "aliases": "none",
         "enabled": true,
         "overridden": false
       }

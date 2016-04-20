@@ -5,6 +5,11 @@
  * in data and functions through module exports and requires.
  *
  * Sora likes it when it's clean, so keep it tidy!
+ *
+ * Sora is now using Discord's main API!
+ *
+ * Use this link to get others to add her to their servers:
+ * https://discordapp.com/oauth2/authorize?&client_id=172474398308040704&scope=bot&permissions=0
  */
 
 /* === Requires START === */
@@ -106,4 +111,4 @@ sora.on("disconnected", function () {
 });
 
 // Login to Discord after processing all the code above.
-sora.login(config.email, config.password);
+sora.loginWithToken('MTcyNDc0NDQ0MDI1OTU0MzA0.CfmU2A.W-0vB6qoS4KKciPj6aRXhqtGML4');
