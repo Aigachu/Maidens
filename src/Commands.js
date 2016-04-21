@@ -10,16 +10,6 @@
  * Sora likes it when it's clean, so keep it tidy!
  */
 
-/* === Requires START === */
-
-// Get custom coded functions saved in the `tools.js` file.
-var tools = require("./tools.js");
-
-// Get jsonfile module ; Used to facilitate json reading and writing.
-var jsonfile = require("jsonfile");
-
-/* === Requires END === */
-
 /* === Commands Start! === */
 
 /**
@@ -90,6 +80,40 @@ commands.pong = {
 
   }
 }
+
+/**
+ * [guid description]
+ * @type {Object}
+ */
+commands.guid = {
+  fn: function( bot, params, msg, msgServer, serverRoles, authorRoles ) {
+    if(params[0]) {
+      var userID = tools.extractID(params[0]);
+      var user = bot.users.get("id", userID);
+      bot.deleteMessage(msg);
+      bot.sendMessage(bot.users.get("id", msg.author.id), "Hey Aigachu! Here's the requested id of the user: **" + user.username + "**\n\n**" + userID + "**");
+    } else {
+      bot.deleteMessage(msg);
+      bot.sendMessage(bot.users.get("id", msg.author.id), "Heyyy...Ya done messed up mang. Add a parameter to the command. >.>");
+    }
+  }
+}
+
+/**
+ * Implements the *pong* command.
+ * @params  {[none]}
+ * @result  {[message]} [Sora answers asking if she's needed.]
+ */
+// commands.atwat = {
+//   fn: function( bot, params, msg ) {
+//     var i = 0;
+//     while ( i < 100 ) {
+//       i++;
+//       bot.sendMessage(msg.channel, "Hi " + tools.printUserTag('84100810870358016') + "!");
+//     }
+
+//   }
+// }
 
 /**
  * Implements the *chname* command.

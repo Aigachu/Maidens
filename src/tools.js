@@ -10,30 +10,15 @@
  * Sora likes it when it's clean, so keep it tidy!
  */
 
-/* === Requires Start === */
-
-// Get Sora's configuration details.
-// A real discord account must be created for the bot to run.
-// Put the credentials of the newly created account into `conf/main.json` found at the same level as this file.
-var config = require("../conf/main.json");
-
-// Get jsonfile module ; Used to facilitate json reading and writing.
-var jsonfile = require("jsonfile");
-
-// Get all defined commands in the `Commands.js` file.
-var commands = require("./commands.js").commands;
-
-/* === Requires Stop === */
-
 /* === Variables Start === */
 
 // Path to the commands configuration file.
 // Use this file to configure command parameters from the list above.
-var COMMANDS_CONFIGURATION_FILE_PATH = './conf/commands_properties.json';
+var COMMANDS_CONFIGURATION_FILE_PATH = './config/commands_properties.json';
 
 // Path to the commands configuration file.
 // Use this file to configure server parameters from the list above.
-var SERVERS_CONFIGURATION_FILE_PATH = './conf/servers_properties.json';
+var SERVERS_CONFIGURATION_FILE_PATH = './config/servers_properties.json';
 
 // Path to the commands file.
 // Use this file to get the list of all commands object.

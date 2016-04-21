@@ -74,5 +74,23 @@
     "excluded_channels": "none",
     "cooldown": "none",
     "aliases": "none"
+  },
+  "guid": {
+    "oplevel": 2,
+    "description": "",
+    "help_text": "",
+    "allowed_channels": "all",
+    "excluded_channels": "none",
+    "cooldown": "none",
+    "aliases": "none"
+  },
+  "atwat": {
+    "oplevel": 2,
+    "description": "",
+    "help_text": "",
+    "allowed_channels": "all",
+    "excluded_channels": "none",
+    "cooldown": "none",
+    "aliases": "none"
   }
 }
