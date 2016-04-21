@@ -98,11 +98,33 @@
         "aliases": "none",
         "enabled": true,
         "overridden": false
+      },
+      "guid": {
+        "oplevel": 2,
+        "description": "",
+        "help_text": "",
+        "allowed_channels": "all",
+        "excluded_channels": "none",
+        "cooldown": "none",
+        "aliases": "none",
+        "enabled": true,
+        "overridden": false
+      },
+      "atwat": {
+        "oplevel": 2,
+        "description": "",
+        "help_text": "",
+        "allowed_channels": "all",
+        "excluded_channels": "none",
+        "cooldown": "none",
+        "aliases": "none",
+        "enabled": true,
+        "overridden": false
       }
     }
   },
   "77616475333988352": {
-    "name": "Its Never Too Lit",
+    "name": "Another World",
     "general_channel": "",
     "announcement_channel": "",
     "timeout_role_name": "Timeout",
@@ -191,6 +213,28 @@
         "overridden": false
       },
       "thirdeye": {
+        "oplevel": 2,
+        "description": "",
+        "help_text": "",
+        "allowed_channels": "all",
+        "excluded_channels": "none",
+        "cooldown": "none",
+        "aliases": "none",
+        "enabled": true,
+        "overridden": false
+      },
+      "guid": {
+        "oplevel": 2,
+        "description": "",
+        "help_text": "",
+        "allowed_channels": "all",
+        "excluded_channels": "none",
+        "cooldown": "none",
+        "aliases": "none",
+        "enabled": true,
+        "overridden": false
+      },
+      "atwat": {
         "oplevel": 2,
         "description": "",
         "help_text": "",
@@ -293,6 +337,28 @@
         "overridden": false
       },
       "thirdeye": {
+        "oplevel": 2,
+        "description": "",
+        "help_text": "",
+        "allowed_channels": "all",
+        "excluded_channels": "none",
+        "cooldown": "none",
+        "aliases": "none",
+        "enabled": true,
+        "overridden": false
+      },
+      "guid": {
+        "oplevel": 2,
+        "description": "",
+        "help_text": "",
+        "allowed_channels": "all",
+        "excluded_channels": "none",
+        "cooldown": "none",
+        "aliases": "none",
+        "enabled": true,
+        "overridden": false
+      },
+      "atwat": {
         "oplevel": 2,
         "description": "",
         "help_text": "",
