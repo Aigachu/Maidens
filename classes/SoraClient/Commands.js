@@ -61,9 +61,9 @@ var commands = {};
  * @result  {[message]} [Sora answers asking if she's needed.]
  */
 commands.ping = {
-  fn: function( bot, params, msg ) {
+  fn: function( sora, params, msg ) {
 
-    bot.sendMessage(msg.channel, "Yes, " + tools.printUserTag(msg.author) + "? What can I do for you?");
+    sora.sendMessage(msg.channel, "Yes, " + sora.helpers.printUserTag(msg.author) + "? What can I do for you?");
 
   }
 }
@@ -74,9 +74,9 @@ commands.ping = {
  * @result  {[message]} [Sora answers asking if she's needed.]
  */
 commands.pong = {
-  fn: function( bot, params, msg ) {
+  fn: function( sora, params, msg ) {
 
-    bot.sendMessage(msg.channel, "Mm?...Anything you might need from me, " + tools.printUserTag(msg.author) + "?");
+    sora.sendMessage(msg.channel, "Mm?...Anything you might need from me, " + sora.helpers.printUserTag(msg.author) + "?");
 
   }
 }
@@ -86,34 +86,18 @@ commands.pong = {
  * @type {Object}
  */
 commands.guid = {
-  fn: function( bot, params, msg, msgServer, serverRoles, authorRoles ) {
+  fn: function( sora, params, msg ) {
     if(params[0]) {
-      var userID = tools.extractID(params[0]);
-      var user = bot.users.get("id", userID);
-      bot.deleteMessage(msg);
-      bot.sendMessage(bot.users.get("id", msg.author.id), "Hey Aigachu! Here's the requested id of the user: **" + user.username + "**\n\n**" + userID + "**");
+      var userID = sora.helpers.extractID(params[0]);
+      var user = sora.users.get("id", userID);
+      sora.deleteMessage(msg);
+      sora.sendMessage(sora.users.get("id", msg.author.id), "Hey Aigachu! Here's the requested id of the user: **" + user.username + "**\n\n**" + userID + "**");
     } else {
-      bot.deleteMessage(msg);
-      bot.sendMessage(bot.users.get("id", msg.author.id), "Heyyy...Ya done messed up mang. Add a parameter to the command. >.>");
+      sora.deleteMessage(msg);
+      sora.sendMessage(sora.users.get("id", msg.author.id), "Heyyy...Ya done messed up mang. Add a parameter to the command. >.>");
     }
   }
 }
-
-/**
- * Implements the *pong* command.
- * @params  {[none]}
- * @result  {[message]} [Sora answers asking if she's needed.]
- */
-// commands.atwat = {
-//   fn: function( bot, params, msg ) {
-//     var i = 0;
-//     while ( i < 100 ) {
-//       i++;
-//       bot.sendMessage(msg.channel, "Hi " + tools.printUserTag('84100810870358016') + "!");
-//     }
-
-//   }
-// }
 
 /**
  * Implements the *chname* command.
@@ -121,36 +105,22 @@ commands.guid = {
  * @result  {[message]} [Sora changes her display name. Don't worry, she will always be Sora to us. ;)]
  */
 commands.chname = {
-  fn: function( bot, params, msg ) {
-    if(tools.val(params)) {
+  fn: function( sora, params, msg ) {
+    if(sora.helpers.val(params)) {
 
       var newName = msg.content.substring(msg.content.indexOf(params[0]), msg.content.length);
 
-      bot.setUsername(newName).catch(function(err){
+      sora.setUsername(newName).catch(function(err){
         if(err) {
-          bot.sendMessage( msg.channel, "There seems to have been an error.\nAllow me to format it for you.\n\n```" + err + "```\nI have logged the console with more information.");
+          sora.sendMessage( msg.channel, "There seems to have been an error.\nAllow me to format it for you.\n\n```" + err + "```\nI have logged the console with more information.");
           console.log(err);
         } else {
-          bot.sendMessage( msg.channel, "Got it! I'll change my name right now.");
+          sora.sendMessage( msg.channel, "Got it! I'll change my name right now.");
         }
       });
 
     } else {
-      bot.sendMessage( msg.channel, "You seem to have forgotten a parameter. Please tell me what to change my display name to!");
-    }
-  }
-}
-
-commands.joinserver = {
-  fn: function( bot, params, msg ) {
-    if(params[0]) {
-      var resolvable = params[0];
-      bot.joinServer(resolvable);
-
-      //@TODO trycatch for error handling.
-      bot.sendMessage( msg.channel, "I'll create an image of myself in that dimension. ;)");
-    } else {
-      bot.sendMessage( msg.channel, "Seems to be blank. You need a parameter!");
+      sora.sendMessage( msg.channel, "You seem to have forgotten a parameter. Please tell me what to change my display name to!");
     }
   }
 }
@@ -161,8 +131,8 @@ commands.joinserver = {
  * @result  {[message]} [Sora changes her display name. Don't worry, she will always be Sora to us. ;)]
  */
 commands.coin = {
-  fn: function( bot, params, msg ) {
-    if(tools.val(params, 0)) {
+  fn: function( sora, params, msg ) {
+    if(sora.helpers.val(params, 0)) {
       var flip = Math.floor(Math.random() * 2) + 1;
 
       flip = ((flip == 1) ? 'Heads' : 'Tails');
@@ -183,15 +153,15 @@ commands.coin = {
 
       var rand = flip_types[Math.floor(Math.random() * flip_types.length)];
 
-      bot.sendMessage(msg.channel, rand.message);
-      bot.startTyping(msg.channel);
+      sora.sendMessage(msg.channel, rand.message);
+      sora.startTyping(msg.channel);
 
       setTimeout(function(){
-        bot.sendMessage(msg.channel, "<@" + msg.author.id + "> obtained **" + flip + "** !");
-        bot.stopTyping(msg.channel);
+        sora.sendMessage(msg.channel, "<@" + msg.author.id + "> obtained **" + flip + "** !");
+        sora.stopTyping(msg.channel);
       }, 1000 * rand.timeout);
     } else {
-      bot.sendMessage( msg.channel, "You seem to have made a mistake with your command. Try using the `help` command! I can remind you about the way a command is used.");
+      sora.sendMessage( msg.channel, "You seem to have made a mistake with your command. Try using the `help` command! I can remind you about the way a command is used.");
     }
   }
 }
@@ -202,41 +172,40 @@ commands.coin = {
  * @result  {[message]} [Sora changes her display name. Don't worry, she will always be Sora to us. ;)]
  */
 commands.help = {
-  fn: function( bot, params, msg ) {
-    if(tools.val(params, 0)) {
+  fn: function( sora, params, msg ) {
+    if(sora.helpers.val(params, 0)) {
 
       // Print general help text for all commands.
-      bot.sendMessage(msg.channel, 'I *should* print the general help message, but Aigachu hasn\'t written it yet. Lazy bum!');
+      sora.sendMessage(msg.channel, 'I *should* print the general help message, but Aigachu hasn\'t written it yet. Lazy bum!');
 
       return;
 
-    } else if(tools.val(params)) {
+    } else if(sora.helpers.val(params)) {
 
-      var command_config = tools.getCommandConfig();
-      var command_object = command_config[params[0]];
+      var command_object = sora.commands_configs[params[0]];
 
       if(command_object == undefined) {
-        bot.sendMessage(msg.channel, "I don't think that command exists...");
+        sora.sendMessage(msg.channel, "I don't think that command exists...");
 
         return;
       }
 
       if(command_object['help_text'].length == 0) {
 
-        bot.sendMessage(msg.channel, "This command doesn't seem to have help text set. Bummer! Hassle Aigachu and tell him to update the documentation! :scream:");
+        sora.sendMessage(msg.channel, "This command doesn't seem to have help text set. Bummer! Hassle Aigachu and tell him to update the documentation! :scream:");
 
         return;
 
       } else {
 
-        bot.sendMessage(msg.channel, command_object['help_text']);
+        sora.sendMessage(msg.channel, command_object['help_text']);
 
         return;
 
       }
 
     } else {
-      bot.sendMessage( msg.channel, "Hmm. That doesn't seem to be the proper use of the help command.");
+      sora.sendMessage( msg.channel, "Hmm. That doesn't seem to be the proper use of the help command.");
 
       return;
     }
@@ -249,9 +218,9 @@ commands.help = {
  * @result  {[message]} [Sora changes her display name. Don't worry, she will always be Sora to us. ;)]
  */
 commands.dlist = {
-  fn: function( bot, params, msg ) {
+  fn: function( sora, params, msg ) {
     // Servers Object
-    var all_servers = bot.servers;
+    var all_servers = sora.servers;
 
     var message = "Here is the list of all worlds I am linked to, as well as their channels!\n";
 
@@ -279,7 +248,7 @@ commands.dlist = {
 
     message += '```\n';
 
-    bot.sendMessage( msg.channel, message);
+    sora.sendMessage( msg.channel, message);
 
   }
 }
@@ -291,17 +260,17 @@ commands.dlist = {
  * @result  {[message]} [Sora changes her display name. Don't worry, she will always be Sora to us. ;)]
  */
 commands.thirdeye = {
-  fn: function( bot, params, msg ) {
+  fn: function( sora, params, msg ) {
 
     var this_dimension = msg.channel.server;
 
     var this_world = msg.channel;
 
-    var their_dimension = bot.servers.get("name", tools.extractParam('{', '}', msg));
+    var their_dimension = sora.servers.get("name", sora.helpers.extractParam('{', '}', msg));
 
-    var their_world = their_dimension.channels.get("name", tools.extractParam('[', ']', msg));
+    var their_world = their_dimension.channels.get("name", sora.helpers.extractParam('[', ']', msg));
 
-    bot.THIRDEYE = {
+    sora.THIRDEYE = {
       this_dimension: this_dimension,
       this_world: this_world,
       their_dimension: their_dimension,
@@ -336,7 +305,7 @@ commands.thirdeye = {
 
     message += "\n```";
 
-    bot.sendMessage( msg.channel, message );
+    sora.sendMessage( msg.channel, message );
 
   }
 }

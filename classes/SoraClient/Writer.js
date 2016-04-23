@@ -1,20 +1,44 @@
-// Path to the commands configuration file.
-// Use this file to configure command parameters from the list above.
-var COMMANDS_CONFIGURATION_FILE_PATH = './config/commands_properties.json';
+/* === Default Command Configuration Paramater Values === */
+// The default values for a new command.
+// Commands that have no configuration declaration in the commands_properties.json configuration file will be given these values by default.
+var default_command_config = {
+  oplevel:            2,
+  description:        '',
+  help_text:          '',
+  allowed_channels:   'all',
+  excluded_channels:  'none',
+  cooldown:           'none',
+  aliases:            'none'
+};
 
-// Path to the commands configuration file.
-// Use this file to configure server parameters from the list above.
-var SERVERS_CONFIGURATION_FILE_PATH = './config/servers_properties.json';
+/* === Default Server Configuration Paramater Values === */
+// The default values for a new server.
+// Servers that have no configuration declaration in the servers_properties.json configuration file will be given these values by default.
+var default_server_config = {
+  name:                   "",
+  general_channel:        "",
+  announcement_channel:   "",
+  timeout_role_name:      "Timeout",
+  admin_roles:            [],
+  override_all_commands:  false
+};
+
+var server_specific_command_params = {
+  enabled: '',
+  overridden: ''
+};
 
 /**
  * [loadCommConf description]
  * @return {[type]} [description]
  */
-exports.loadCommConf = function() {
+exports.loadCommConf = function(client) {
   /* === Command Properties Configuration === */
 
+  var commands = client.commands;
+
   // Write new command configuration values to the JSON file.
-  jsonfile.readFile(COMMANDS_CONFIGURATION_FILE_PATH, function(err, obj) {
+  jsonfile.readFile(commands_configuration_path, function(err, obj) {
     if(err) { // If the file is not found or another error occurs...
       // This is most likely to happen if the file is not found.
       // In this case, log the error.
@@ -33,7 +57,7 @@ exports.loadCommConf = function() {
         }
       }
 
-      jsonfile.writeFile(COMMANDS_CONFIGURATION_FILE_PATH, command_properties, {spaces: 2}, function (err) {
+      jsonfile.writeFile(commands_configuration_path, command_properties, {spaces: 2}, function (err) {
         if(err) {
           console.error(err)
         }
@@ -83,7 +107,7 @@ exports.loadCommConf = function() {
         }
       }
 
-      jsonfile.writeFile(COMMANDS_CONFIGURATION_FILE_PATH, command_properties, {spaces: 2}, function (err) {
+      jsonfile.writeFile(commands_configuration_path, command_properties, {spaces: 2}, function (err) {
         if(err) {
           console.error(err)
         }
@@ -101,15 +125,16 @@ exports.loadCommConf = function() {
  * @param  {[type]} bot [description]
  * @return {[type]}     [description]
  */
-exports.loadServConf = function(bot) {
+exports.loadServConf = function(client) {
 
-  var servers = bot.servers;
+  var servers = client.servers;
+  var commands = client.commands;
 
   // Get commands configuration properties.
   // You are now in tools.js, so you need to add a dot to indicate a return to the other directory.
 
   try{
-    var commands_configuration = require('.' + COMMANDS_CONFIGURATION_FILE_PATH);
+    var commands_configuration = require(commands_configuration_path);
   } catch(err) {
     if(err) {
       console.log(err);
@@ -126,7 +151,7 @@ exports.loadServConf = function(bot) {
     }
   }
 
-  jsonfile.readFile(SERVERS_CONFIGURATION_FILE_PATH, function(err, obj) {
+  jsonfile.readFile(servers_configuration_path, function(err, obj) {
     if(err) { // If the file is not found or another error occurs...
       // This is most likely to happen if the file is not found.
       // In this case, log the error.
@@ -145,7 +170,7 @@ exports.loadServConf = function(bot) {
         }
       }
 
-      jsonfile.writeFile(SERVERS_CONFIGURATION_FILE_PATH, server_properties, {spaces: 2}, function (err) {
+      jsonfile.writeFile(servers_configuration_path, server_properties, {spaces: 2}, function (err) {
         if(err) {
           console.error(err)
         }
@@ -185,7 +210,7 @@ exports.loadServConf = function(bot) {
       for (var key in server_properties) {
         if(server_properties.hasOwnProperty(key)) {
           // Deletes any command configuration declarations of commands that have been removed.
-          if(bot.servers.get("id", key) == null) {
+          if(client.servers.get("id", key) == null) {
             console.log("\nSora: The following server definition does not have a corresponding server in my cache: " + key + ".\nSora: I will remove it from the configuration file.");
             delete server_properties[key];
           } else {
@@ -264,7 +289,7 @@ exports.loadServConf = function(bot) {
         }
       }
 
-      jsonfile.writeFile(SERVERS_CONFIGURATION_FILE_PATH, server_properties, {spaces: 2}, function (err) {
+      jsonfile.writeFile(servers_configuration_path, server_properties, {spaces: 2}, function (err) {
         if(err) {
           console.error(err)
         }
