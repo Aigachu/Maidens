@@ -363,6 +363,31 @@ commands.main = {
 }
 
 /**
+ * Implements the 'ironman' command.
+ * Generates a list of characters for the user.
+ *
+ * Armady's idea - Generate custom movesets for each characters as well.
+ * $sora ironman *custom*
+ *
+ * @todo  - Explore the potential of adding character stock icons to the list generate (would be cool tho)
+ */
+commands.ironman = {
+  fn: function(sora, params, msg) {
+    // code goes here
+  }
+}
+
+/**
+ * Unokened the 'handicap' command.
+ * Presents the user with a handicap to potentially use in their next smash match!
+ */
+commands.handicap = {
+  fn: function(sora, params, msg) {
+    // code 
+  }
+}
+
+/**
  * Implements the *help* command.
  * @params  {[none]}
  * @result  {[message]}
