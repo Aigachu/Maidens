@@ -349,13 +349,17 @@ commands.love = {
 commands.main = {
   fn: function(sora, params, msg) {
     // Get all images from Smash 4 resources folder.
-    var s4images = fs.readdirSync(resources + "smash4-character-portraits");
+    var smash4_character_directories = fs.readdirSync(resources + "smash4-character-portraits");
 
-    var random = s4images[Math.floor(Math.random() * s4images.length)];
+    var character_name = smash4_character_directories[Math.floor(Math.random() * smash4_character_directories.length)];
+
+    var character_images = fs.readdirSync(resources + "smash4-character-portraits/" + character_name);
+
+    var random_image = character_images[Math.floor(Math.random() * character_images.length)];
 
     sora.sendMessage(msg.channel, sora.helpers.printUserTag(msg.author.id) + "! Your new main is..._drumroll_");
     sora.startTyping();
-    sora.sendFile(msg.channel, resources + 'smash4-character-portraits/' + random, random, function(){
+    sora.sendFile(msg.channel, resources + 'smash4-character-portraits/' + character_name + "/" + random_image, random_image, function(){
       sora.stopTyping();
     });
 
@@ -367,13 +371,54 @@ commands.main = {
  * Generates a list of characters for the user.
  *
  * Armady's idea - Generate custom movesets for each characters as well.
- * $sora ironman *custom*
+ * $sora ironman # *custom*
  *
  * @todo  - Explore the potential of adding character stock icons to the list generate (would be cool tho)
  */
 commands.ironman = {
   fn: function(sora, params, msg) {
-    // code goes here
+    var smash4_character_directories = fs.readdirSync(resources + "smash4-character-portraits");
+
+    var roster_size = smash4_character_directories.length - 2;
+
+    if(params[0] > roster_size) {
+      sora.sendMessage(msg.channel, "That number is too high! There are only **" + roster_size + "** characters in the Smash 4 roster you weenie! xD");
+    } else if(params[0]) {
+      // Get all images from Smash 4 resources folder.
+
+      var number_of_characters = params[0];
+
+      var charlist = [];
+
+      var chosen_characters = [];
+
+      for( i = 0; i < number_of_characters; i++ ) {
+        var random_character = smash4_character_directories[Math.floor(Math.random() * smash4_character_directories.length)];
+
+        while(random_character in chosen_characters || random_character == "Misc" || random_character == "Memes") {
+          random_character = smash4_character_directories[Math.floor(Math.random() * smash4_character_directories.length)];
+        }
+
+        charlist[i] = random_character;
+        chosen_characters[random_character] = random_character;
+      }
+
+      var message = "Here's your list of iron man characters!\n";
+
+      for (var key in charlist) {
+        if(charlist.hasOwnProperty(key)) {
+          message += "-- **" + charlist[key] + "**\n";
+        }
+      }
+
+      message += "\nThere we go! Good luck against your challenger. ;)";
+
+      sora.sendMessage(msg.channel, message);
+
+    } else {
+      sora.sendMessage(msg.channel, "You sorry fool. Don't even think about it. nairoFiend");
+    }
+
   }
 }
 
