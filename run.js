@@ -28,6 +28,9 @@ GLOBAL.rootdir = __dirname + '/';
 // Project classes relative path.
 GLOBAL.namespace = rootdir + 'classes/';
 
+// Project resources relative path.
+GLOBAL.resources = rootdir + 'resources/';
+
 // Project classes relative path.
 GLOBAL.soraspace = namespace + 'SoraClient/';
 
@@ -38,12 +41,14 @@ GLOBAL.commands_configuration_path = soraspace + 'configurations/commands_config
 GLOBAL.servers_configuration_path = soraspace + 'configurations/servers_config.json';
 
 
-
 // Must run `npm install --save discord.js` if this is not installed or found.
 GLOBAL.Discord = require("discord.js");
 
 // Get jsonfile module ; Used to facilitate json reading and writing.
 GLOBAL.jsonfile = require("jsonfile");
+
+// Get filesystem
+GLOBAL.fs = require('fs');
 
 // Node API: util
 GLOBAL.util = require('util');

@@ -332,6 +332,37 @@ commands.love = {
 }
 
 /**
+ * Implements the main command.
+ * Randomly selects a main from Super Smash Brothers for Wii U/3DS, for the user of the command.
+ * Posts the image of the main.
+ * Color Palette Randomization too!
+ *
+ * IF BAYONIGGA IS CHOSEN, POP OUT THE "OH NON" MEME AS WELL FOR FUNNIES.
+ *
+ * THIS IS A NICE TO HAVE - NOT A TOP PRIORITY.
+ * $sora main - It shows your main if you have one, and if you don't she asks you to set one.
+ * $sora main set - Randomly choose a main for a user. It saves it for the user.
+ * If you reuse 'set', she's going to tell you that you already have one.
+ *
+ * MP3 FILES OF THE ANNOUNCER SAYING THE NAME OF THE CHARACTER IN A VOICE CHANNEL ONCE THE COMMAND IS USED.
+ */
+commands.main = {
+  fn: function(sora, params, msg) {
+    // Get all images from Smash 4 resources folder.
+    var s4images = fs.readdirSync(resources + "smash4-character-portraits");
+
+    var random = s4images[Math.floor(Math.random() * s4images.length)];
+
+    sora.sendMessage(msg.channel, sora.helpers.printUserTag(msg.author.id) + "! Your new main is..._drumroll_");
+    sora.startTyping();
+    sora.sendFile(msg.channel, resources + 'smash4-character-portraits/' + random, random, function(){
+      sora.stopTyping();
+    });
+
+  }
+}
+
+/**
  * Implements the *help* command.
  * @params  {[none]}
  * @result  {[message]}
