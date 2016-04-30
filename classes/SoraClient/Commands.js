@@ -100,11 +100,11 @@ commands.guid = {
 }
 
 /**
- * Implements the *chname* command.
+ * Implements the *setname* command.
  * @params  {[none]}
  * @result  {[message]} [Sora changes her display name. Don't worry, she will always be Sora to us. ;)]
  */
-commands.chname = {
+commands.setname = {
   fn: function( sora, params, msg ) {
     if(sora.helpers.val(params)) {
 
@@ -128,7 +128,7 @@ commands.chname = {
 /**
  * Implements the *coin* command.
  * @params  {[none]}
- * @result  {[message]} [Sora changes her display name. Don't worry, she will always be Sora to us. ;)]
+ * @result  {[message]} 
  */
 commands.coin = {
   fn: function( sora, params, msg ) {
@@ -167,9 +167,174 @@ commands.coin = {
 }
 
 /**
+ * Implements the rolldice command.
+ * @result  {[message]} 
+ */
+commands.rolldice = {
+  fn: function( sora, params, msg) {
+    var roll = Math.floor(Math.random() * 6) + 1;
+
+    var roll_types = [];
+    roll_types.push({
+      message: "_rolls the die normally_",
+      timeout: 1
+    });
+    roll_types.push({
+      message: "_rolls the die violently_\n_the die falls on the ground_",
+      timeout: 2
+    });
+    roll_types.push({
+      message: "_accidentally drops the die on the ground while getting ready_\nOops! Still counts right...?",
+      timeout: 2
+    });
+    roll_types.push({
+      message: "_spins the die_\nWait for it...",
+      timeout: 5
+    });
+
+    var rand = roll_types[Math.floor(Math.random() * roll_types.length)];
+
+    sora.sendMessage(msg.channel, rand.message);
+    sora.startTyping(msg.channel);
+
+    setTimeout(function(){
+      sora.sendMessage(msg.channel, "<@" + msg.author.id + "> rolled a **" + roll + "** !");
+      sora.stopTyping(msg.channel);
+    }, 1000 * rand.timeout);
+  }
+}
+
+/**
+ * Implements 8ball command.
+ * Not sure if using the term '8ball' for the object key is going to fuck shit up so we'll name it 'ball' and put an '8ball' alias.
+ * 
+ */
+commands.ball = {
+  fn: function( sora, params, msg) {
+    if(params[0]) {
+      var answers = [];
+
+      answers.push({
+        message: "8ball says: \"_It is certain._\"",
+        timeout: 2
+      });
+      answers.push({
+        message: "8ball says: \"_It is decidedly so._\"",
+        timeout: 2
+      });
+      answers.push({
+        message: "8ball says: \"_Without a doubt._\"",
+        timeout: 3
+      });
+      answers.push({
+        message: "8ball says: \"_Yes, definitely._\"",
+        timeout: 4
+      });
+      answers.push({
+        message: "8ball says: \"_You may rely on it._\"",
+        timeout: 2
+      });
+      answers.push({
+        message: "8ball says: \"_As I see it, yes._\"",
+        timeout: 3
+      });
+      answers.push({
+        message: "8ball says: \"_Most likely._\"",
+        timeout: 4
+      });
+      answers.push({
+        message: "8ball says: \"_Outlook good._\"",
+        timeout: 2
+      });
+      answers.push({
+        message: "8ball says: \"_Yes._\"",
+        timeout: 4
+      });
+      answers.push({
+        message: "8ball says: \"_Signs point to yes._\"",
+        timeout: 2
+      });
+      answers.push({
+        message: "8ball says: \"_Reply hazy try again._\"",
+        timeout: 2
+      });
+      answers.push({
+        message: "8ball says: \"_Ask again later._\"",
+        timeout: 2
+      });
+      answers.push({
+        message: "8ball says: \"_Better not tell you now._\"",
+        timeout: 3
+      });
+      answers.push({
+        message: "8ball says: \"_Cannot predict now._\"",
+        timeout: 4
+      });
+      answers.push({
+        message: "8ball says: \"_Concentrate and ask again._\"",
+        timeout: 2
+      });
+      answers.push({
+        message: "8ball says: \"_Don't count on it._\"",
+        timeout: 3
+      });
+      answers.push({
+        message: "8ball says: \"_My reply is no._\"",
+        timeout: 4
+      });
+      answers.push({
+        message: "8ball says: \"_My sources say no._\"",
+        timeout: 2
+      });
+      answers.push({
+        message: "8ball says: \"_Very doubtful._\"",
+        timeout: 4
+      });
+      answers.push({
+        message: "8ball says: \"_Outlook not so good._\"",
+        timeout: 2
+      });
+
+      var rand = answers[Math.floor(Math.random() * answers.length)];
+
+      sora.startTyping(msg.channel);
+
+      setTimeout(function(){
+        sora.sendMessage(msg.channel, "<@" + msg.author.id + "> " + rand.message);
+        sora.stopTyping(msg.channel);
+      }, 1000 * rand.timeout);
+    } else {
+      sora.sendMessage( msg.channel, "8ball says: \"_Now now, ask me something. Don't be shy!_\"");
+    }
+  }
+}
+
+/**
+ * Implements the love command.
+ * @type {Object}
+ */
+commands.love = {
+  fn: function( sora, params, msg) {
+    if(params[0]) {
+      // Lol Aiga naming your variable 'thing' really? xD
+      var thing = msg.content.substring(msg.content.indexOf(params[0]), msg.content.length);
+
+      var author_name = msg.author.name;
+      // var author_name_int = parseInt(author_name);
+
+      console.log(author_name_int);
+
+      sora.sendMessage( msg.channel, "There is __**" + Math.floor(Math.random() * 100) + "%**__ love between <@" + msg.author.id + "> and **" + thing + "**!" );
+    } else {
+      sora.sendMessage( msg.channel, "You have 100% for ZeRo & M2K's AS5 if you don't specify an object or person!\n\n_Make sure you put an argument! `!love cheesecake`_");
+    }
+  }
+}
+
+/**
  * Implements the *help* command.
  * @params  {[none]}
- * @result  {[message]} [Sora changes her display name. Don't worry, she will always be Sora to us. ;)]
+ * @result  {[message]}
  */
 commands.help = {
   fn: function( sora, params, msg ) {
