@@ -8,7 +8,7 @@
     "override_all_commands": false,
     "commands": {
       "getthatassbanned": {
-        "oplevel": 2,
+        "oplevel": 0,
         "description": "",
         "help_text": "",
         "allowed_channels": "all",
@@ -220,7 +220,7 @@
     "override_all_commands": false,
     "commands": {
       "getthatassbanned": {
-        "oplevel": 2,
+        "oplevel": 0,
         "description": "",
         "help_text": "",
         "allowed_channels": "all",
@@ -432,7 +432,7 @@
     "override_all_commands": false,
     "commands": {
       "getthatassbanned": {
-        "oplevel": 2,
+        "oplevel": 0,
         "description": "",
         "help_text": "",
         "allowed_channels": "all",
@@ -644,7 +644,7 @@
     "override_all_commands": false,
     "commands": {
       "getthatassbanned": {
-        "oplevel": 2,
+        "oplevel": 0,
         "description": "",
         "help_text": "",
         "allowed_channels": "all",

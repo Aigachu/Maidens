@@ -131,7 +131,7 @@ exports.loadCommConf = function(client, callback) {
  * [loadCommConf description]
  * @return {[type]} [description]
  */
-exports.loadPMCommConf = function(client) {
+exports.loadPMCommConf = function(client, callback) {
   /* === Command Properties Configuration === */
 
   var pmcommands = client.pmcommands;
@@ -156,11 +156,10 @@ exports.loadPMCommConf = function(client) {
         }
       }
 
-      jsonfile.writeFile(pmcommands_configuration_path, pmcommand_properties, {spaces: 2}, function (err) {
-        if(err) {
-          console.error(err)
-        }
-      });
+      jsonfile.writeFileSync(pmcommands_configuration_path, pmcommand_properties, {spaces: 2});
+
+      callback();
+      
     } else { // If the file is found and successfully loaded...
       var pmcommand_properties = obj;
 
@@ -206,11 +205,9 @@ exports.loadPMCommConf = function(client) {
         }
       }
 
-      jsonfile.writeFile(pmcommands_configuration_path, pmcommand_properties, {spaces: 2}, function (err) {
-        if(err) {
-          console.error(err)
-        }
-      });
+      jsonfile.writeFileSync(pmcommands_configuration_path, pmcommand_properties, {spaces: 2});
+
+      callback();
     }
   });
 
