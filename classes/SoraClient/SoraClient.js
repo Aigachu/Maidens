@@ -69,14 +69,9 @@ function SoraClient() {
     });
 
     // Loads and modifies the pmcommand configuration file.
-    sora.writer.loadPMCommConf(sora, function(err) {
-      if(err) {
-        console.log("Aigachu, we got an even bigger problem.");
-      } else {
-
-        // Sora commands configurations.
-        this.pmcommands_configs = require(pmcommands_configuration_path);
-      }
+    sora.writer.loadPMCommConf(sora, function() {
+      // Sora commands configurations.
+      this.pmcommands_configs = require(pmcommands_configuration_path);
     });
     
 
