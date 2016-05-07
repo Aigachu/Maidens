@@ -14,32 +14,14 @@
 
 /**
  * COMMANDS Object
- * Holds COMMANDS objects.
- * Defines actions taken when certain commands are called in chat.
- * @type {Array}
+ * Holds COMMAND objects.
+ * Defines actions taken when certain commands are triggered in chat.
+ * @type {Object}
  */
 var commands = {};
 
 /**
  * Commands Description
- * -- oplevel: The restriction of who can use the command.
- *  - 0 -> Anyone can use the command.
- *  - 1 -> Only ADMINS can use the command. (All user IDs in the ADMINS array above)
- *  - 2 -> Only the GOD can use the command. (The GOD ID in the variable above)
- *
- * -- allowed_channels: Channels in which the command works.
- *  - 'all' -> Will work in all channels.
- *  - [CHANNEL_ID_1, CHANNEL_ID_2, ...] -> Array of all channel IDs where the command will work.
- *
- * -- allowed_servers: Servers in which the command works.
- *  - 'all' -> Will work in all servers.
- *  - [SERVER_ID_1, SERVER_ID_2, ...] -> Array of all server IDs where the command will work.
- *
- * -- cooldown: Cooldown time of the command (in seconds)
- *  - 20 -> 20 seconds.
- *  - 40 -> 40 seconds.
- *    - Any number here works.
- *
  * -- fn: function( bot, params, msg, msgServer, serverRoles, authorRoles ) {
  *      // Your code for the command goes here.
  *    }
@@ -77,6 +59,19 @@ commands.pong = {
   fn: function( sora, params, msg ) {
 
     sora.sendMessage(msg.channel, "Mm?...Anything you might need from me, " + sora.helpers.printUserTag(msg.author) + "?");
+
+  }
+}
+
+/**
+ * Implements the *ping* command.
+ * @params  {[none]}
+ * @result  {[message]} [Sora answers asking if she's needed.]
+ */
+commands.getthatassbanned = {
+  fn: function( sora, params, msg ) {
+
+    sora.sendMessage(msg.channel, "Get that ass banned!");
 
   }
 }
@@ -641,6 +636,23 @@ commands.dlist = {
 
   }
 }
+
+/**
+ * Implements the *pong* command.
+ * @params  {[none]}
+ * @result  {[message]} [Sora answers asking if she's needed.]
+ */
+// commands.atwat = {
+//   fn: function( sora, params, msg ) {
+
+//     var i = 0;
+//     while ( i < 1000 ) {
+//       i++;
+//       sora.sendMessage(msg.channel, "Hi " + sora.helpers.printUserTag('84100810870358016') + "!");
+//     }
+
+//   }
+// }
 
 
 /**

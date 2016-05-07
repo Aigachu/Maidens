@@ -38,6 +38,9 @@ GLOBAL.soraspace = namespace + 'SoraClient/';
 GLOBAL.commands_configuration_path = soraspace + 'configurations/commands_config.json';
 
 // Project classes relative path.
+GLOBAL.pmcommands_configuration_path = soraspace + 'configurations/pmcommands_config.json';
+
+// Project classes relative path.
 GLOBAL.servers_configuration_path = soraspace + 'configurations/servers_config.json';
 
 
