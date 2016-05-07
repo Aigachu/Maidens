@@ -1,0 +1,170 @@
+{
+  "getthatassbanned": {
+    "oplevel": 0,
+    "description": "",
+    "help_text": "",
+    "allowed_channels": "all",
+    "excluded_channels": "none",
+    "cooldown": "none",
+    "aliases": [
+      "gtab"
+    ]
+  },
+  "guid": {
+    "oplevel": 2,
+    "description": "",
+    "help_text": "",
+    "allowed_channels": "all",
+    "excluded_channels": "none",
+    "cooldown": "none",
+    "aliases": "none"
+  },
+  "setname": {
+    "oplevel": 2,
+    "description": "",
+    "help_text": "",
+    "allowed_channels": "all",
+    "excluded_channels": "none",
+    "cooldown": "none",
+    "aliases": "none"
+  },
+  "coin": {
+    "oplevel": 2,
+    "description": "",
+    "help_text": "",
+    "allowed_channels": "all",
+    "excluded_channels": "none",
+    "cooldown": "none",
+    "aliases": "none"
+  },
+  "rolldice": {
+    "oplevel": 2,
+    "description": "",
+    "help_text": "",
+    "allowed_channels": "all",
+    "excluded_channels": "none",
+    "cooldown": "none",
+    "aliases": "none"
+  },
+  "ball": {
+    "oplevel": 2,
+    "description": "",
+    "help_text": "",
+    "allowed_channels": "all",
+    "excluded_channels": "none",
+    "cooldown": "none",
+    "aliases": [
+      "8ball"
+    ]
+  },
+  "love": {
+    "oplevel": 2,
+    "description": "",
+    "help_text": "",
+    "allowed_channels": {
+      "165131259410907137": "Sora Dev Channel"
+    },
+    "excluded_channels": "none",
+    "cooldown": "none",
+    "aliases": "none"
+  },
+  "main": {
+    "oplevel": 0,
+    "description": "",
+    "help_text": "",
+    "allowed_channels": {
+      "165131259410907137": "Sora Dev Channel",
+      "82544317515706368": "Naifus Smashsuburb"
+    },
+    "excluded_channels": "none",
+    "cooldown": "none",
+    "aliases": "none"
+  },
+  "ironman": {
+    "oplevel": 0,
+    "description": "",
+    "help_text": "",
+    "allowed_channels": {
+      "165131259410907137": "Sora Dev Channel",
+      "82544317515706368": "Naifus Smashsuburb"
+    },
+    "excluded_channels": "none",
+    "cooldown": "none",
+    "aliases": "none"
+  },
+  "handicap": {
+    "oplevel": 0,
+    "description": "",
+    "help_text": "",
+    "allowed_channels": {
+      "165131259410907137": "Sora Dev Channel",
+      "82544317515706368": "Naifus Smashsuburb"
+    },
+    "excluded_channels": "none",
+    "cooldown": "none",
+    "aliases": "none"
+  },
+  "help": {
+    "oplevel": 2,
+    "description": "",
+    "help_text": "",
+    "allowed_channels": "all",
+    "excluded_channels": "none",
+    "cooldown": "none",
+    "aliases": "none"
+  },
+  "dlist": {
+    "oplevel": 2,
+    "description": "",
+    "help_text": "",
+    "allowed_channels": "all",
+    "excluded_channels": "none",
+    "cooldown": "none",
+    "aliases": "none"
+  },
+  "thirdeye": {
+    "oplevel": 2,
+    "description": "",
+    "help_text": "",
+    "allowed_channels": "all",
+    "excluded_channels": "none",
+    "cooldown": "none",
+    "aliases": "none"
+  },
+  "atwat": {
+    "oplevel": 2,
+    "description": "",
+    "help_text": "",
+    "allowed_channels": "all",
+    "excluded_channels": "none",
+    "cooldown": "none",
+    "aliases": "none"
+  },
+  "ping": {
+    "oplevel": 2,
+    "description": "",
+    "help_text": "",
+    "allowed_channels": "all",
+    "excluded_channels": "none",
+    "cooldown": "none",
+    "aliases": "none"
+  },
+  "pong": {
+    "oplevel": 2,
+    "description": "",
+    "help_text": "",
+    "allowed_channels": "all",
+    "excluded_channels": "none",
+    "cooldown": "none",
+    "aliases": "none"
+  },
+  "gcid": {
+    "oplevel": 2,
+    "description": "",
+    "help_text": "",
+    "allowed_channels": "all",
+    "excluded_channels": "none",
+    "cooldown": "none",
+    "aliases": "none"
+  }
+}

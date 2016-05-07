@@ -95,6 +95,17 @@ commands.guid = {
 }
 
 /**
+ * [gcid description]
+ * @type {Object}
+ */
+commands.gcid = {
+  fn: function(sora, params, msg) {
+    sora.deleteMessage(msg);
+    sora.sendMessage(sora.users.get("id", msg.author.id), "Psst! Here's the id of the **" + msg.channel + "** channel:\n\n**" + msg.channel.id + "**");
+  }
+}
+
+/**
  * Implements the *setname* command.
  * @params  {[none]}
  * @result  {[message]} [Sora changes her display name. Don't worry, she will always be Sora to us. ;)]
