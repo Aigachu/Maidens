@@ -18,7 +18,7 @@ function SoraClient() {
 
   // Get Sora's configuration details.
   // A real discord account must be created for the bot to run.
-  // Put the credentials of the newly created account into `conf/main.json` found at the same level as this file.
+  // Put the credentials of the newly created account into `config.js` found at the same level as this file.
   this.config = require(rootdir + 'config.js');
 
   // Sora commands.
@@ -58,23 +58,14 @@ function SoraClient() {
 
     /* === On-Boot Tasks === */
     // Loads and modifies the command configuration file.
-    sora.writer.loadCommConf(sora, function(err) {
-      if(err) {
-        console.log("Aigachu, we got a problem.");
-      } else {
+    sora.writer.loadCommConf(sora, function() {
+      // Sora commands configurations.
+      this.commands_configs = require(commands_configuration_path);
 
-        // Sora commands configurations.
-        this.commands_configs = require(commands_configuration_path);
-
-        sora.writer.loadServConf(sora, function(err) {
-          if(err) {
-            console.log("Aigachu, we got an even bigger problem.");
-          } else {
-            // Sora servers configurations.
-            this.servers_configs = require(servers_configuration_path);
-          }
-        });
-      }
+      sora.writer.loadServConf(sora, function() {
+      // Sora servers configurations.
+        this.servers_configs = require(servers_configuration_path);
+      });
     });
 
     // Loads and modifies the pmcommand configuration file.
@@ -282,7 +273,7 @@ function SoraClient() {
       }
 
       // Check Excluded Channels
-      if(command_validation_obj.excluded_channels !== 'all') {
+      if(command_validation_obj.excluded_channels !== 'none') {
         if((msg.channel.id in command_validation_obj.excluded_channels)) {
           return false;
         }

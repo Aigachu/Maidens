@@ -68,11 +68,10 @@ exports.loadCommConf = function(client, callback) {
         }
       }
 
-      jsonfile.writeFile(commands_configuration_path, command_properties, {spaces: 2}, function (err) {
-        if(err) {
-          console.error(err)
-        }
-      });
+      jsonfile.writeFileSync(commands_configuration_path, command_properties, {spaces: 2});
+
+      callback();
+
     } else { // If the file is found and successfully loaded...
       var command_properties = obj;
 
@@ -118,16 +117,12 @@ exports.loadCommConf = function(client, callback) {
         }
       }
 
-      jsonfile.writeFile(commands_configuration_path, command_properties, {spaces: 2}, function (err) {
-        if(err) {
-          console.error(err)
-          callback(err);
-        }
-      });
+      jsonfile.writeFileSync(commands_configuration_path, command_properties, {spaces: 2});
+
+      callback();
+
     }
   });
-
-  callback();
 
   /* === Command Properties End === */
 }
@@ -227,7 +222,7 @@ exports.loadPMCommConf = function(client) {
  * @param  {[type]} bot [description]
  * @return {[type]}     [description]
  */
-exports.loadServConf = function(client) {
+exports.loadServConf = function(client, callback) {
 
   var servers = client.servers;
   var commands = client.commands;
@@ -272,11 +267,9 @@ exports.loadServConf = function(client) {
         }
       }
 
-      jsonfile.writeFile(servers_configuration_path, server_properties, {spaces: 2}, function (err) {
-        if(err) {
-          console.error(err)
-        }
-      });
+      jsonfile.writeFileSync(servers_configuration_path, server_properties, {spaces: 2});
+
+      callback();
 
     } else {
       var server_properties = obj;
@@ -391,11 +384,9 @@ exports.loadServConf = function(client) {
         }
       }
 
-      jsonfile.writeFile(servers_configuration_path, server_properties, {spaces: 2}, function (err) {
-        if(err) {
-          console.error(err)
-        }
-      });
+      jsonfile.writeFileSync(servers_configuration_path, server_properties, {spaces: 2});
+
+      callback();
     }
   });
 
