@@ -146,28 +146,34 @@ function SoraClient() {
     // Divide text into distinct parameters.
     var split = msg.content.split(" ");
 
-    // Check if it contains the command syntax.
-    if(split[0] == sora.config.prefix && split[1]) {
+    // First, check if the message is a private message
+    // We don't want regular commands to be triggered in PMs with Sora.
+    // PMCommands will be a different entity entirely.
 
-      // Supposed Key
-      var key = split[1].toLowerCase();
+    if(!msg.isPrivate()) {
+      // Check if it contains the command syntax.
+      if(split[0] == sora.config.prefix && split[1]) {
 
-      // Loop through the command configurations and check if the key is an alias for a command.
-      for (var command_key in commands_configuration) {
-        if(commands_configuration.hasOwnProperty(command_key)) {
+        // Supposed Key
+        var key = split[1].toLowerCase();
 
-          // This will set the key variable to the key of the actual command that the alias is for.
-          if(commands_configuration[command_key].aliases.indexOf(key) > -1) {
-            key = command_key;
+        // Loop through the command configurations and check if the key is an alias for a command.
+        for (var command_key in commands_configuration) {
+          if(commands_configuration.hasOwnProperty(command_key)) {
+
+            // This will set the key variable to the key of the actual command that the alias is for.
+            if(commands_configuration[command_key].aliases.indexOf(key) > -1) {
+              key = command_key;
+            }
+
           }
-
         }
-      }
 
-      // Check if the second word in the message is
-      if(key in commands) {
-        // console.log("Sora: This is a command.");
-        return key;
+        // Check if the second word in the message is
+        if(key in commands) {
+          // console.log("Sora: This is a command.");
+          return key;
+        }
       }
     }
 
