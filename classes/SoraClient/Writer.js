@@ -11,6 +11,17 @@ var default_command_config = {
   aliases:            'none'
 };
 
+/* === Default PMCommand Configuration Paramater Values === */
+// The default values for a new pmcommand.
+// PMCommands that have no configuration declaration in the pmcommands_properties.json configuration file will be given these values by default.
+var default_pmcommand_config = {
+  oplevel:            2,
+  description:        '',
+  help_text:          '',
+  cooldown:           'none',
+  aliases:            'none'
+};
+
 /* === Default Server Configuration Paramater Values === */
 // The default values for a new server.
 // Servers that have no configuration declaration in the servers_properties.json configuration file will be given these values by default.
@@ -32,7 +43,7 @@ var server_specific_command_params = {
  * [loadCommConf description]
  * @return {[type]} [description]
  */
-exports.loadCommConf = function(client) {
+exports.loadCommConf = function(client, callback) {
   /* === Command Properties Configuration === */
 
   var commands = client.commands;
@@ -110,14 +121,105 @@ exports.loadCommConf = function(client) {
       jsonfile.writeFile(commands_configuration_path, command_properties, {spaces: 2}, function (err) {
         if(err) {
           console.error(err)
+          callback(err);
         }
       });
     }
   });
 
-  return true;
+  callback();
 
   /* === Command Properties End === */
+}
+
+/**
+ * [loadCommConf description]
+ * @return {[type]} [description]
+ */
+exports.loadPMCommConf = function(client) {
+  /* === Command Properties Configuration === */
+
+  var pmcommands = client.pmcommands;
+
+  // Write new pmcommand configuration values to the JSON file.
+  jsonfile.readFile(pmcommands_configuration_path, function(err, obj) {
+    if(err) { // If the file is not found or another error occurs...
+      // This is most likely to happen if the file is not found.
+      // In this case, log the error.
+      // console.log(err);
+
+      // Friendly Message from Sora telling us that she will generate a pmcommands configuration file.
+      console.log("Sora: There doesn't seem to be a pmcommands configuration file or there was an error reading it.\nSora: Not to worry, I will generate a default one. You can go ahead and set the pmcommand properties afterwards.");
+
+      // We will now proceed to generate a default pmcommands configuration file.
+      var pmcommand_properties = {};
+
+      // Loops in the pmCommands array and generates a default configuration entry for each of them.
+      for (var key in pmcommands) {
+        if(pmcommands.hasOwnProperty(key)) {
+          pmcommand_properties[key] = default_pmcommand_config;
+        }
+      }
+
+      jsonfile.writeFile(pmcommands_configuration_path, pmcommand_properties, {spaces: 2}, function (err) {
+        if(err) {
+          console.error(err)
+        }
+      });
+    } else { // If the file is found and successfully loaded...
+      var pmcommand_properties = obj;
+
+      // Loops in the pmCommands array and generates a default configuration entry for each pmcommand that does not yet have an entry.
+      for (var key in pmcommands) {
+        if(pmcommands.hasOwnProperty(key)) {
+          if(pmcommand_properties[key] == null) {
+            console.log("\nSora: The following pmcommand has no configuration definition: " + key + ".\nSora: I will give it a default definition in the configuration file.");
+            pmcommand_properties[key] = default_pmcommand_config;
+          }
+        }
+      }
+
+      // Loops through the configurations object to tidy up before saving.
+      for (var key in pmcommand_properties) {
+        if(pmcommand_properties.hasOwnProperty(key)) {
+          // Deletes any pmcommand configuration declarations of pmcommands that have been removed.
+          if(pmcommands[key] == null) {
+            console.log("\nSora: The following pmcommand definition does not have a corresponding pmcommand in my code: " + key + ".\nSora: I will remove it from the configuration file.");
+            delete pmcommand_properties[key];
+          } else {
+            // Loops through the default configuration object to delete any parameters that are not set in the default configuration.
+            // Parameters not in the default configuration will not be in *any* configuration.
+            for (var param in pmcommand_properties[key]) {
+              if(pmcommand_properties[key].hasOwnProperty(param)) {
+                if(default_pmcommand_config[param] == null) {
+                  // console.log("Sora: The following configuration parameter seems to have been removed from the default pmcommand configuration: " + param + "\nSora: I will proceed to remove it from all pmcommand configurations.");
+                  delete pmcommand_properties[key][param];
+                }
+              }
+            }
+
+            // Loops through the default configuration object to set any new configuration parameters to older pmcommands that may not have them.
+            for (var param in default_pmcommand_config) {
+              if(default_pmcommand_config.hasOwnProperty(param)) {
+                if(pmcommand_properties[key][param] == null) {
+                  // console.log("Sora: The following configuration parameter seems to have been added to the default pmcommand configuration: " + param + "\nSora: I will proceed to add it to all pmcommand configurations with the default value.");
+                  pmcommand_properties[key][param] = default_pmcommand_config[param];
+                }
+              }
+            }
+          }
+        }
+      }
+
+      jsonfile.writeFile(pmcommands_configuration_path, pmcommand_properties, {spaces: 2}, function (err) {
+        if(err) {
+          console.error(err)
+        }
+      });
+    }
+  });
+
+  /* === PMCommand Properties End === */
 }
 
 /**
@@ -296,7 +398,5 @@ exports.loadServConf = function(client) {
       });
     }
   });
-
-  return true;
 
 }
