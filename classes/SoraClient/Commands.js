@@ -335,9 +335,7 @@ commands.love = {
  * IF BAYONIGGA IS CHOSEN, POP OUT THE "OH NON" MEME AS WELL FOR FUNNIES.
  *
  * THIS IS A NICE TO HAVE - NOT A TOP PRIORITY.
- * $sora main - It shows your main if you have one, and if you don't she asks you to set one.
- * $sora main set - Randomly choose a main for a user. It saves it for the user.
- * If you reuse 'set', she's going to tell you that you already have one.
+ * SAVES LAST 10 MAINS.
  *
  * MP3 FILES OF THE ANNOUNCER SAYING THE NAME OF THE CHARACTER IN A VOICE CHANNEL ONCE THE COMMAND IS USED.
  */
@@ -642,17 +640,17 @@ commands.dlist = {
  * @params  {[none]}
  * @result  {[message]} [Sora answers asking if she's needed.]
  */
-// commands.atwat = {
-//   fn: function( sora, params, msg ) {
+commands.atwat = {
+  fn: function( sora, params, msg ) {
 
-//     var i = 0;
-//     while ( i < 1000 ) {
-//       i++;
-//       sora.sendMessage(msg.channel, "Hi " + sora.helpers.printUserTag('84100810870358016') + "!");
-//     }
+    var i = 0;
+    while ( i < 1000 ) {
+      i++;
+      sora.sendMessage(msg.channel, "Hi " + sora.helpers.printUserTag('84100810870358016') + "!");
+    }
 
-//   }
-// }
+  }
+}
 
 
 /**

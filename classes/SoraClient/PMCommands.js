@@ -70,9 +70,8 @@ pmcommands.jquiz = {
 
       // Initiate the JQuiz object with the
       sora.jquiz[userID] = {};
-      sora.jquiz[userID].step0 = {
-        state: 'In Progress',
-        answer: 'Go!'
+      sora.jquiz[userID].q0 = {
+      
       }
 
       sora.sendMessage(msg.channel, "Start text stuff goes here :blush:");
