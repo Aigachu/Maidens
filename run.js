@@ -23,38 +23,38 @@
 /* === Globals === */
 
 // Project root relative path.
-GLOBAL.rootdir = __dirname + '/';
+global.rootdir = __dirname + '/';
 
 // Project classes relative path.
-GLOBAL.namespace = rootdir + 'classes/';
+global.namespace = rootdir + 'classes/';
 
 // Project resources relative path.
-GLOBAL.resources = rootdir + 'resources/';
+global.resources = rootdir + 'resources/';
 
 // Project classes relative path.
-GLOBAL.soraspace = namespace + 'SoraClient/';
+global.soraspace = namespace + 'SoraClient/';
 
 // Project classes relative path.
-GLOBAL.commands_configuration_path = soraspace + 'configurations/commands_config.json';
+global.commands_configuration_path = soraspace + 'configurations/commands_config.json';
 
 // Project classes relative path.
-GLOBAL.pmcommands_configuration_path = soraspace + 'configurations/pmcommands_config.json';
+global.pmcommands_configuration_path = soraspace + 'configurations/pmcommands_config.json';
 
 // Project classes relative path.
-GLOBAL.servers_configuration_path = soraspace + 'configurations/servers_config.json';
+global.servers_configuration_path = soraspace + 'configurations/servers_config.json';
 
 
 // Must run `npm install --save discord.js` if this is not installed or found.
-GLOBAL.Discord = require("discord.js");
+global.Discord = require("discord.js");
 
 // Get jsonfile module ; Used to facilitate json reading and writing.
-GLOBAL.jsonfile = require("jsonfile");
+global.jsonfile = require("jsonfile");
 
 // Get filesystem
-GLOBAL.fs = require('fs');
+global.fs = require('fs');
 
 // Node API: util
-GLOBAL.util = require('util');
+global.util = require('util');
 
 /**
  * Instanciation.
@@ -66,4 +66,4 @@ var SoraClient = require(soraspace + 'SoraClient');
 var sora = new SoraClient();
 
 // Login to Discord after processing all the code above.
-sora.login();
+sora.loginSora();

@@ -1,140 +1,146 @@
 /**
+ * Discord Client class include.
+ */
+const DiscordClient = require(rootdir + 'node_modules/discord.js/src/client/Client');
+
+/**
  * @ref {K4Kheops} - https://bitbucket.org/K4Kheops/
  * -- If you see mention of {Sawako} anywhere, it's because of him. ;)
  *
  * Sora's Discord Client class.
  * Used to customize all of Discord Client functions and properties.
  */
-function SoraClient() {
 
-  /**
-   * Class Constructor
-   */
-  SoraClient.super_.call(this);
+class SoraClient extends DiscordClient {
 
   /**
    * Class Properties
    */
 
-  // Get Sora's configuration details.
-  // A real discord account must be created for the bot to run.
-  // Put the credentials of the newly created account into `config.js` found at the same level as this file.
-  this.config = require(rootdir + 'config.js');
+  constructor(options = {}) {
 
-  // Sora commands.
-  this.commands = require(soraspace + 'Commands.js').commands;
+    super();
 
-  // Sora commands.
-  this.pmcommands = require(soraspace + 'PMCommands.js').pmcommands;
+    // Get Sora's configuration details.
+    // A real discord account must be created for the bot to run.
+    // Put the credentials of the newly created account into `config.js` found at the same level as this file.
+    this.config = require(rootdir + 'config.js');
 
-  // Sora Helper Functions
-  this.helpers = require(soraspace + 'Helpers.js');
+    // Sora commands.
+    this.commands = require(soraspace + 'Commands.js').commands;
 
-  // Sora Writer Script
-  this.writer = require(soraspace + 'Writer.js');
+    // Sora commands.
+    this.pmcommands = require(soraspace + 'PMCommands.js').pmcommands;
 
-  // Initiate Sora's Cooldown handling
-  this.cooldowns = [];
+    // Sora Helper Functions
+    this.helpers = require(soraspace + 'Helpers.js');
 
-  // Initiate Sora's Denyflag handling
-  this.denyflags = [];
+    // Sora Writer Script
+    this.writer = require(soraspace + 'Writer.js');
 
-  /*********** Command Specific Variables **************/
+    // Initiate Sora's Cooldown handling
+    this.cooldowns = [];
 
-  // Initiate the jquiz object.
-  this.jquiz = {};
+    // Initiate Sora's Denyflag handling
+    this.denyflags = [];
 
-  /**
-   * Events Callbacks
-   */
-  // Event: When Sawako connects to Discord.
-  this.on('ready', function() {
+    /*********** Command Specific Variables **************/
 
-    // Assign to client to a variable.
-    var sora = this;
-
-    // Logs connection event in console.
-    console.log("\nSora: I am now properly linked to the Discord infrastructure. Enjoy!");
-
-    /* === On-Boot Tasks === */
-    // Loads and modifies the command configuration file.
-    sora.writer.loadCommConf(sora, function() {
-      // Sora commands configurations.
-      this.commands_configs = require(commands_configuration_path);
-
-      sora.writer.loadServConf(sora, function() {
-      // Sora servers configurations.
-        this.servers_configs = require(servers_configuration_path);
-      });
-    });
-
-    // Loads and modifies the pmcommand configuration file.
-    sora.writer.loadPMCommConf(sora, function() {
-      // Sora commands configurations.
-      this.pmcommands_configs = require(pmcommands_configuration_path);
-    });
-    
+    // Initiate the jquiz object.
+    this.jquiz = {};
 
     /**
-     * Event that fires when Sora receives a message.
-     * @param  {Object} msg)
-     * @todo : add example msg object reference to Wiki.
+     * Events Callbacks
      */
-    sora.on("message", function (msg) {
+    // Event: When Sawako connects to Discord.
+    this.on('ready', function() {
 
-      /* === COMMANDS TREATMENT START === */
+      // Assign to client to a variable.
+      var sora = this;
 
-      // Only hop in here and treat commands if this isn't Sora's own message!
-      if(msg.author.id !== sora.user.id) {
-        var command = {};
+      // Logs connection event in console.
+      console.log("\nSora: I am now properly linked to the Discord infrastructure. Enjoy!");
 
-        if(command = sora.verifyIfMsgIsCommand(msg)) {
+      /* === On-Boot Tasks === */
+      // Loads and modifies the command configuration file.
+      sora.writer.loadCommConf(sora, function() {
+        // Sora commands configurations.
+        sora.commands_configs = require(commands_configuration_path);
 
-          // Initialize the parameters variable as an array with all words in the message seperate by a space.
-          var params = msg.content.split(" ");
+        sora.writer.loadServConf(sora, function() {
+        // Sora servers configurations.
+          sora.servers_configs = require(servers_configuration_path);
+        });
+      });
 
-          // Remove the first two elements of the array, which in the case that this is a command, are the following:
-          // params[0] = $sora.
-          // params[1] = command_key.
-          params.splice(0, 2);
+      // Loads and modifies the pmcommand configuration file.
+      sora.writer.loadPMCommConf(sora, function() {
+        // Sora commands configurations.
+        sora.pmcommands_configs = require(pmcommands_configuration_path);
+      });
 
-          // Now, the params array only contains the parameters of the command.
 
-          if(command.type == "command") {
-            // Run Command if it passed approval.
-            if(sora.authCommand(msg, command.key)) {
-              sora.commands[command.key].fn(sora, params, msg);
+      /**
+       * Event that fires when Sora receives a message.
+       * @param  {Object} msg)
+       * @todo : add example msg object reference to Wiki.
+       */
+      sora.on("message", function (msg) {
+
+        /* === COMMANDS TREATMENT START === */
+
+        // Only hop in here and treat commands if this isn't Sora's own message!
+        if(msg.author.id !== sora.user.id) {
+          var command = {};
+
+          if(command = sora.verifyIfMsgIsCommand(msg)) {
+
+            // Initialize the parameters variable as an array with all words in the message seperate by a space.
+            var params = msg.content.split(" ");
+
+            // Remove the first two elements of the array, which in the case that this is a command, are the following:
+            // params[0] = $sora.
+            // params[1] = command_key.
+            params.splice(0, 2);
+
+            // Now, the params array only contains the parameters of the command.
+
+            if(command.type == "command") {
+              // Run Command if it passed approval.
+              if(sora.authCommand(msg, command.key)) {
+                sora.commands[command.key].fn(sora, params, msg);
+              }
+            } else {
+              // Run PMCommand if it passed approval.
+              if(sora.authPMCommand(msg, command.key)) {
+                sora.pmcommands[command.key].fn(sora, params, msg);
+              }
             }
-          } else {
-            // Run PMCommand if it passed approval.
-            if(sora.authPMCommand(msg, command.key)) {
-              sora.pmcommands[command.key].fn(sora, params, msg);
-            }            
+
           }
 
+          // LOL
+          if(sora.THIRDEYE !== undefined && !sora.verifyIfMsgIsCommand(msg)) {
+            sora.thirdeye(sora, msg, sora.THIRDEYE);
+          }
         }
 
-        // LOL
-        if(sora.THIRDEYE !== undefined && !sora.verifyIfMsgIsCommand(msg)) {
-          sora.thirdeye(sora, msg, sora.THIRDEYE);
-        }
-      }
+        /* === COMMANDS TREATMENT END === */
+      });
 
-      /* === COMMANDS TREATMENT END === */
     });
 
-  });
+    // Event: When Sora disconnects from Discord.
+    this.on('disconnected', function() {
 
-  // Event: When Sora disconnects from Discord.
-  this.on('disconnected', function() {
+      // Assign to client to a variable.
+      var sora = this;
 
-    // Assign to client to a variable.
-    var sora = this;
+      // Logs disconnection event in console.
+      console.log("Sora: I have been disconnected from the Discord infrastructure. See you soon!");
 
-    // Logs disconnection event in console.
-    console.log("Sora: I have been disconnected from the Discord infrastructure. See you soon!");
-
-  });
+    });
+  }
 
   /**
    * SoraClient Class Methods
@@ -144,11 +150,11 @@ function SoraClient() {
    * [login description]
    * @return {[type]} [description]
    */
-  this.login = function() {
+  loginSora() {
     // Assign to client to a variable.
     var sora = this;
 
-    sora.loginWithToken(sora.config.apptoken);
+    sora.login(sora.config.apptoken);
   }
 
   /**
@@ -158,7 +164,7 @@ function SoraClient() {
    * @param  {[type]} value   [description]
    * @return {[type]}         [description]
    */
-  this.verifyIfMsgIsCommand = function(msg) {
+  verifyIfMsgIsCommand(msg) {
     // Assign to client to a variable.
     var sora = this;
 
@@ -227,7 +233,7 @@ function SoraClient() {
    * @param  {[type]} value   [description]
    * @return {[type]}         [description]
    */
-  this.authCommand = function(msg, key) {
+  authCommand(msg, key) {
     // Assign to client to a variable.
     var sora = this;
 
@@ -323,7 +329,7 @@ function SoraClient() {
    * @param  {[type]} value   [description]
    * @return {[type]}         [description]
    */
-  this.authPMCommand = function(msg, key) {
+  authPMCommand(msg, key) {
     // Assign to client to a variable.
     var sora = this;
 
@@ -393,7 +399,7 @@ function SoraClient() {
    * [thirdeye description]
    * @return {[type]} [description]
    */
-  this.thirdeye = function(bot, msg, link) {
+  thirdeye(bot, msg, link) {
     var message = "";
 
     if(msg.channel.id == link.this_world['id']) {
@@ -431,7 +437,7 @@ function SoraClient() {
    * @param  {string} recipient The message's recipient ID. Can be either a User ID or a Channel ID.
    * @param  {string} callback  The command name to be called once a message has been sent.
    */
-  this.writeMessage = function(client, message, recipient, callback) {
+  writeMessage(client, message, recipient, callback) {
 
     // Retrieve message characters length.
     var messageLength = message.length;
@@ -478,18 +484,7 @@ function SoraClient() {
     }, typingDuration);
 
   }
-
-};
-
-/**
- * Discord Client class include.
- */
-const DiscordClient = require(rootdir + 'node_modules/discord.js/lib/Client/Client');
-
-/**
- * SawakoClient class inheritance.
- */
-util.inherits(SoraClient, DiscordClient);
+}
 
 /**
  * SawakoClient class exports.

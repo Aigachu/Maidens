@@ -159,7 +159,7 @@ exports.loadPMCommConf = function(client, callback) {
       jsonfile.writeFileSync(pmcommands_configuration_path, pmcommand_properties, {spaces: 2});
 
       callback();
-      
+
     } else { // If the file is found and successfully loaded...
       var pmcommand_properties = obj;
 
@@ -221,7 +221,7 @@ exports.loadPMCommConf = function(client, callback) {
  */
 exports.loadServConf = function(client, callback) {
 
-  var servers = client.servers;
+  var servers = client.guilds;
   var commands = client.commands;
 
   // Get commands configuration properties.
@@ -257,12 +257,9 @@ exports.loadServConf = function(client, callback) {
       // We will now proceed to generate a default server configuration file.
       var server_properties = {};
 
-      // Now for each server, we will create a definition in the file with default values.
-      for(var key in servers) {
-        if(servers.hasOwnProperty(key) && key != 'limit' && key != 'length') {
-          server_properties[servers[key].id] = default_server_config;
-        }
-      }
+      servers.forEach(function(item, index, array) {
+        server_properties[index] = default_server_config;
+      });
 
       jsonfile.writeFileSync(servers_configuration_path, server_properties, {spaces: 2});
 
@@ -271,38 +268,24 @@ exports.loadServConf = function(client, callback) {
     } else {
       var server_properties = obj;
 
-      // Loops in the servers configurations array.
-      for (var key in servers) {
-        if(servers.hasOwnProperty(key) && key != 'limit' && key != 'length') {
-          if(server_properties[servers[key].id] == null) {
-            console.log("\nSora: The following server has no configuration definition: " + servers[key].name + ".\nSora: I will give it a default definition in the configuration file.");
-            server_properties[servers[key].id] = default_server_config;
-          }
-
-          // Update the name entry in the configuration file.
-          if(servers[key].id in server_properties) {
-            // console.log("\nSora: I have updated the name of the following server: " + servers[key].name);
-            server_properties[servers[key].id]['name'] = servers[key].name;
-          }
+      servers.forEach(function(item, index, array) {
+        if(server_properties[index] == null) {
+          console.log("\nSora: The following server has no configuration definition: " + servers[index].name + ".\nSora: I will give it a default definition in the configuration file.");
+          server_properties[item.id] = default_server_config;
         }
-      }
 
-      // Loops in the servers array and generates a default configuration entry for each server that does not yet have an entry.
-      for (var key in servers) {
-        if(servers.hasOwnProperty(key) && key != 'limit' && key != 'length') {
-          if(server_properties[servers[key].id] == null) {
-            console.log("\nSora: The following server has no configuration definition: " + servers[key].name + ".\nSora: I will give it a default definition in the configuration file.");
-            server_properties[servers[key].id] = default_server_config;
-            server_properties[servers[key].id]['name'] = servers[key].name;
-          }
+        // Update the name entry in the configuration file.
+        if(item.id in server_properties) {
+          // console.log("\nSora: I have updated the name of the following server: " + servers[key].name);
+          server_properties[item.id]['name'] = item.name;
         }
-      }
+      });
 
       // Loops through the configurations object to tidy up before saving.
       for (var key in server_properties) {
         if(server_properties.hasOwnProperty(key)) {
           // Deletes any command configuration declarations of commands that have been removed.
-          if(client.servers.get("id", key) == null) {
+          if(client.guilds.find("id", key) == null) {
             console.log("\nSora: The following server definition does not have a corresponding server in my cache: " + key + ".\nSora: I will remove it from the configuration file.");
             delete server_properties[key];
           } else {

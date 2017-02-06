@@ -1,238 +1,57 @@
 {
-  "150507471155232768": {
-    "name": "Aiga's Haven",
-    "general_channel": "",
-    "announcement_channel": "",
-    "timeout_role_name": "Timeout",
-    "admin_roles": [],
-    "override_all_commands": false,
-    "commands": {
-      "getthatassbanned": {
-        "oplevel": 0,
-        "description": "",
-        "help_text": "",
-        "allowed_channels": "all",
-        "excluded_channels": "none",
-        "cooldown": "none",
-        "aliases": [
-          "gtab"
-        ],
-        "enabled": true,
-        "overridden": false
-      },
-      "guid": {
-        "oplevel": 2,
-        "description": "",
-        "help_text": "",
-        "allowed_channels": "all",
-        "excluded_channels": "none",
-        "cooldown": "none",
-        "aliases": "none",
-        "enabled": true,
-        "overridden": false
-      },
-      "setname": {
-        "oplevel": 2,
-        "description": "",
-        "help_text": "",
-        "allowed_channels": "all",
-        "excluded_channels": "none",
-        "cooldown": "none",
-        "aliases": "none",
-        "enabled": true,
-        "overridden": false
-      },
-      "coin": {
-        "oplevel": 2,
-        "description": "",
-        "help_text": "",
-        "allowed_channels": "all",
-        "excluded_channels": "none",
-        "cooldown": "none",
-        "aliases": "none",
-        "enabled": true,
-        "overridden": false
-      },
-      "rolldice": {
-        "oplevel": 2,
-        "description": "",
-        "help_text": "",
-        "allowed_channels": "all",
-        "excluded_channels": "none",
-        "cooldown": "none",
-        "aliases": "none",
-        "enabled": true,
-        "overridden": false
-      },
-      "ball": {
-        "oplevel": 2,
-        "description": "",
-        "help_text": "",
-        "allowed_channels": "all",
-        "excluded_channels": "none",
-        "cooldown": "none",
-        "aliases": [
-          "8ball"
-        ],
-        "enabled": true,
-        "overridden": false
-      },
-      "love": {
-        "oplevel": 2,
-        "description": "",
-        "help_text": "",
-        "allowed_channels": {
-          "165131259410907137": "Sora Dev Channel"
-        },
-        "excluded_channels": "none",
-        "cooldown": "none",
-        "aliases": "none",
-        "enabled": true,
-        "overridden": false
-      },
-      "main": {
-        "oplevel": 0,
-        "description": "",
-        "help_text": "",
-        "allowed_channels": {
-          "165131259410907137": "Sora Dev Channel",
-          "82544317515706368": "Naifus Smashsuburb"
-        },
-        "excluded_channels": "none",
-        "cooldown": "none",
-        "aliases": "none",
-        "enabled": true,
-        "overridden": false
-      },
-      "ironman": {
-        "oplevel": 0,
-        "description": "",
-        "help_text": "",
-        "allowed_channels": {
-          "165131259410907137": "Sora Dev Channel",
-          "82544317515706368": "Naifus Smashsuburb"
-        },
-        "excluded_channels": "none",
-        "cooldown": "none",
-        "aliases": "none",
-        "enabled": true,
-        "overridden": false
-      },
-      "handicap": {
-        "oplevel": 0,
-        "description": "",
-        "help_text": "",
-        "allowed_channels": {
-          "165131259410907137": "Sora Dev Channel",
-          "82544317515706368": "Naifus Smashsuburb"
-        },
-        "excluded_channels": "none",
-        "cooldown": "none",
-        "aliases": "none",
-        "enabled": true,
-        "overridden": false
-      },
-      "help": {
-        "oplevel": 2,
-        "description": "",
-        "help_text": "",
-        "allowed_channels": "all",
-        "excluded_channels": "none",
-        "cooldown": "none",
-        "aliases": "none",
-        "enabled": true,
-        "overridden": false
-      },
-      "dlist": {
-        "oplevel": 2,
-        "description": "",
-        "help_text": "",
-        "allowed_channels": "all",
-        "excluded_channels": "none",
-        "cooldown": "none",
-        "aliases": "none",
-        "enabled": true,
-        "overridden": false
-      },
-      "thirdeye": {
-        "oplevel": 2,
-        "description": "",
-        "help_text": "",
-        "allowed_channels": "all",
-        "excluded_channels": "none",
-        "cooldown": "none",
-        "aliases": "none",
-        "enabled": true,
-        "overridden": false
-      },
-      "atwat": {
-        "oplevel": 2,
-        "description": "",
-        "help_text": "",
-        "allowed_channels": "all",
-        "excluded_channels": "none",
-        "cooldown": "none",
-        "aliases": "none",
-        "enabled": true,
-        "overridden": false
-      },
-      "ping": {
-        "oplevel": 2,
-        "description": "",
-        "help_text": "",
-        "allowed_channels": "all",
-        "excluded_channels": "none",
-        "cooldown": "none",
-        "aliases": "none",
-        "enabled": true,
-        "overridden": false
-      },
-      "pong": {
-        "oplevel": 2,
-        "description": "",
-        "help_text": "",
-        "allowed_channels": "all",
-        "excluded_channels": "none",
-        "cooldown": "none",
-        "aliases": "none",
-        "enabled": true,
-        "overridden": false
-      },
-      "gcid": {
-        "oplevel": 2,
-        "description": "",
-        "help_text": "",
-        "allowed_channels": "all",
-        "excluded_channels": "none",
-        "cooldown": "none",
-        "aliases": "none",
-        "enabled": true,
-        "overridden": false
-      }
-    }
-  },
   "77616475333988352": {
-    "name": "Another World",
+    "name": "lolchat 2.0",
     "general_channel": "",
     "announcement_channel": "",
     "timeout_role_name": "Timeout",
     "admin_roles": [],
     "override_all_commands": false,
     "commands": {
-      "getthatassbanned": {
-        "oplevel": 0,
+      "ping": {
+        "oplevel": 2,
         "description": "",
         "help_text": "",
         "allowed_channels": "all",
         "excluded_channels": "none",
         "cooldown": "none",
-        "aliases": [
-          "gtab"
-        ],
+        "aliases": "none",
+        "enabled": true,
+        "overridden": false
+      },
+      "pong": {
+        "oplevel": 2,
+        "description": "",
+        "help_text": "",
+        "allowed_channels": "all",
+        "excluded_channels": "none",
+        "cooldown": "none",
+        "aliases": "none",
+        "enabled": true,
+        "overridden": false
+      },
+      "getthatassbanned": {
+        "oplevel": 2,
+        "description": "",
+        "help_text": "",
+        "allowed_channels": "all",
+        "excluded_channels": "none",
+        "cooldown": "none",
+        "aliases": "none",
         "enabled": true,
         "overridden": false
       },
       "guid": {
+        "oplevel": 2,
+        "description": "",
+        "help_text": "",
+        "allowed_channels": "all",
+        "excluded_channels": "none",
+        "cooldown": "none",
+        "aliases": "none",
+        "enabled": true,
+        "overridden": false
+      },
+      "gcid": {
         "oplevel": 2,
         "description": "",
         "help_text": "",
@@ -283,9 +102,7 @@
         "allowed_channels": "all",
         "excluded_channels": "none",
         "cooldown": "none",
-        "aliases": [
-          "8ball"
-        ],
+        "aliases": "none",
         "enabled": true,
         "overridden": false
       },
@@ -293,9 +110,7 @@
         "oplevel": 2,
         "description": "",
         "help_text": "",
-        "allowed_channels": {
-          "165131259410907137": "Sora Dev Channel"
-        },
+        "allowed_channels": "all",
         "excluded_channels": "none",
         "cooldown": "none",
         "aliases": "none",
@@ -303,13 +118,10 @@
         "overridden": false
       },
       "main": {
-        "oplevel": 0,
+        "oplevel": 2,
         "description": "",
         "help_text": "",
-        "allowed_channels": {
-          "165131259410907137": "Sora Dev Channel",
-          "82544317515706368": "Naifus Smashsuburb"
-        },
+        "allowed_channels": "all",
         "excluded_channels": "none",
         "cooldown": "none",
         "aliases": "none",
@@ -317,13 +129,10 @@
         "overridden": false
       },
       "ironman": {
-        "oplevel": 0,
+        "oplevel": 2,
         "description": "",
         "help_text": "",
-        "allowed_channels": {
-          "165131259410907137": "Sora Dev Channel",
-          "82544317515706368": "Naifus Smashsuburb"
-        },
+        "allowed_channels": "all",
         "excluded_channels": "none",
         "cooldown": "none",
         "aliases": "none",
@@ -331,13 +140,10 @@
         "overridden": false
       },
       "handicap": {
-        "oplevel": 0,
+        "oplevel": 2,
         "description": "",
         "help_text": "",
-        "allowed_channels": {
-          "165131259410907137": "Sora Dev Channel",
-          "82544317515706368": "Naifus Smashsuburb"
-        },
+        "allowed_channels": "all",
         "excluded_channels": "none",
         "cooldown": "none",
         "aliases": "none",
@@ -366,17 +172,6 @@
         "enabled": true,
         "overridden": false
       },
-      "thirdeye": {
-        "oplevel": 2,
-        "description": "",
-        "help_text": "",
-        "allowed_channels": "all",
-        "excluded_channels": "none",
-        "cooldown": "none",
-        "aliases": "none",
-        "enabled": true,
-        "overridden": false
-      },
       "atwat": {
         "oplevel": 2,
         "description": "",
@@ -388,241 +183,7 @@
         "enabled": true,
         "overridden": false
       },
-      "ping": {
-        "oplevel": 2,
-        "description": "",
-        "help_text": "",
-        "allowed_channels": "all",
-        "excluded_channels": "none",
-        "cooldown": "none",
-        "aliases": "none",
-        "enabled": true,
-        "overridden": false
-      },
-      "pong": {
-        "oplevel": 2,
-        "description": "",
-        "help_text": "",
-        "allowed_channels": "all",
-        "excluded_channels": "none",
-        "cooldown": "none",
-        "aliases": "none",
-        "enabled": true,
-        "overridden": false
-      },
-      "gcid": {
-        "oplevel": 2,
-        "description": "",
-        "help_text": "",
-        "allowed_channels": "all",
-        "excluded_channels": "none",
-        "cooldown": "none",
-        "aliases": "none",
-        "enabled": true,
-        "overridden": false
-      }
-    }
-  },
-  "134815222035775488": {
-    "name": "Its Never Too Lit",
-    "general_channel": "",
-    "announcement_channel": "",
-    "timeout_role_name": "Timeout",
-    "admin_roles": [],
-    "override_all_commands": false,
-    "commands": {
-      "getthatassbanned": {
-        "oplevel": 0,
-        "description": "",
-        "help_text": "",
-        "allowed_channels": "all",
-        "excluded_channels": "none",
-        "cooldown": "none",
-        "aliases": [
-          "gtab"
-        ],
-        "enabled": true,
-        "overridden": false
-      },
-      "guid": {
-        "oplevel": 2,
-        "description": "",
-        "help_text": "",
-        "allowed_channels": "all",
-        "excluded_channels": "none",
-        "cooldown": "none",
-        "aliases": "none",
-        "enabled": true,
-        "overridden": false
-      },
-      "setname": {
-        "oplevel": 2,
-        "description": "",
-        "help_text": "",
-        "allowed_channels": "all",
-        "excluded_channels": "none",
-        "cooldown": "none",
-        "aliases": "none",
-        "enabled": true,
-        "overridden": false
-      },
-      "coin": {
-        "oplevel": 2,
-        "description": "",
-        "help_text": "",
-        "allowed_channels": "all",
-        "excluded_channels": "none",
-        "cooldown": "none",
-        "aliases": "none",
-        "enabled": true,
-        "overridden": false
-      },
-      "rolldice": {
-        "oplevel": 2,
-        "description": "",
-        "help_text": "",
-        "allowed_channels": "all",
-        "excluded_channels": "none",
-        "cooldown": "none",
-        "aliases": "none",
-        "enabled": true,
-        "overridden": false
-      },
-      "ball": {
-        "oplevel": 2,
-        "description": "",
-        "help_text": "",
-        "allowed_channels": "all",
-        "excluded_channels": "none",
-        "cooldown": "none",
-        "aliases": [
-          "8ball"
-        ],
-        "enabled": true,
-        "overridden": false
-      },
-      "love": {
-        "oplevel": 2,
-        "description": "",
-        "help_text": "",
-        "allowed_channels": {
-          "165131259410907137": "Sora Dev Channel"
-        },
-        "excluded_channels": "none",
-        "cooldown": "none",
-        "aliases": "none",
-        "enabled": true,
-        "overridden": false
-      },
-      "main": {
-        "oplevel": 0,
-        "description": "",
-        "help_text": "",
-        "allowed_channels": {
-          "165131259410907137": "Sora Dev Channel",
-          "82544317515706368": "Naifus Smashsuburb"
-        },
-        "excluded_channels": "none",
-        "cooldown": "none",
-        "aliases": "none",
-        "enabled": true,
-        "overridden": false
-      },
-      "ironman": {
-        "oplevel": 0,
-        "description": "",
-        "help_text": "",
-        "allowed_channels": {
-          "165131259410907137": "Sora Dev Channel",
-          "82544317515706368": "Naifus Smashsuburb"
-        },
-        "excluded_channels": "none",
-        "cooldown": "none",
-        "aliases": "none",
-        "enabled": true,
-        "overridden": false
-      },
-      "handicap": {
-        "oplevel": 0,
-        "description": "",
-        "help_text": "",
-        "allowed_channels": {
-          "165131259410907137": "Sora Dev Channel",
-          "82544317515706368": "Naifus Smashsuburb"
-        },
-        "excluded_channels": "none",
-        "cooldown": "none",
-        "aliases": "none",
-        "enabled": true,
-        "overridden": false
-      },
-      "help": {
-        "oplevel": 2,
-        "description": "",
-        "help_text": "",
-        "allowed_channels": "all",
-        "excluded_channels": "none",
-        "cooldown": "none",
-        "aliases": "none",
-        "enabled": true,
-        "overridden": false
-      },
-      "dlist": {
-        "oplevel": 2,
-        "description": "",
-        "help_text": "",
-        "allowed_channels": "all",
-        "excluded_channels": "none",
-        "cooldown": "none",
-        "aliases": "none",
-        "enabled": true,
-        "overridden": false
-      },
       "thirdeye": {
-        "oplevel": 2,
-        "description": "",
-        "help_text": "",
-        "allowed_channels": "all",
-        "excluded_channels": "none",
-        "cooldown": "none",
-        "aliases": "none",
-        "enabled": true,
-        "overridden": false
-      },
-      "atwat": {
-        "oplevel": 2,
-        "description": "",
-        "help_text": "",
-        "allowed_channels": "all",
-        "excluded_channels": "none",
-        "cooldown": "none",
-        "aliases": "none",
-        "enabled": true,
-        "overridden": false
-      },
-      "ping": {
-        "oplevel": 2,
-        "description": "",
-        "help_text": "",
-        "allowed_channels": "all",
-        "excluded_channels": "none",
-        "cooldown": "none",
-        "aliases": "none",
-        "enabled": true,
-        "overridden": false
-      },
-      "pong": {
-        "oplevel": 2,
-        "description": "",
-        "help_text": "",
-        "allowed_channels": "all",
-        "excluded_channels": "none",
-        "cooldown": "none",
-        "aliases": "none",
-        "enabled": true,
-        "overridden": false
-      },
-      "gcid": {
         "oplevel": 2,
         "description": "",
         "help_text": "",
@@ -636,27 +197,58 @@
     }
   },
   "82343511336157184": {
-    "name": "Naifu Nation 👀",
+    "name": "THE EMPIRE RETURNS!!!! 🦈",
     "general_channel": "",
     "announcement_channel": "",
     "timeout_role_name": "Timeout",
     "admin_roles": [],
     "override_all_commands": false,
     "commands": {
-      "getthatassbanned": {
-        "oplevel": 0,
+      "ping": {
+        "oplevel": 2,
         "description": "",
         "help_text": "",
         "allowed_channels": "all",
         "excluded_channels": "none",
         "cooldown": "none",
-        "aliases": [
-          "gtab"
-        ],
+        "aliases": "none",
+        "enabled": true,
+        "overridden": false
+      },
+      "pong": {
+        "oplevel": 2,
+        "description": "",
+        "help_text": "",
+        "allowed_channels": "all",
+        "excluded_channels": "none",
+        "cooldown": "none",
+        "aliases": "none",
+        "enabled": true,
+        "overridden": false
+      },
+      "getthatassbanned": {
+        "oplevel": 2,
+        "description": "",
+        "help_text": "",
+        "allowed_channels": "all",
+        "excluded_channels": "none",
+        "cooldown": "none",
+        "aliases": "none",
         "enabled": true,
         "overridden": false
       },
       "guid": {
+        "oplevel": 2,
+        "description": "",
+        "help_text": "",
+        "allowed_channels": "all",
+        "excluded_channels": "none",
+        "cooldown": "none",
+        "aliases": "none",
+        "enabled": true,
+        "overridden": false
+      },
+      "gcid": {
         "oplevel": 2,
         "description": "",
         "help_text": "",
@@ -707,9 +299,7 @@
         "allowed_channels": "all",
         "excluded_channels": "none",
         "cooldown": "none",
-        "aliases": [
-          "8ball"
-        ],
+        "aliases": "none",
         "enabled": true,
         "overridden": false
       },
@@ -717,9 +307,7 @@
         "oplevel": 2,
         "description": "",
         "help_text": "",
-        "allowed_channels": {
-          "165131259410907137": "Sora Dev Channel"
-        },
+        "allowed_channels": "all",
         "excluded_channels": "none",
         "cooldown": "none",
         "aliases": "none",
@@ -727,13 +315,10 @@
         "overridden": false
       },
       "main": {
-        "oplevel": 0,
+        "oplevel": 2,
         "description": "",
         "help_text": "",
-        "allowed_channels": {
-          "165131259410907137": "Sora Dev Channel",
-          "82544317515706368": "Naifus Smashsuburb"
-        },
+        "allowed_channels": "all",
         "excluded_channels": "none",
         "cooldown": "none",
         "aliases": "none",
@@ -741,13 +326,10 @@
         "overridden": false
       },
       "ironman": {
-        "oplevel": 0,
+        "oplevel": 2,
         "description": "",
         "help_text": "",
-        "allowed_channels": {
-          "165131259410907137": "Sora Dev Channel",
-          "82544317515706368": "Naifus Smashsuburb"
-        },
+        "allowed_channels": "all",
         "excluded_channels": "none",
         "cooldown": "none",
         "aliases": "none",
@@ -755,13 +337,10 @@
         "overridden": false
       },
       "handicap": {
-        "oplevel": 0,
+        "oplevel": 2,
         "description": "",
         "help_text": "",
-        "allowed_channels": {
-          "165131259410907137": "Sora Dev Channel",
-          "82544317515706368": "Naifus Smashsuburb"
-        },
+        "allowed_channels": "all",
         "excluded_channels": "none",
         "cooldown": "none",
         "aliases": "none",
@@ -790,17 +369,6 @@
         "enabled": true,
         "overridden": false
       },
-      "thirdeye": {
-        "oplevel": 2,
-        "description": "",
-        "help_text": "",
-        "allowed_channels": "all",
-        "excluded_channels": "none",
-        "cooldown": "none",
-        "aliases": "none",
-        "enabled": true,
-        "overridden": false
-      },
       "atwat": {
         "oplevel": 2,
         "description": "",
@@ -812,6 +380,27 @@
         "enabled": true,
         "overridden": false
       },
+      "thirdeye": {
+        "oplevel": 2,
+        "description": "",
+        "help_text": "",
+        "allowed_channels": "all",
+        "excluded_channels": "none",
+        "cooldown": "none",
+        "aliases": "none",
+        "enabled": true,
+        "overridden": false
+      }
+    }
+  },
+  "134815222035775488": {
+    "name": "the cemetery",
+    "general_channel": "",
+    "announcement_channel": "",
+    "timeout_role_name": "Timeout",
+    "admin_roles": [],
+    "override_all_commands": false,
+    "commands": {
       "ping": {
         "oplevel": 2,
         "description": "",
@@ -834,7 +423,358 @@
         "enabled": true,
         "overridden": false
       },
+      "getthatassbanned": {
+        "oplevel": 2,
+        "description": "",
+        "help_text": "",
+        "allowed_channels": "all",
+        "excluded_channels": "none",
+        "cooldown": "none",
+        "aliases": "none",
+        "enabled": true,
+        "overridden": false
+      },
+      "guid": {
+        "oplevel": 2,
+        "description": "",
+        "help_text": "",
+        "allowed_channels": "all",
+        "excluded_channels": "none",
+        "cooldown": "none",
+        "aliases": "none",
+        "enabled": true,
+        "overridden": false
+      },
       "gcid": {
+        "oplevel": 2,
+        "description": "",
+        "help_text": "",
+        "allowed_channels": "all",
+        "excluded_channels": "none",
+        "cooldown": "none",
+        "aliases": "none",
+        "enabled": true,
+        "overridden": false
+      },
+      "setname": {
+        "oplevel": 2,
+        "description": "",
+        "help_text": "",
+        "allowed_channels": "all",
+        "excluded_channels": "none",
+        "cooldown": "none",
+        "aliases": "none",
+        "enabled": true,
+        "overridden": false
+      },
+      "coin": {
+        "oplevel": 2,
+        "description": "",
+        "help_text": "",
+        "allowed_channels": "all",
+        "excluded_channels": "none",
+        "cooldown": "none",
+        "aliases": "none",
+        "enabled": true,
+        "overridden": false
+      },
+      "rolldice": {
+        "oplevel": 2,
+        "description": "",
+        "help_text": "",
+        "allowed_channels": "all",
+        "excluded_channels": "none",
+        "cooldown": "none",
+        "aliases": "none",
+        "enabled": true,
+        "overridden": false
+      },
+      "ball": {
+        "oplevel": 2,
+        "description": "",
+        "help_text": "",
+        "allowed_channels": "all",
+        "excluded_channels": "none",
+        "cooldown": "none",
+        "aliases": "none",
+        "enabled": true,
+        "overridden": false
+      },
+      "love": {
+        "oplevel": 2,
+        "description": "",
+        "help_text": "",
+        "allowed_channels": "all",
+        "excluded_channels": "none",
+        "cooldown": "none",
+        "aliases": "none",
+        "enabled": true,
+        "overridden": false
+      },
+      "main": {
+        "oplevel": 2,
+        "description": "",
+        "help_text": "",
+        "allowed_channels": "all",
+        "excluded_channels": "none",
+        "cooldown": "none",
+        "aliases": "none",
+        "enabled": true,
+        "overridden": false
+      },
+      "ironman": {
+        "oplevel": 2,
+        "description": "",
+        "help_text": "",
+        "allowed_channels": "all",
+        "excluded_channels": "none",
+        "cooldown": "none",
+        "aliases": "none",
+        "enabled": true,
+        "overridden": false
+      },
+      "handicap": {
+        "oplevel": 2,
+        "description": "",
+        "help_text": "",
+        "allowed_channels": "all",
+        "excluded_channels": "none",
+        "cooldown": "none",
+        "aliases": "none",
+        "enabled": true,
+        "overridden": false
+      },
+      "help": {
+        "oplevel": 2,
+        "description": "",
+        "help_text": "",
+        "allowed_channels": "all",
+        "excluded_channels": "none",
+        "cooldown": "none",
+        "aliases": "none",
+        "enabled": true,
+        "overridden": false
+      },
+      "dlist": {
+        "oplevel": 2,
+        "description": "",
+        "help_text": "",
+        "allowed_channels": "all",
+        "excluded_channels": "none",
+        "cooldown": "none",
+        "aliases": "none",
+        "enabled": true,
+        "overridden": false
+      },
+      "atwat": {
+        "oplevel": 2,
+        "description": "",
+        "help_text": "",
+        "allowed_channels": "all",
+        "excluded_channels": "none",
+        "cooldown": "none",
+        "aliases": "none",
+        "enabled": true,
+        "overridden": false
+      },
+      "thirdeye": {
+        "oplevel": 2,
+        "description": "",
+        "help_text": "",
+        "allowed_channels": "all",
+        "excluded_channels": "none",
+        "cooldown": "none",
+        "aliases": "none",
+        "enabled": true,
+        "overridden": false
+      }
+    }
+  },
+  "150507471155232768": {
+    "name": "Aiga's Basement where we anticipate the release of ARMS and train valiantly to become top players",
+    "general_channel": "",
+    "announcement_channel": "",
+    "timeout_role_name": "Timeout",
+    "admin_roles": [],
+    "override_all_commands": false,
+    "commands": {
+      "ping": {
+        "oplevel": 2,
+        "description": "",
+        "help_text": "",
+        "allowed_channels": "all",
+        "excluded_channels": "none",
+        "cooldown": "none",
+        "aliases": "none",
+        "enabled": true,
+        "overridden": false
+      },
+      "pong": {
+        "oplevel": 2,
+        "description": "",
+        "help_text": "",
+        "allowed_channels": "all",
+        "excluded_channels": "none",
+        "cooldown": "none",
+        "aliases": "none",
+        "enabled": true,
+        "overridden": false
+      },
+      "getthatassbanned": {
+        "oplevel": 2,
+        "description": "",
+        "help_text": "",
+        "allowed_channels": "all",
+        "excluded_channels": "none",
+        "cooldown": "none",
+        "aliases": "none",
+        "enabled": true,
+        "overridden": false
+      },
+      "guid": {
+        "oplevel": 2,
+        "description": "",
+        "help_text": "",
+        "allowed_channels": "all",
+        "excluded_channels": "none",
+        "cooldown": "none",
+        "aliases": "none",
+        "enabled": true,
+        "overridden": false
+      },
+      "gcid": {
+        "oplevel": 2,
+        "description": "",
+        "help_text": "",
+        "allowed_channels": "all",
+        "excluded_channels": "none",
+        "cooldown": "none",
+        "aliases": "none",
+        "enabled": true,
+        "overridden": false
+      },
+      "setname": {
+        "oplevel": 2,
+        "description": "",
+        "help_text": "",
+        "allowed_channels": "all",
+        "excluded_channels": "none",
+        "cooldown": "none",
+        "aliases": "none",
+        "enabled": true,
+        "overridden": false
+      },
+      "coin": {
+        "oplevel": 2,
+        "description": "",
+        "help_text": "",
+        "allowed_channels": "all",
+        "excluded_channels": "none",
+        "cooldown": "none",
+        "aliases": "none",
+        "enabled": true,
+        "overridden": false
+      },
+      "rolldice": {
+        "oplevel": 2,
+        "description": "",
+        "help_text": "",
+        "allowed_channels": "all",
+        "excluded_channels": "none",
+        "cooldown": "none",
+        "aliases": "none",
+        "enabled": true,
+        "overridden": false
+      },
+      "ball": {
+        "oplevel": 2,
+        "description": "",
+        "help_text": "",
+        "allowed_channels": "all",
+        "excluded_channels": "none",
+        "cooldown": "none",
+        "aliases": "none",
+        "enabled": true,
+        "overridden": false
+      },
+      "love": {
+        "oplevel": 2,
+        "description": "",
+        "help_text": "",
+        "allowed_channels": "all",
+        "excluded_channels": "none",
+        "cooldown": "none",
+        "aliases": "none",
+        "enabled": true,
+        "overridden": false
+      },
+      "main": {
+        "oplevel": 2,
+        "description": "",
+        "help_text": "",
+        "allowed_channels": "all",
+        "excluded_channels": "none",
+        "cooldown": "none",
+        "aliases": "none",
+        "enabled": true,
+        "overridden": false
+      },
+      "ironman": {
+        "oplevel": 2,
+        "description": "",
+        "help_text": "",
+        "allowed_channels": "all",
+        "excluded_channels": "none",
+        "cooldown": "none",
+        "aliases": "none",
+        "enabled": true,
+        "overridden": false
+      },
+      "handicap": {
+        "oplevel": 2,
+        "description": "",
+        "help_text": "",
+        "allowed_channels": "all",
+        "excluded_channels": "none",
+        "cooldown": "none",
+        "aliases": "none",
+        "enabled": true,
+        "overridden": false
+      },
+      "help": {
+        "oplevel": 2,
+        "description": "",
+        "help_text": "",
+        "allowed_channels": "all",
+        "excluded_channels": "none",
+        "cooldown": "none",
+        "aliases": "none",
+        "enabled": true,
+        "overridden": false
+      },
+      "dlist": {
+        "oplevel": 2,
+        "description": "",
+        "help_text": "",
+        "allowed_channels": "all",
+        "excluded_channels": "none",
+        "cooldown": "none",
+        "aliases": "none",
+        "enabled": true,
+        "overridden": false
+      },
+      "atwat": {
+        "oplevel": 2,
+        "description": "",
+        "help_text": "",
+        "allowed_channels": "all",
+        "excluded_channels": "none",
+        "cooldown": "none",
+        "aliases": "none",
+        "enabled": true,
+        "overridden": false
+      },
+      "thirdeye": {
         "oplevel": 2,
         "description": "",
         "help_text": "",

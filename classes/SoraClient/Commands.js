@@ -45,7 +45,9 @@ var commands = {};
 commands.ping = {
   fn: function( sora, params, msg ) {
 
-    sora.sendMessage(msg.channel, "Yes, " + sora.helpers.printUserTag(msg.author) + "? What can I do for you?");
+    message.reply(`I'm alive and well! Version 2.0 is almost ready. ;)`)
+      .then((msg) => console.log(`Sent a reply to ${message.author.username}.`))
+      .catch(console.error);
 
   }
 }
@@ -134,7 +136,7 @@ commands.setname = {
 /**
  * Implements the *coin* command.
  * @params  {[none]}
- * @result  {[message]} 
+ * @result  {[message]}
  */
 commands.coin = {
   fn: function( sora, params, msg ) {
@@ -174,7 +176,7 @@ commands.coin = {
 
 /**
  * Implements the rolldice command.
- * @result  {[message]} 
+ * @result  {[message]}
  */
 commands.rolldice = {
   fn: function( sora, params, msg) {
@@ -213,7 +215,7 @@ commands.rolldice = {
 /**
  * Implements 8ball command.
  * Not sure if using the term '8ball' for the object key is going to fuck shit up so we'll name it 'ball' and put an '8ball' alias.
- * 
+ *
  */
 commands.ball = {
   fn: function( sora, params, msg) {
