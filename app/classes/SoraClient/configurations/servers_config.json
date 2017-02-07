@@ -36,29 +36,9 @@
         "allowed_channels": "all",
         "excluded_channels": "none",
         "cooldown": "none",
-        "aliases": "none",
-        "enabled": true,
-        "overridden": false
-      },
-      "guid": {
-        "oplevel": 2,
-        "description": "",
-        "help_text": "",
-        "allowed_channels": "all",
-        "excluded_channels": "none",
-        "cooldown": "none",
-        "aliases": "none",
-        "enabled": true,
-        "overridden": false
-      },
-      "gcid": {
-        "oplevel": 2,
-        "description": "",
-        "help_text": "",
-        "allowed_channels": "all",
-        "excluded_channels": "none",
-        "cooldown": "none",
-        "aliases": "none",
+        "aliases": [
+          "gtab"
+        ],
         "enabled": true,
         "overridden": false
       },
@@ -233,29 +213,9 @@
         "allowed_channels": "all",
         "excluded_channels": "none",
         "cooldown": "none",
-        "aliases": "none",
-        "enabled": true,
-        "overridden": false
-      },
-      "guid": {
-        "oplevel": 2,
-        "description": "",
-        "help_text": "",
-        "allowed_channels": "all",
-        "excluded_channels": "none",
-        "cooldown": "none",
-        "aliases": "none",
-        "enabled": true,
-        "overridden": false
-      },
-      "gcid": {
-        "oplevel": 2,
-        "description": "",
-        "help_text": "",
-        "allowed_channels": "all",
-        "excluded_channels": "none",
-        "cooldown": "none",
-        "aliases": "none",
+        "aliases": [
+          "gtab"
+        ],
         "enabled": true,
         "overridden": false
       },
@@ -430,29 +390,9 @@
         "allowed_channels": "all",
         "excluded_channels": "none",
         "cooldown": "none",
-        "aliases": "none",
-        "enabled": true,
-        "overridden": false
-      },
-      "guid": {
-        "oplevel": 2,
-        "description": "",
-        "help_text": "",
-        "allowed_channels": "all",
-        "excluded_channels": "none",
-        "cooldown": "none",
-        "aliases": "none",
-        "enabled": true,
-        "overridden": false
-      },
-      "gcid": {
-        "oplevel": 2,
-        "description": "",
-        "help_text": "",
-        "allowed_channels": "all",
-        "excluded_channels": "none",
-        "cooldown": "none",
-        "aliases": "none",
+        "aliases": [
+          "gtab"
+        ],
         "enabled": true,
         "overridden": false
       },
@@ -627,29 +567,9 @@
         "allowed_channels": "all",
         "excluded_channels": "none",
         "cooldown": "none",
-        "aliases": "none",
-        "enabled": true,
-        "overridden": false
-      },
-      "guid": {
-        "oplevel": 2,
-        "description": "",
-        "help_text": "",
-        "allowed_channels": "all",
-        "excluded_channels": "none",
-        "cooldown": "none",
-        "aliases": "none",
-        "enabled": true,
-        "overridden": false
-      },
-      "gcid": {
-        "oplevel": 2,
-        "description": "",
-        "help_text": "",
-        "allowed_channels": "all",
-        "excluded_channels": "none",
-        "cooldown": "none",
-        "aliases": "none",
+        "aliases": [
+          "gtab"
+        ],
         "enabled": true,
         "overridden": false
       },

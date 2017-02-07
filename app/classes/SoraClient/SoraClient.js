@@ -249,8 +249,8 @@ class SoraClient extends DiscordClient {
     var command_validation_obj = commands_configuration[key];
 
     // Check if the command is overriden in the current server.
-    if(servers_configuration[msg.channel.server.id]['override_all_commands'] || servers_configuration[msg.channel.server.id]['commands'][key]['override']) {
-      command_validation_obj = servers_configuration[msg.channel.server.id]['commands'][key];
+    if(servers_configuration[msg.channel.guild.id]['override_all_commands'] || servers_configuration[msg.channel.guild.id]['commands'][key]['override']) {
+      command_validation_obj = servers_configuration[msg.channel.guild.id]['commands'][key];
     }
 
     // If the message author is a God, Sora will not verify anything. Auto-Auth.
