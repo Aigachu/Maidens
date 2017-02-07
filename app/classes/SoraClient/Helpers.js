@@ -19,12 +19,19 @@
  * @return {[type]}        [description]
  */
 exports.val = function(params, count) {
-  count = typeof count !== 'undefined' ? count : 1;
+  // If the count parameter isn't provided, we'll default it to 1.
+  if(!count) {
+    count = 1;
+  }
 
-  if( count == 0 && params[count + 1] ) {
-    return false;
-  } else if(!params[count]) {
-    return true;
+  console.log(params.length)
+
+  if(count == 0) {
+    var someshit = (params.length <= 0) ? true : false;
+    console.log(someshit);
+    return (params.length <= 0) ? true : false;
+  } else {
+    return (params[count]) ? true : false;
   }
 };
 

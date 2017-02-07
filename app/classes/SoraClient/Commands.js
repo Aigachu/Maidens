@@ -45,8 +45,8 @@ var commands = {};
 commands.ping = {
   fn: function( sora, params, msg ) {
 
-    message.reply(`I'm alive and well! Version 2.0 is almost ready. ;)`)
-      .then((msg) => console.log(`Sent a reply to ${message.author.username}.`))
+    msg.reply(`Sora, version 2.0, at your service. ;)`)
+      .then((msg) => console.log(`Sent a reply to ${msg.author.username}.`))
       .catch(console.error);
 
   }
@@ -60,7 +60,9 @@ commands.ping = {
 commands.pong = {
   fn: function( sora, params, msg ) {
 
-    sora.sendMessage(msg.channel, "Mm?...Anything you might need from me, " + sora.helpers.printUserTag(msg.author) + "?");
+    msg.author.sendMessage(`Ping...Pong...Why do you even have two of these? They do exactly the same thing!`)
+      .then((msg) => console.log(`Sent a reply to ${msg.author.username}.`))
+      .catch(console.error);
 
   }
 }
@@ -73,37 +75,10 @@ commands.pong = {
 commands.getthatassbanned = {
   fn: function( sora, params, msg ) {
 
-    sora.sendMessage(msg.channel, "Get that ass banned!");
+    msg.channel.sendMessage(`Get that ass banned!`)
+      .then((msg) => console.log(`Sent a GTAB call ordered from ${msg.author.username} in the ${msg.channel.name} of the ${msg.channel.guild.name}.`))
+      .catch(console.error);
 
-  }
-}
-
-/**
- * [guid description]
- * @type {Object}
- */
-commands.guid = {
-  fn: function( sora, params, msg ) {
-    if(params[0]) {
-      var userID = sora.helpers.extractID(params[0]);
-      var user = sora.users.get("id", userID);
-      sora.deleteMessage(msg);
-      sora.sendMessage(sora.users.get("id", msg.author.id), "Hey Aigachu! Here's the requested id of the user: **" + user.username + "**\n\n**" + userID + "**");
-    } else {
-      sora.deleteMessage(msg);
-      sora.sendMessage(sora.users.get("id", msg.author.id), "Heyyy...Ya done messed up mang. Add a parameter to the command. >.>");
-    }
-  }
-}
-
-/**
- * [gcid description]
- * @type {Object}
- */
-commands.gcid = {
-  fn: function(sora, params, msg) {
-    sora.deleteMessage(msg);
-    sora.sendMessage(sora.users.get("id", msg.author.id), "Psst! Here's the id of the **" + msg.channel + "** channel:\n\n**" + msg.channel.id + "**");
   }
 }
 
@@ -118,17 +93,15 @@ commands.setname = {
 
       var newName = msg.content.substring(msg.content.indexOf(params[0]), msg.content.length);
 
-      sora.setUsername(newName).catch(function(err){
-        if(err) {
-          sora.sendMessage( msg.channel, "There seems to have been an error.\nAllow me to format it for you.\n\n```" + err + "```\nI have logged the console with more information.");
-          console.log(err);
-        } else {
-          sora.sendMessage( msg.channel, "Got it! I'll change my name right now.");
-        }
-      });
+      // Set Username
+      sora.user.setUsername(newName)
+       .then((user, msg) => function(user, msg) {
+          console.log(`My new username is ${user.username}`);
+        })
+       .catch(console.error);
 
     } else {
-      sora.sendMessage( msg.channel, "You seem to have forgotten a parameter. Please tell me what to change my display name to!");
+      msg.reply(`you seem to have forgotten a parameter. Please tell me what to change my display name to!`);
     }
   }
 }
