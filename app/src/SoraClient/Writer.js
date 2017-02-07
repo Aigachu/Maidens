@@ -1,3 +1,6 @@
+// @TODO - Make this a class instead of an array of exports.
+// SoraWriter
+
 /* === Default Command Configuration Paramater Values === */
 // The default values for a new command.
 // Commands that have no configuration declaration in the commands_properties.json configuration file will be given these values by default.

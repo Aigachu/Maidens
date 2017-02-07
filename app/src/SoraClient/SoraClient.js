@@ -1,23 +1,26 @@
 /**
  * Discord Client class include.
+ * Sora's mainframe depends on Discord.js, created by hydrabolt.
+ * https://discord.js.org/#/
  */
 const DiscordClient = require(rootdir + 'node_modules/discord.js/src/client/Client');
 
 /**
  * @ref {K4Kheops} - https://bitbucket.org/K4Kheops/
  * -- If you see mention of {Sawako} anywhere, it's because of him. ;)
+ * -- Let's take a moment to thank him for heavy inspiration of his object-oriented design in javascript.
+ * -- *clap* *clap* *clap*
+ * -- OK back to coding!
  *
  * Sora's Discord Client class.
  * Used to customize all of Discord Client functions and properties.
  */
-
 class SoraClient extends DiscordClient {
 
   /**
-   * Class Properties
+   * Class constructor
    */
-
-  constructor(options = {}) {
+  constructor() {
 
     super();
 
@@ -50,12 +53,12 @@ class SoraClient extends DiscordClient {
     this.jquiz = {};
 
     /**
-     * Events Callbacks
+     * === Events Callbacks ===
      */
     // Event: When Sawako connects to Discord.
     this.on('ready', function() {
 
-      // Assign to client to a variable.
+      // Assign the client to a variable.
       var sora = this;
 
       // Logs connection event in console.
@@ -150,7 +153,7 @@ class SoraClient extends DiscordClient {
    * [login description]
    * @return {[type]} [description]
    */
-  loginSora() {
+  soraLogin() {
     // Assign to client to a variable.
     var sora = this;
 
@@ -217,12 +220,10 @@ class SoraClient extends DiscordClient {
       // Check if the second word in the message is a command key.
       if(key in commands) {
         command.key = key;
-        // console.log("Sora: This is a command.");
         return command;
       }
     }
 
-    // console.log("Sora: This is not a command.");
     return false;
   };
 
@@ -318,8 +319,8 @@ class SoraClient extends DiscordClient {
       }
     }
 
-    // console.log("Sora: This command will not be authorized at this time.");
     return true;
+
   };
 
   /**
@@ -424,65 +425,6 @@ class SoraClient extends DiscordClient {
 
       bot.sendMessage(link.this_world, message);
     }
-  }
-
-  /**
-   * @ref {K4Kheops} - https://bitbucket.org/K4Kheops/
-   * -- If you see mention of {Sawako} anywhere, it's because of him. ;)
-   *
-   * Simulates Sora typing a message in Discord.
-   * The longer the message, the faster she types!
-   * @param  {Client} client    The Discord Client object: Sora.
-   * @param  {string} message   The message string to be written in chat.
-   * @param  {string} recipient The message's recipient ID. Can be either a User ID or a Channel ID.
-   * @param  {string} callback  The command name to be called once a message has been sent.
-   */
-  writeMessage(client, message, recipient, callback) {
-
-    // Retrieve message characters length.
-    var messageLength = message.length;
-
-    // Define typing speed.
-    var typingSpeed = 50;
-
-    // The longer the message, the faster the speed.
-    if(messageLength > 50) {
-      typingSpeed = 15;
-    } else if(messageLength > 100) {
-      typingSpeed = 10;
-    } else if(messageLength > 300) {
-      typingSpeed = 5;
-    } else if(messageLength > 500) {
-      typingSpeed = 2;
-    }
-
-    // Calculate typing duration based on message lenth and typing speed.
-    var typingDuration = messageLength * typingSpeed;
-
-    // Simulate Sawako typing in Discord.
-    this.startTyping(recipient);
-
-    // Set typing simulation duration.
-    setTimeout(function() {
-
-      // Sawako stops typing in Discord.
-      client.stopTyping(recipient);
-
-      // Sawako sends the message to the recipient.
-      client.sendMessage(recipient, message);
-
-      // If callback command is set, call it.
-      if(typeof callback !== 'undefined') {
-
-        /**
-         * @todo Would be nice to implement the command parameters here too.
-         */
-        client.commands[callback].fn(client);
-
-      }
-
-    }, typingDuration);
-
   }
 }
 

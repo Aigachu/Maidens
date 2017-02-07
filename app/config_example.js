@@ -1,8 +1,15 @@
+/**
+ * Configuration file for Sora's core functionality.
+ * This configuration file is needed for the bot to begin functioning when you run 'node sora.js'.
+ * If configurations are not set, Sora will prompt you to modify values in here.
+ *
+ * Have fun!
+ */
 module.exports = {
   // Discord Application Token
   // This can be obtained from the developers section of the discord site.
   // Create an application and paste the token here!
-  // @todo - Clearer Documentation
+  // @url: https://discordapp.com/developers/docs/intro
   'apptoken': '',
 
   // Sora's Command Prefix
@@ -17,7 +24,7 @@ module.exports = {
     '': 'Best Friend ID'
   },
 
-  // Admins can use all commands with an oplevel set to 1.
+  // Admins can use all commands with an oplevel set to 1 or lower.
   'admins': {
     '': 'Some Dude ID'
   }

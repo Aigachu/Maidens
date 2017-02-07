@@ -16,35 +16,41 @@
  *
  * Last note - See README.md for more details!
  *
- * Happy Dimension Traveling! :-) <3
+ * Happy Blick Winkel! ;-) <3
  *
  */
 
-/* === Globals === */
+/**
+* === Globals ===
+*/
 
 // Project root relative path.
 global.rootdir = __dirname + '/';
 
-// Project classes relative path.
-global.namespace = rootdir + 'classes/';
+// Project source code relative path.
+global.namespace = rootdir + 'src/';
 
 // Project resources relative path.
+// Images, icons, files, etc.
 global.resources = rootdir + 'resources/';
 
-// Project classes relative path.
+// Sora core files path.
 global.soraspace = namespace + 'SoraClient/';
 
-// Project classes relative path.
+// Path to configuration files.
+// @TODO - Change 'server' nomenclature to 'guild'
 global.commands_configuration_path = soraspace + 'configurations/commands_config.json';
-
-// Project classes relative path.
 global.pmcommands_configuration_path = soraspace + 'configurations/pmcommands_config.json';
-
-// Project classes relative path.
 global.servers_configuration_path = soraspace + 'configurations/servers_config.json';
 
 
-// Must run `npm install --save discord.js` if this is not installed or found.
+/**
+* === Modules ===
+* Run 'npm install' in the 'app' folder if any of these modules are not found.
+* It is important to run 'npm init' if new packages are added during development. This will update packages.json to include new dependencies
+*/
+
+// Must run `npm install` if this is not installed or found.
 global.Discord = require("discord.js");
 
 // Get jsonfile module ; Used to facilitate json reading and writing.
@@ -57,13 +63,14 @@ global.fs = require('fs');
 global.util = require('util');
 
 /**
- * Instanciation.
+ * === Instanciation ===
  */
-// Sawako class.
+
+// Sora class.
 var SoraClient = require(soraspace + 'SoraClient');
 
-// Sawako instance.
+// Sora instance.
 var sora = new SoraClient();
 
 // Login to Discord after processing all the code above.
-sora.loginSora();
+sora.soraLogin();
