@@ -39,9 +39,9 @@ global.soraspace = namespace + 'SoraClient/';
 
 // Path to configuration files.
 // @TODO - Change 'server' nomenclature to 'guild'
-global.commands_configuration_path = soraspace + 'configurations/commands_config.json';
-global.pmcommands_configuration_path = soraspace + 'configurations/pmcommands_config.json';
-global.servers_configuration_path = soraspace + 'configurations/servers_config.json';
+global.commands_configuration_path = soraspace + 'config/commands_config.json';
+global.pmcommands_configuration_path = soraspace + 'config/pmcommands_config.json';
+global.servers_configuration_path = soraspace + 'config/servers_config.json';
 
 
 /**

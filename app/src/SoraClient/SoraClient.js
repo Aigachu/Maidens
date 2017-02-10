@@ -55,6 +55,7 @@ class SoraClient extends DiscordClient {
     /**
      * === Events Callbacks ===
      */
+
     // Event: When Sawako connects to Discord.
     this.on('ready', function() {
 
@@ -90,45 +91,8 @@ class SoraClient extends DiscordClient {
        */
       sora.on("message", function (msg) {
 
-        /* === COMMANDS TREATMENT START === */
+        sora.processCommand(msg);
 
-        // Only hop in here and treat commands if this isn't Sora's own message!
-        if(msg.author.id !== sora.user.id) {
-          var command = {};
-
-          if(command = sora.verifyIfMsgIsCommand(msg)) {
-
-            // Initialize the parameters variable as an array with all words in the message seperate by a space.
-            var params = msg.content.split(" ");
-
-            // Remove the first two elements of the array, which in the case that this is a command, are the following:
-            // params[0] = $sora.
-            // params[1] = command_key.
-            params.splice(0, 2);
-
-            // Now, the params array only contains the parameters of the command.
-
-            if(command.type == "command") {
-              // Run Command if it passed approval.
-              if(sora.authCommand(msg, command.key)) {
-                sora.commands[command.key].fn(sora, params, msg);
-              }
-            } else {
-              // Run PMCommand if it passed approval.
-              if(sora.authPMCommand(msg, command.key)) {
-                sora.pmcommands[command.key].fn(sora, params, msg);
-              }
-            }
-
-          }
-
-          // LOL
-          if(sora.THIRDEYE !== undefined && !sora.verifyIfMsgIsCommand(msg)) {
-            sora.thirdeye(sora, msg, sora.THIRDEYE);
-          }
-        }
-
-        /* === COMMANDS TREATMENT END === */
       });
 
     });
@@ -140,7 +104,7 @@ class SoraClient extends DiscordClient {
       var sora = this;
 
       // Logs disconnection event in console.
-      console.log("Sora: I have been disconnected from the Discord infrastructure. See you soon!");
+      console.log("Sora: I have been disconnected from the Discord infrastructure, which means I'm going to disappear soon. ;_; See you soon though!");
 
     });
   }
@@ -161,6 +125,50 @@ class SoraClient extends DiscordClient {
   }
 
   /**
+   * [processCommand description]
+   * @return {[type]} [description]
+   */
+  processCommand(msg) {
+
+    // Only hop in here and treat commands if this isn't Sora's own message!
+    if(msg.author.id !== this.user.id) {
+      var command = {};
+
+      if(command = this.verifyIfMsgIsCommand(msg)) {
+
+        // Initialize the parameters variable as an array with all words in the message seperate by a space.
+        var params = msg.content.split(" ");
+
+        // Remove the first two elements of the array, which in the case that this is a command, are the following:
+        // params[0] = $sora.
+        // params[1] = command_key.
+        params.splice(0, 2);
+
+        // Now, the params array only contains the parameters of the command.
+
+        if(command.type == "command") {
+          // Run Command if it passed approval.
+          if(this.authCommand(msg, command.key)) {
+            this.commands[command.key].fn(this, params, msg);
+          }
+        } else {
+          // Run PMCommand if it passed approval.
+          if(this.authPMCommand(msg, command.key)) {
+            this.pmcommands[command.key].fn(this, params, msg);
+          }
+        }
+
+      }
+
+      // LOL
+      if(this.THIRDEYE !== undefined && !this.verifyIfMsgIsCommand(msg)) {
+        this.thirdeye(this, msg, this.THIRDEYE);
+      }
+    }
+
+  }
+
+  /**
    * [isCommand description]
    * @param  {[type]} command [description]
    * @param  {[type]} param   [description]
@@ -168,8 +176,6 @@ class SoraClient extends DiscordClient {
    * @return {[type]}         [description]
    */
   verifyIfMsgIsCommand(msg) {
-    // Assign to client to a variable.
-    var sora = this;
 
     var command = {};
 
@@ -177,45 +183,35 @@ class SoraClient extends DiscordClient {
     // We don't want regular commands to be triggered in PMs with Sora.
     // PMCommands will be a different entity entirely.
     if(!msg.channel.isPrivate) {
+
       // Get commands configuration properties.
-      // You are now in tools.js, so you need to add a dot to indicate a return to the other directory.
       var commands_configuration = require(commands_configuration_path);
 
       // Get all defined commands in the `Commands.js` file.
-      var commands = sora.commands;
+      var commands = this.commands;
 
       command.type = "command";
+
     } else {
+
       // Get commands configuration properties.
-      // You are now in tools.js, so you need to add a dot to indicate a return to the other directory.
       var commands_configuration = require(pmcommands_configuration_path);
 
       // Get all defined commands in the `Commands.js` file.
-      var commands = sora.pmcommands;
+      var commands = this.pmcommands;
 
       command.type = "pmcommand";
+
     }
 
     // Divide text into distinct parameters.
     var split = msg.content.split(" ");
 
     // Check if it contains the command syntax.
-    if(split[0] == sora.config.prefix && split[1]) {
+    if(split[0] == this.config.prefix && split[1]) {
 
       // Supposed Key
       var key = split[1].toLowerCase();
-
-      // Loop through the command configurations and check if the key is an alias for a command.
-      for (var command_key in commands_configuration) {
-        if(commands_configuration.hasOwnProperty(command_key)) {
-
-          // This will set the key variable to the key of the actual command that the alias is for.
-          if(commands_configuration[command_key].aliases.indexOf(key) > -1) {
-            key = command_key;
-          }
-
-        }
-      }
 
       // Check if the second word in the message is a command key.
       if(key in commands) {
@@ -235,8 +231,6 @@ class SoraClient extends DiscordClient {
    * @return {[type]}         [description]
    */
   authCommand(msg, key) {
-    // Assign to client to a variable.
-    var sora = this;
 
     // Get commands configuration properties.
     // Within the function, you are now in tools.js, so you need to add a dot to indicate a return to the other directory.
@@ -255,14 +249,11 @@ class SoraClient extends DiscordClient {
     }
 
     // If the message author is a God, Sora will not verify anything. Auto-Auth.
-    if(!(msg.author.id in sora.config.gods)) {
-      // Check OP Level
-      if(command_validation_obj.oplevel === 2) {
-        return false;
-      }
+    if(!(msg.author.id in this.config.gods)) {
 
+      // Check OP Level for Admins
       if(command_validation_obj.oplevel === 1) {
-        if(!(msg.author.id in sora.config.admins)) {
+        if(!(msg.author.id in this.config.admins)) {
           return false;
         }
       }
@@ -283,36 +274,36 @@ class SoraClient extends DiscordClient {
 
       // Check Cooldown (if any)
       if(command_validation_obj.cooldown !== 'none') {
-       if(sora.cooldowns[key]) {
+       if(this.cooldowns[key]) {
 
-        if(!sora.cooldowns['announce_cd_' + key]) {
+        if(!this.cooldowns['announce_cd_' + key]) {
 
-          sora.sendMessage(msg.channel, "Hmm. The `" + key + "` command seems to be on cooldown.\nThe cooldown time is **" + command_validation_obj.cooldown + "** seconds. It will be available shortly.", function(error, message) {
+          this.sendMessage(msg.channel, "Hmm. The `" + key + "` command seems to be on cooldown.\nThe cooldown time is **" + command_validation_obj.cooldown + "** seconds. It will be available shortly.", function(error, message) {
             // Delete the cooldown warning after five seconds.
-            setTimeout(function(){ sora.deleteMessage(message); }, 1000 * 5);
+            setTimeout(function(){ this.deleteMessage(message); }, 1000 * 5);
           });
 
-          sora.cooldowns['announce_cd_' + key] = true;
+          this.cooldowns['announce_cd_' + key] = true;
 
-          if(typeof sora.commands[key] !== 'undefined') {
-            setTimeout(function(){ sora.cooldowns['announce_cd_' + key] = false; /* console.log("Removed cooldown for " + key); */ }, 1000 * command_validation_obj.cooldown);
+          if(typeof this.commands[key] !== 'undefined') {
+            setTimeout(function(){ this.cooldowns['announce_cd_' + key] = false; /* console.log("Removed cooldown for " + key); */ }, 1000 * command_validation_obj.cooldown);
           } else {
-            setTimeout(function(){ sora.cooldowns['announce_cd_' + key] = false; /* console.log("Removed cooldown for " + key); */ }, 1000 * 15);
+            setTimeout(function(){ this.cooldowns['announce_cd_' + key] = false; /* console.log("Removed cooldown for " + key); */ }, 1000 * 15);
           }
         }
 
-        sora.deleteMessage(msg);
+        this.deleteMessage(msg);
 
         return false;
 
        } else {
 
-        sora.cooldowns[key] = true;
+        this.cooldowns[key] = true;
 
           if(typeof commands[key] !== 'undefined') {
-            setTimeout(function(){ sora.cooldowns[key] = false; console.log("Removed cooldown for " + key); }, 1000 * command_validation_obj.cooldown);
+            setTimeout(function(){ this.cooldowns[key] = false; console.log("Removed cooldown for " + key); }, 1000 * command_validation_obj.cooldown);
           } else {
-            setTimeout(function(){ sora.cooldowns[key] = false; console.log("Removed cooldown for " + key); }, 1000 * 15);
+            setTimeout(function(){ this.cooldowns[key] = false; console.log("Removed cooldown for " + key); }, 1000 * 15);
           }
 
        }
@@ -331,8 +322,6 @@ class SoraClient extends DiscordClient {
    * @return {[type]}         [description]
    */
   authPMCommand(msg, key) {
-    // Assign to client to a variable.
-    var sora = this;
 
     // Get commands configuration properties.
     // Within the function, you are now in tools.js, so you need to add a dot to indicate a return to the other directory.
@@ -342,50 +331,50 @@ class SoraClient extends DiscordClient {
     var pmcommand_validation_obj = pmcommands_configuration[key];
 
     // If the message author is a God, Sora will not verify anything. Auto-Auth.
-    if(!(msg.author.id in sora.config.gods)) {
+    if(!(msg.author.id in this.config.gods)) {
       // Check OP Level
       if(pmcommand_validation_obj.oplevel === 2) {
         return false;
       }
 
       if(pmcommand_validation_obj.oplevel === 1) {
-        if(!(msg.author.id in sora.config.admins)) {
+        if(!(msg.author.id in this.config.admins)) {
           return false;
         }
       }
 
       // Check Cooldown (if any)
       if(pmcommand_validation_obj.cooldown !== 'none') {
-       if(sora.cooldowns[key]) {
+       if(this.cooldowns[key]) {
 
-        if(!sora.cooldowns['announce_cd_' + key]) {
+        if(!this.cooldowns['announce_cd_' + key]) {
 
-          sora.sendMessage(msg.channel, "Hmm. The `" + key + "` pmcommand seems to be on cooldown.\nThe cooldown time is **" + pmcommand_validation_obj.cooldown + "** seconds. It will be available shortly.", function(error, message) {
+          this.sendMessage(msg.channel, "Hmm. The `" + key + "` pmcommand seems to be on cooldown.\nThe cooldown time is **" + pmcommand_validation_obj.cooldown + "** seconds. It will be available shortly.", function(error, message) {
             // Delete the cooldown warning after five seconds.
-            setTimeout(function(){ sora.deleteMessage(message); }, 1000 * 5);
+            setTimeout(function(){ this.deleteMessage(message); }, 1000 * 5);
           });
 
-          sora.cooldowns['announce_cd_' + key] = true;
+          this.cooldowns['announce_cd_' + key] = true;
 
-          if(typeof sora.pmcommands[key] !== 'undefined') {
-            setTimeout(function(){ sora.cooldowns['announce_cd_' + key] = false; /* console.log("Removed cooldown for " + key); */ }, 1000 * pmcommand_validation_obj.cooldown);
+          if(typeof this.pmcommands[key] !== 'undefined') {
+            setTimeout(function(){ this.cooldowns['announce_cd_' + key] = false; /* console.log("Removed cooldown for " + key); */ }, 1000 * pmcommand_validation_obj.cooldown);
           } else {
-            setTimeout(function(){ sora.cooldowns['announce_cd_' + key] = false; /* console.log("Removed cooldown for " + key); */ }, 1000 * 15);
+            setTimeout(function(){ this.cooldowns['announce_cd_' + key] = false; /* console.log("Removed cooldown for " + key); */ }, 1000 * 15);
           }
         }
 
-        sora.deleteMessage(msg);
+        this.deleteMessage(msg);
 
         return false;
 
        } else {
 
-        sora.cooldowns[key] = true;
+        this.cooldowns[key] = true;
 
           if(typeof pmcommands[key] !== 'undefined') {
-            setTimeout(function(){ sora.cooldowns[key] = false; console.log("Removed cooldown for " + key); }, 1000 * pmcommand_validation_obj.cooldown);
+            setTimeout(function(){ this.cooldowns[key] = false; console.log("Removed cooldown for " + key); }, 1000 * pmcommand_validation_obj.cooldown);
           } else {
-            setTimeout(function(){ sora.cooldowns[key] = false; console.log("Removed cooldown for " + key); }, 1000 * 15);
+            setTimeout(function(){ this.cooldowns[key] = false; console.log("Removed cooldown for " + key); }, 1000 * 15);
           }
 
        }
