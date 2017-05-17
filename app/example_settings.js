@@ -15,7 +15,7 @@ module.exports = {
   // Sora's Command Prefix
   // She is currently set up to accept commands like this:
   // -- $sora COMMAND_KEY param_1 param_2 ... param_n
-  'prefix': '$sora',
+  'cprefix': '$sora',
 
   // Gods can use all commands at any time.
   // They correspond to oplevel being set to 2.
