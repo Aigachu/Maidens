@@ -23,7 +23,4 @@
 var soracore = require('./soracore');
 
 // Sora instanciation.
-var client = new soracore.SoraClient(require('./settings'));
-
-// Login to Discord after processing all the code above.
-client.soraLogin();
+global.soraclient = new soracore.SoraClient(require('./settings'));

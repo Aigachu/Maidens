@@ -1,4 +1,5 @@
-// @TODO - DOCUMENTATION
+// This is all going to be refactored into the new structure. For now, we're keeping the file committed for reference. But it's not being used in the current
+// code running on Sora. :)
 
 /**
  * TO MODIFY
@@ -36,36 +37,6 @@ var commands = {};
  *   - serverRoles -> All roles of the server that the command was invoked from in an array.
  *   - authorRoles -> All roles of the author that invoked the command.
  */
-
-/**
- * Implements the *ping* command.
- * @params  {[none]}
- * @result  {[message]} [Sora answers asking if she's needed.]
- */
-commands.ping = {
-  fn: function( sora, params, msg ) {
-
-    msg.reply(`Sora, version 2.0, at your service. ;)`)
-      .then((msg) => console.log(`Sent a reply to ${msg.author.username}.`))
-      .catch(console.error);
-
-  }
-}
-
-/**
- * Implements the *pong* command.
- * @params  {[none]}
- * @result  {[message]} [Sora answers asking if she's needed.]
- */
-commands.pong = {
-  fn: function( sora, params, msg ) {
-
-    msg.author.sendMessage(`Ping...Pong...Why do you even have two of these? They do exactly the same thing!`)
-      .then((msg) => console.log(`Sent a reply to ${msg.author.username}.`))
-      .catch(console.error);
-
-  }
-}
 
 /**
  * Implements the *ping* command.

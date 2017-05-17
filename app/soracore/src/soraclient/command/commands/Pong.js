@@ -2,17 +2,19 @@ const Command = require('../Command');
 
 class Pong extends Command {
 
-	constructor(client) {
+  constructor(client) {
 
-		super();
+    super(client);
 
-		this.client = client;
+    // this.help = "";
+
+    // this.description = "";
 
   }
 
-  execute(msg) {
+  tasks(data) {
 
-    msg.author.send(`Sora, version 2.0, at your service. ;)`)
+    data.msg.author.send(`Sora, version 2.0, at your service. ;)`)
       .then((msg) => console.log(`Sent a reply to ${msg.author.username}.`))
       .catch(console.error);
 
