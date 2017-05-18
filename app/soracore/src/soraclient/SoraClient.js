@@ -90,7 +90,7 @@ class SoraClient extends DiscordClient {
   }
 
   /**
-   * Instant Messaging function
+   * Instant Messaging method
    * This is used for messages that must be instantly sent to a given destination.
    * @param  {[string]} text        Text to send.
    * @param  {[Message/User/Channel]} destination Destination to send the text to.
@@ -101,7 +101,7 @@ class SoraClient extends DiscordClient {
   }
 
   /**
-   * Reply function
+   * Reply method
    * This is used for easy replying to messages received.
    * @param  {[string]} text        Text to send.
    * @param  {[Message]} destination Destination to send the text to.
@@ -112,7 +112,7 @@ class SoraClient extends DiscordClient {
   }
 
   /**
-   * @todo  TypeWrite function
+   * @todo  TypeWrite method
    * This is used for typewriting replies or messages, instead of sending them right away.
    * @param  {[string]} text        Text to send.
    * @param  {[Message]} destination Destination to send the text to.

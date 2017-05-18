@@ -21,12 +21,11 @@ class CommandManager {
     // Instantiate the class properties.
     this.client = client;
     this.commands = this._getCommands(this.client);
-    this._debug();
 
   }
 
   /**
-   * Interpret function.
+   * Interpret method.
    * Determines what to do with a message that has been heard.
    * @param  {[type]} msg Message received (or heard) in Discord.
    */
@@ -41,7 +40,7 @@ class CommandManager {
   }
 
   /**
-   * Discern Command function.
+   * Discern Command method.
    * This determines what to do with a command that has been heard.
    * Depending on options of parameters, the outcome may be different.
    *
@@ -79,7 +78,7 @@ class CommandManager {
   }
 
   /**
-   * IsCommand function.
+   * IsCommand method.
    * Simple. Checks if the message heard is a command or not.
    * @param  {[Message]}  msg Message received (or heard) in Discord.
    * @return {Boolean}        Whether or not the message is a command.
@@ -118,7 +117,7 @@ class CommandManager {
   }
 
   /**
-   * Extract Parameters function.
+   * Extract Parameters method.
    * Use this to extract parameters from a heard command.
    * Words surrounded by "" should be treated as one parameter.
    * @param  {[Message]} message  The message object of the message heard as a command.
@@ -129,7 +128,7 @@ class CommandManager {
     // First, we need to check if there is a part of the command that is a string of text.
     var regex = /\"([^"]+)\"/;
 
-    var matches = regex.exec("$s lol \"text inside if the shit\" lmao");
+    var matches = regex.exec("$s lol \"text inside of the shit\" \"second set of text\" lmao");
 
     console.log(matches);
 
@@ -150,8 +149,8 @@ class CommandManager {
   }
 
   /**
-   * Get Commands processor function.
-   * This function reads all of the files in the "./commands" directory and turns them into commands.
+   * Get Commands processor method.
+   * This method reads all of the files in the "./commands" directory and turns them into commands.
    * @param  {[DiscordClient/BotClient]}  client            The client that will be used and given to commands.
    * @return                              {[Object/Array]}  An array of commands.
    */
@@ -178,18 +177,6 @@ class CommandManager {
     return commands;
 
   }
-
-  _debug() {
-    console.log("--------------START DEBUGGER--------------");
-    // First, we need to check if there is a part of the command that is a string of text.
-    var regex = /\"([^"]+)\"/;
-
-    var matches = regex.exec("$s lol \"text inside if the shit\" lmao");
-
-    console.log(matches);
-    console.log("--------------END DEBUGGER--------------");
-  }
-
 }
 
 // Export the Command Manager.
