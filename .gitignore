@@ -1,5 +1,5 @@
 # -------------------------------------
 #              Maiden Ignores
 # -------------------------------------
-app/config.js
+app/settings.js
 app/node_modules
