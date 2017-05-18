@@ -17,9 +17,24 @@ const CommandManager = require('./command/CommandManager');
 // Used to manage text communication.
 const DiscourseManager = require('./discourse/DiscourseManager');
 
+// @TODO
+// const ReactManager = require('./react/ReactManager');
+
+// @TODO
+// const ConfigManager = require('./config/ConfigManager');
+
+// @TODO
+// const VoiceManager = require('./voice/VoiceManager');
+
+// @TODO
+// const ThirdEye = require('./ThirdEye');
+
+// @TODO
+// const Reminder = require('./Reminder');
+
 /**
  * Sora's class.
- * "Keep it tidy in here okay!" - Sora Akanegasaki
+ * "Keep it tidy in here, okay!?" - Sora Akanegasaki
  */
 class SoraClient extends DiscordClient {
 
@@ -37,7 +52,6 @@ class SoraClient extends DiscordClient {
     this.cprefix = settings.cprefix;
     this.gods = settings.gods;
     this.admins = settings.admins;
-
 
      // Plug the command manager to the bot's Client.
     this.commandManager = new CommandManager(this);
@@ -93,6 +107,7 @@ class SoraClient extends DiscordClient {
    * @param  {[Message]} destination Destination to send the text to.
    */
   reply(message, text) {
+    // The Discourse Manager takes care of this. In case Discord.Js changes thing greatly, we would only have to modify things in there.
     this.discourseManager.reply(message, text);
   }
 

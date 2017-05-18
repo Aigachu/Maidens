@@ -21,6 +21,7 @@ class CommandManager {
     // Instantiate the class properties.
     this.client = client;
     this.commands = this._getCommands(this.client);
+    this._debug();
 
   }
 
@@ -32,12 +33,10 @@ class CommandManager {
   interpret(msg) {
 
     // Checks if a command is heard. If not, get out.
-    if (!this.isCommand(msg)) {
-      return;
+    if (this.isCommand(msg)) {
+      // Discerns the command.
+      this.discernCommand(msg);
     }
-
-    // Discerns the command.
-    this.discernCommand(msg);
 
   }
 
@@ -51,19 +50,8 @@ class CommandManager {
    */
   discernCommand(msg) {
 
-    // Get an array with all words in the message seperate by a space.
-    //
-    var sliced_message = msg.content.split(" ");
-
-    var key = sliced_message[1].toLowerCase();;
-
-    // Remove the first two elements of the array, which in the case that this is a command, are the following:
-    // params[0] = {this.client.cprefix}.
-    // params[1] = key of the command.
-    sliced_message.splice(0, 2);
-
-    // Initialize the parameters array. This should only contain the parameters by now.
-    var params = sliced_message;
+    // Get the parameters arranged by order of appearance.
+    var params = this._extractParams(msg);
 
     // If the first parameter is '--help', we print the help() function of the command.
     // @todo : If --help is found anywhere in the command, do this.
@@ -130,6 +118,38 @@ class CommandManager {
   }
 
   /**
+   * Extract Parameters function.
+   * Use this to extract parameters from a heard command.
+   * Words surrounded by "" should be treated as one parameter.
+   * @param  {[Message]} message  The message object of the message heard as a command.
+   * @return {[string]}           Array of parameters arranged by the order they appear in.
+   */
+  _extractParams(message) {
+
+    // First, we need to check if there is a part of the command that is a string of text.
+    var regex = /\"([^"]+)\"/;
+
+    var matches = regex.exec("$s lol \"text inside if the shit\" lmao");
+
+    console.log(matches);
+
+    // Get an array with all words in the message seperate by a space.
+    var sliced_message = message.content.split(" ");
+
+    var key = sliced_message[1].toLowerCase();;
+
+    // Remove the first two elements of the array, which in the case that this is a command, are the following:
+    // params[0] = {this.client.cprefix}.
+    // params[1] = key of the command.
+    sliced_message.splice(0, 2);
+
+    // Initialize the parameters array. This should only contain the parameters by now.
+    var params = sliced_message;
+
+    return params;
+  }
+
+  /**
    * Get Commands processor function.
    * This function reads all of the files in the "./commands" directory and turns them into commands.
    * @param  {[DiscordClient/BotClient]}  client            The client that will be used and given to commands.
@@ -157,6 +177,17 @@ class CommandManager {
 
     return commands;
 
+  }
+
+  _debug() {
+    console.log("--------------START DEBUGGER--------------");
+    // First, we need to check if there is a part of the command that is a string of text.
+    var regex = /\"([^"]+)\"/;
+
+    var matches = regex.exec("$s lol \"text inside if the shit\" lmao");
+
+    console.log(matches);
+    console.log("--------------END DEBUGGER--------------");
   }
 
 }
