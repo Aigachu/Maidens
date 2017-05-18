@@ -7,16 +7,14 @@ class Example extends Command {
 		super(client);
 
     // this.help = "";
-
     // this.description = "";
-
     // this.reqParams = 0;
 
   }
 
   tasks(data) {
 
-    this.client.reply('This is an example command. :O Did you even know this existed?', data.msg);
+    this.client.reply(data.msg, 'This is an example command. :O Did you even know this existed?');
 
   }
 

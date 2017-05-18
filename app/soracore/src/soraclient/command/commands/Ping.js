@@ -7,8 +7,8 @@ class Ping extends Command {
     super(client);
 
     // this.help = "";
-
     // this.description = "";
+    // this.reqParams = 0;
 
   }
 
@@ -18,7 +18,7 @@ class Ping extends Command {
     //   .then((msg) => console.log(`Sent a reply to ${msg.author.username}.`))
     //   .catch(console.error);
 
-    this.client.reply('Sora, version 3.0, at your service. ;)', data.msg);
+    this.client.reply(data.msg, 'Sora, version 3.0, at your service. ;)');
 
   }
 

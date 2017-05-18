@@ -7,16 +7,14 @@ class Pong extends Command {
     super(client);
 
     // this.help = "";
-
     // this.description = "";
+    // this.reqParams = 0;
 
   }
 
   tasks(data) {
 
-    data.msg.author.send(`Sora, version 2.0, at your service. ;)`)
-      .then((msg) => console.log(`Sent a reply to ${msg.author.username}.`))
-      .catch(console.error);
+    this.client.im(data.msg.author, `Sora, version 2.0, at your service. ;)`);
 
   }
 

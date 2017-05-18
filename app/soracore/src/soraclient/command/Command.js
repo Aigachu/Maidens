@@ -56,7 +56,7 @@ class Command {
    */
   help(msg) {
   	// Reply to the message with the Command's help text.
-    this.client.reply(this.helpText, msg);
+    this.client.reply(msg, this.helpText);
   }
 
   /**
@@ -66,7 +66,7 @@ class Command {
    */
   desc(msg) {
   	// Reply to the message with the Command's description text.
-    this.client.reply(this.descText, msg);
+    this.client.reply(msg, this.descText);
   }
 
   /**
@@ -79,21 +79,21 @@ class Command {
   error(data, type, msg) {
 		switch (type) {
 	    case 'ParamsException':
-	        this.client.reply(`
+	        this.client.reply(msg, `
 	        	_**Woops!**_ - The number of parameters given for the \`${this.key}\` command is wrong.\n
-	        	You provided ${data} parameter(s) when you should have provided ${this.reqParams}!`,
-	        msg);
+	        	You provided ${data} parameter(s) when you should have provided ${this.reqParams}!`
+	        );
 	        break;
 	    default:
 	        // Do nothing
 	        break;
 		}
 
-		this.client.reply(
+		this.client.reply(msg, 
 			`Please use the \`--help\` option of the command through the following method.\n
 			\`${this.client.cprefix} ${this.key} --help\`\n
-			This will give you more information on how to use the command!`,
-		msg);
+			This will give you more information on how to use the command!`
+		);
   }
 
 }

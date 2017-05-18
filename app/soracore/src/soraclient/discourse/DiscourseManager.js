@@ -35,7 +35,7 @@ class DiscourseManager {
    * @param  {[string]}                 text        Text we want to send.
    * @param  {[Channel/User/PMChannel]} destination Where we want to send it.
    */
-  instantMessage(text, destination) {
+  instantMessage(destination, text) {
   	destination.send(text);
   }
 
@@ -45,7 +45,7 @@ class DiscourseManager {
    * @param  {[string]}                 text    Text we want to send.
    * @param  {[Channel/User/PMChannel]} message Message we want to reply to.
    */
-  reply(text, message) {
+  reply(message, text) {
   	message.reply(text);
   }
 

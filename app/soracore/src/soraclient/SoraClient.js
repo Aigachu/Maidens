@@ -81,9 +81,9 @@ class SoraClient extends DiscordClient {
    * @param  {[string]} text        Text to send.
    * @param  {[Message/User/Channel]} destination Destination to send the text to.
    */
-  im(text, destination) {
+  im(destination, text) {
     // The Discourse Manager takes care of this. In case Discord.Js changes thing greatly, we would only have to modify things in there.
-    this.discourseManager.instantMessage(text, destination);
+    this.discourseManager.instantMessage(destination, text);
   }
 
   /**
@@ -92,8 +92,8 @@ class SoraClient extends DiscordClient {
    * @param  {[string]} text        Text to send.
    * @param  {[Message]} destination Destination to send the text to.
    */
-  reply(text, message) {
-    this.discourseManager.reply(text, message);
+  reply(message, text) {
+    this.discourseManager.reply(message, text);
   }
 
   /**
