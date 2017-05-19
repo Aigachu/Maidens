@@ -106,6 +106,12 @@ class Command {
 		);
   }
 
+  /**
+   * Signature setter.
+   * When the Class is created, we want to initiate the Command signature.
+   * @param  {[string]} pattern A custom pattern that will be used to create the array.
+   * @return {[type]}         [description]
+   */
   set signature(pattern) {
 
     if(pattern == '*') {
