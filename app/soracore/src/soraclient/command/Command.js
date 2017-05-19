@@ -1,5 +1,5 @@
 /**
- * Class [Command]
+ * Class [Command].
  *
  * This class defines the properties of a [Command] object. Commands
  * are orders that can be given to a bot. The bot interprets these
