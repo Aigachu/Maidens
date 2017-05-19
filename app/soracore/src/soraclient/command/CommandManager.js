@@ -31,11 +31,12 @@ class CommandManager {
    */
   interpret(msg) {
 
-    // Checks if a command is heard. If not, get out.
-    if (this.isCommand(msg)) {
-      // Discerns the command.
-      this.discernCommand(msg);
+    if(!this._getCommand(msg)) {
+      return;
     }
+
+    // Discerns the command.
+    this._do(this._getCommand());
 
   }
 
@@ -47,33 +48,15 @@ class CommandManager {
    * @param  {[Message]} msg Message heard or received that has been identified as a command.
    * @todo  : Make the IsCommand() function return a command key and parameters. We'll eliminate some duplicate splicing and fiddling.
    */
-  discernCommand(msg) {
+  _do(command) {
 
-    // Get the parameters arranged by order of appearance.
-    var params = this._extractParams(msg);
+    // Now we know it's a command. So we gotta compare to see if the provided orders
+    // comply with the given command's signature.
+    console.log(command.key);
+    console.log(command.params);
 
-    // If the first parameter is '--help', we print the help() function of the command.
-    // @todo : If --help is found anywhere in the command, do this.
-    if (params[0] && params[0] == '--help') {
-      this.commands[key].help(msg);
-      return;
-    }
-
-    // If the first parameter is '--desc', we print the desc() function of the command.
-    // @todo : If --desc is found anywhere in the command, do this.
-    if (params[0] && params[0] == '--desc') {
-      this.commands[key].desc(msg);
-      return;
-    }
-
-    // Throw an exception if the parameters given do not match the configured {reqParameters} value in the command's definition.
-    if (params.length != this.commands[key].reqParams) {
-      this.commands[key].error(params.length, 'ParamsException', msg);
-      return;
-    }
-
-    // Run Command if it passed throw all previous checks.
-    this.commands[key].execute(msg, params);
+    // // Run Command if it passed throw all previous checks.
+    // this.commands[command.key].execute(msg, params);
 
   }
 
@@ -83,7 +66,7 @@ class CommandManager {
    * @param  {[Message]}  msg Message received (or heard) in Discord.
    * @return {Boolean}        Whether or not the message is a command.
    */
-  isCommand(msg) {
+  _getCommand(msg) {
 
     // If this message comes from the bot, it's not a command!
     if (msg.author.id === this.client.user.id) {
@@ -98,54 +81,69 @@ class CommandManager {
     }
 
     // Divide text into distinct parameters.
-    var split = msg.content.split(" ");
+    var divided_msg = msg.content.split(" ");
 
     // Check if it contains the command syntax.
-    if (split[0] != this.client.cprefix || split[1].length == 0) {
+    if (divided_msg[0] != this.client.cprefix || !divided_msg[1]) {
       return false;
     }
 
     // Supposed Key
-    var key = split[1].toLowerCase();
+    var provided_key = divided_msg[1].toLowerCase();
 
     // Check if the second word in the message is a command key.
-    if (key in this.commands) {
-      return true;
+    if (provided_key in this.commands) {
+      return {
+        'key'     :  provided_key,
+        'params'  :  this._ratifyCommand(msg, provided_key, divided_msg),
+        'msg'     :  msg
+      };
     }
 
     return false;
+
   }
 
   /**
-   * Extract Parameters method.
-   * Use this to extract parameters from a heard command.
+   * Ratify Command method.
+   * Use this to validate the orders given with a command and extract parameters from it.
    * Words surrounded by "" should be treated as one parameter.
    * @param  {[Message]} message  The message object of the message heard as a command.
    * @return {[string]}           Array of parameters arranged by the order they appear in.
    */
-  _extractParams(message) {
+  _ratifyCommand(message, command_key, divided_msg) {
+
+    // @TODO - If the command contains a text component at the end, but it's not supposed to, fire a TextNotNeeded exception to the command.
+    // @TODO - If the command does not contain a text component, but it needs one, fire a TextNotFound exception to the command.
+    // @TODO - Cover what parameters to send when there is no text needed.
+    // @TODO - Cover what parameters to send when there is text needed.
+
+    // Remove the first two elements of the divided message array, which in the case that this is a command, are the following:
+    // params[0] = {this.client.cprefix}.
+    // params[1] = key of the command.
+    divided_msg.splice(0, 2);
+
+    var parameters = divided_msg;
 
     // First, we need to check if there is a part of the command that is a string of text.
-    var regex = /\"([^"]+)\"/;
+    var regex = /\{([^{^}]+)\}/;
 
-    var matches = regex.exec("$s lol \"text inside of the shit\" \"second set of text\" lmao");
+    var matches = regex.exec(message);
 
     console.log(matches);
 
-    // Get an array with all words in the message seperate by a space.
-    var sliced_message = message.content.split(" ");
+    if()
 
-    var key = sliced_message[1].toLowerCase();;
-
-    // Remove the first two elements of the array, which in the case that this is a command, are the following:
-    // params[0] = {this.client.cprefix}.
-    // params[1] = key of the command.
-    sliced_message.splice(0, 2);
+    sliced_message.forEach(function(component){
+      if(component.indexOf('{') == 0 && matches[1]) {
+        params = matches[1];
+      }
+    });
 
     // Initialize the parameters array. This should only contain the parameters by now.
     var params = sliced_message;
 
-    return params;
+    return parameters;
   }
 
   /**
