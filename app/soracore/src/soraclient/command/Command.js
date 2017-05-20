@@ -15,7 +15,7 @@
  *   - This functionality is designed to take in identifiers of each component a command must have that comes after the command key.
  *   - *    -> Wildcard. The command ignores parameters, and will function regarless of what comes after the command key.
  *   - p    -> Regular parameter. Collection of characters/numbers without spaces.
- *   - "t"  -> String (a collection of text in brackets with spaces)
+ *   - {s}  -> String (a collection of text in brackets with spaces)
  *   - @    -> A user mention.
  *   - --o  -> An option definition.
  */
@@ -24,16 +24,18 @@ class Command {
 	// Constructor for the Command Class
 	constructor(client) {
 
+    this.client     = client;
+
 		// Instantiate class properties. These are default values that will be assigned to any child command
     // that doesn't have these values set.
 		// Descriptions of each up above!
 		this.key 				= this.constructor.name.toLowerCase();
-		this.client 		= client;
 		this.helpText 	= "This is the default help text for commands...Which means that Aiga was too lazy to write one for this command. :/ Bug him about it!";
 		this.descText   = "This is the default description for commands...Which means that Mr. Aiga was being too much of a lazy fart to write one for this command. :/ Bug him about it!";
-		this.signature  = '*';
+		this.pattern    = '*';
 
-    console.log(this.signature);
+    // Preparators
+    this.signature = this._sign(this.pattern);
 
   }
 
@@ -44,19 +46,31 @@ class Command {
    * @param  {[array]} 	params 	Parameters array extracted from the message.
    */
   execute(msg, params) {
-  	this.tasks({
-  		msg: msg,
-  		params: params
-  	});
-  }
 
-  /**
-   * Tasks method.
-   * Code to run for the given command when executed.
-   */
-  tasks() {
-  	// General tasks for all commands?
-  	// Right now, the tasks() method only exists in child Command instances.
+    switch(params[0]) {
+
+      // If the first parameter is '--help', we print the help() function of the command.
+      // @todo : If --help is found anywhere in the command, do this.
+      case '--help':
+        this.help(msg);
+        return;
+        break;
+
+      // If the first parameter is '--desc', we print the desc() function of the command.
+      // @todo : If --desc is found anywhere in the command, do this.
+      case '--desc':
+        this.desc(msg);
+        return;
+        break;
+
+      default:
+        // Or, do the specified tasks.
+        this.tasks({
+          msg: msg,
+          params: params
+        });
+        break;
+    }
   }
 
   /**
@@ -110,21 +124,23 @@ class Command {
    * Signature setter.
    * When the Class is created, we want to initiate the Command signature.
    * @param  {[string]} pattern A custom pattern that will be used to create the array.
-   * @return {[type]}         [description]
+   * @return {[array]}         An empty array if the command is a simple command. A complex array of components needed for the command if the command is complex.
    */
-  set signature(pattern) {
+  _sign(pattern) {
 
-    if(pattern == '*') {
-      return [];
+    var signature = [];
+
+    if(pattern != '*') {
+      var components = pattern.split(" ");
+
+      components.forEach(function(component){
+        var component_key = component.substr(0, component.indexOf('.'));
+        var component_label = component.substr(component.indexOf('.') + 1, component.length);
+        signature[component_key] = component_label;
+      });
     }
 
-    var test = "--o.Option1 p.Param1 t.Text1";
-
-    var components = test.split(" ");
-
-    console.log(components);
-
-    return components;
+    return signature;
   }
 
 }
