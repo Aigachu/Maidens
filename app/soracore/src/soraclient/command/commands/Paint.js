@@ -1,14 +1,14 @@
 const Command = require('../Command');
 
-class SetName extends Command {
+class Paint extends Command {
 
-  constructor(client) {
+	constructor(client) {
 
-    super(client);
+		super(client);
 
     // Uncomment to enter different aliases that can be used to use the command.
     // e.g. the ping command can have pi or pg as aliases.
-    this.aliases = [ "sn"];
+		this.aliases = [ "p", "pnt"];
     
     // Uncomment to customize the text that will be shown when --help is used.
     // this.help = "";
@@ -18,20 +18,25 @@ class SetName extends Command {
     
     // Uncomment to declare that input is required for this command.
     // Follow the template here to assure functionality of the Synopsis.
-    this.input = {
-      "new_name": {
-        "type": "text", // Either text or plain.
-        "name": "New Name",
-        "description": "The new name that Sora should have after the command is executed."
-      }
-    };
+    // this.input = {
+    //   "input_name": {
+    //     "type": "plain", // Either text or plain.
+    //     "name": "An example of plain input.",
+    //     "description": "Example of plain input needed for the command to function."
+    //   }
+    // };
 
     // Uncomment to permit different options in the command
     // Follow the template here to assure functionality of the Synopsis.
     this.options = {
-      "d": {
-        "readable_name" : "Default",
-        "description"   : "Set Sora's name to the default name: \"Sora Akanegasaki\"",
+      "c": {
+        "readable_name" : "Create a new Color.",
+        "description"   : "Send the ping via direct message instead of sending it in the chat.",
+      },
+      "s": {
+        "readable_name" : "Set Color to yourself.",
+        "description"   : "Send a message defined on the fly instead of the default ping response.",
+        "needs_input"   : true,
       }
     };
 
@@ -49,20 +54,10 @@ class SetName extends Command {
    */
   tasks(data) {
 
-    var new_name = data.input.full;
-
-    // Set her name back to default.
-    if ("d" in data.input.options) {
-      new_name = "Sora Akanegasaki";
-    }
-
-    // Set username
-    this.client.user.setUsername(new_name)
-     .then(user => console.log(`My new username is ${user.username}`))
-     .catch(console.error);
+    this.client.reply(data.msg, 'This is an example command. :O Did you even know this existed?');
 
   }
 
 }
 
-module.exports = SetName;
+module.exports = Paint;

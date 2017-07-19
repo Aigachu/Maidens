@@ -65,8 +65,10 @@ class SoraClient extends DiscordClient {
 
     // Event: When Sora connects to Discord and is ready.
     this.on('ready', () => {
+
       // Logs connection event in console.
       console.log("\nSora: I am now properly linked to the Discord infrastructure. Enjoy!");
+
     });
 
     /**
@@ -74,14 +76,18 @@ class SoraClient extends DiscordClient {
      * @param  {Object} message :: https://discord.js.org/#/docs/main/stable/class/Message
      */
     this.on("message", (message) => {
+
       // The Command Manager interprets the message and decides what to do with it.
       this.commandManager.interpret(message);
+
     });
 
     // Event: When Sora disconnects from Discord.
     this.on('disconnected', () => {
+
       // Logs disconnection event in console.
       console.log("Sora: I have been disconnected from the Discord infrastructure, which means I'm going to disappear soon. ;_; See you soon though!");
+
     });
 
     // Sora will automatically login when instanciated.
@@ -96,8 +102,10 @@ class SoraClient extends DiscordClient {
    * @param  {[Message/User/Channel]} destination Destination to send the text to.
    */
   im(destination, text) {
+
     // The Discourse Manager takes care of this. In case Discord.Js changes thing greatly, we would only have to modify things in there.
     this.discourseManager.instantMessage(destination, text);
+
   }
 
   /**
@@ -107,8 +115,10 @@ class SoraClient extends DiscordClient {
    * @param  {[Message]} destination Destination to send the text to.
    */
   reply(message, text) {
+
     // The Discourse Manager takes care of this. In case Discord.Js changes thing greatly, we would only have to modify things in there.
     this.discourseManager.reply(message, text);
+    
   }
 
   /**

@@ -6,15 +6,31 @@ class Pong extends Command {
 
     super(client);
 
+    this.aliases = [
+      "po"
+    ];
     // this.help = "";
     // this.description = "";
-    // this.reqParams = 0;
+
+    this.options = {
+      "direct-message": {
+        "readable_name" : "Direct Message",
+        "description"   : "Send the ping via direct message instead of sending it in the chat.",
+        "shortcuts"     : ["dm"],
+      },
+      "custom-message": {
+        "readable_name" : "Custom Message",
+        "description"   : "Send a message defined on the fly instead of the default ping response.",
+        "shortcuts"     : ["cm"],
+        "input"         : "yes",
+      }
+    };
 
   }
 
   tasks(data) {
 
-    this.client.im(data.msg.author, `Sora, version 2.0, at your service. ;)`);
+    this.client.im(data.msg.author, `Pong! Sora, version 2.0, at your service. ;)`);
 
   }
 

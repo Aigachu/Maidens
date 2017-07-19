@@ -1,41 +1,45 @@
 /**
- * Class [Command].
+ * Class [Command]
  *
  * This class defines the properties of a [Command] object. Commands
  * are orders that can be given to a bot. The bot interprets these
  * orders and executes tasks in consequence.
  *
+ * @see  /commands/Example.js for a template on how to create a new command!
+ *       WARNING: Coding experience required to create complex commands. ;)
+ *
  * === Properties ===
  * - {key}				:	The command identifier, as well as the text that triggers it. By default, this will take the name of the class.
- *   - @todo : Command Aliases
  * - {client}			:	The Discord Bot client.
+ * - {aliases}    : Array of different aliases a command can be called by.
  * - {helpText}		:	Short text to help show how the command is used.
  * - {descText}		:	Short (or long if you want) description to explain the purpose of the command.
- * - {signature}	:	Defines how the command should be inputted to function properly.
- *   - This functionality is designed to take in identifiers of each component a command must have that comes after the command key.
- *   - *    -> Wildcard. The command ignores parameters, and will function regarless of what comes after the command key.
- *   - p    -> Regular parameter. Collection of characters/numbers without spaces.
- *   - {s}  -> String (a collection of text in brackets with spaces)
- *   - @    -> A user mention.
- *   - --o  -> An option definition.
+ * - {input}      : Object to configure whether or not the command needs raw input.
+ *   e.g. $sora ping <raw_input>
+ * - {options}    : Object to configure whether or not the command will have options to extend functionality.
+ *   e.g. $sora ping [-d] [-c]
  */
 class Command {
 
 	// Constructor for the Command Class
 	constructor(client) {
 
-    this.client     = client;
-
 		// Instantiate class properties. These are default values that will be assigned to any child command
     // that doesn't have these values set.
 		// Descriptions of each up above!
+    
+    this.client     = client; 
 		this.key 				= this.constructor.name.toLowerCase();
+
+    // The upcoming properties are customizable per command.
+    // These are the default values.
+    this.aliases    = [];
 		this.helpText 	= "This is the default help text for commands...Which means that Aiga was too lazy to write one for this command. :/ Bug him about it!";
 		this.descText   = "This is the default description for commands...Which means that Mr. Aiga was being too much of a lazy fart to write one for this command. :/ Bug him about it!";
-		this.pattern    = '*';
-
-    // Preparators
-    this.signature = this._sign(this.pattern);
+    
+    this.input      = {};
+    
+    this.options    = {};
 
   }
 
@@ -45,32 +49,20 @@ class Command {
    * @param  {[string]} msg    	Message that triggered the command.
    * @param  {[array]} 	params 	Parameters array extracted from the message.
    */
-  execute(msg, params) {
+  execute(msg, input) {
+  	this.tasks({
+  		msg: msg,
+  		input: input
+  	});
+  }
 
-    switch(params[0]) {
-
-      // If the first parameter is '--help', we print the help() function of the command.
-      // @todo : If --help is found anywhere in the command, do this.
-      case '--help':
-        this.help(msg);
-        return;
-        break;
-
-      // If the first parameter is '--desc', we print the desc() function of the command.
-      // @todo : If --desc is found anywhere in the command, do this.
-      case '--desc':
-        this.desc(msg);
-        return;
-        break;
-
-      default:
-        // Or, do the specified tasks.
-        this.tasks({
-          msg: msg,
-          params: params
-        });
-        break;
-    }
+  /**
+   * Tasks method.
+   * Code to run for the given command when executed.
+   */
+  tasks(data) {
+  	// General tasks for all commands?
+  	// Right now, the tasks() method only does things in child Command instances.
   }
 
   /**
@@ -97,51 +89,46 @@ class Command {
    * Error method.
    * Error handler for multiple errors that can occur when trying to execute a command.
    * @param  {[string/array]} data Pertinent data for the error.
-   * @param  {[string]} 			type Type of error. This determines which text is said by Sora.
-   * @param  {[type]} 				msg  The message containing the command that triggered the error.
+   * @param  {[string]}       type Type of error. This determines which text is said by Sora.
+   * @param  {[type]}         msg  The message containing the command that triggered the error.
    */
   error(data, type, msg) {
-		switch (type) {
-	    case 'ParamsException':
-	        this.client.reply(msg, `
-	        	_**Woops!**_ - The number of parameters given for the \`${this.key}\` command is wrong.\n
-	        	You provided ${data} parameter(s) when you should have provided ${this.reqParams}!`
-	        );
-	        break;
-	    default:
-	        // Do nothing
-	        break;
-		}
 
-		this.client.reply(msg,
-			`Please use the \`--help\` option of the command through the following method.\n
-			\`${this.client.cprefix} ${this.key} --help\`\n
-			This will give you more information on how to use the command!`
-		);
-  }
+    var error_msg = "";
 
-  /**
-   * Signature setter.
-   * When the Class is created, we want to initiate the Command signature.
-   * @param  {[string]} pattern A custom pattern that will be used to create the array.
-   * @return {[array]}         An empty array if the command is a simple command. A complex array of components needed for the command if the command is complex.
-   */
-  _sign(pattern) {
-
-    var signature = [];
-
-    if(pattern != '*') {
-      var components = pattern.split(" ");
-
-      components.forEach(function(component){
-        var component_key = component.substr(0, component.indexOf('.'));
-        var component_label = component.substr(component.indexOf('.') + 1, component.length);
-        signature[component_key] = component_label;
-      });
+    switch (type) {
+      
+      case 'InputGivenWhenSimpleCommand':
+          error_msg = `_**Woops!**_ - Seems like some input was given for the \`${this.key}\` command, but this command doesn't accept input.\n`;
+          break;
+      
+      case 'OptionsGivenWhenOptionlessCommand':
+          error_msg = `_**Woops!**_ - Seems like some options were given for the \`${this.key}\` command, but this command doesn't accept options.\n`;
+          break;
+      
+      case 'InvalidOption':
+          error_msg = `_**Woops!**_ - Seems like there was one or more invalid option(s) for the \`${this.key}\` command.\n`;
+          break;
+      
+      case 'OptionGivenWithoutInput':
+          error_msg = `_**Woops!**_ - Seems like an option was given, but without input to specify, for the \`${this.key}\` command.\n`;
+          break;
+      
+      case 'InputRequiredButNotEntered':
+          error_msg = `_**Woops!**_ - Seems like some raw input was forgotten for the \`${this.key}\` command.\n`;
+          break;
+      
+      default:
+          // Do nothing
+          break;
     }
 
-    return signature;
+    this.client.im(msg.author, error_msg);
+
+    this.client.im(msg.author,`Please use the \`--help\` option of the command through the following method.\n\n\`${this.client.cprefix} ${this.key} --help\`\n\nThis will give you more information on how to use the command!`);
   }
+
+  // @TODO - Synopsis generator.
 
 }
 

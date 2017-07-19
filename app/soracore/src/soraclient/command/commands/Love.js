@@ -1,6 +1,6 @@
 const Command = require('../Command');
 
-class Example extends Command {
+class Love extends Command {
 
 	constructor(client) {
 
@@ -54,10 +54,19 @@ class Example extends Command {
    */
   tasks(data) {
 
-    this.client.reply(data.msg, 'This is an example command. :O Did you even know this existed?');
+    if(!_.isEmpty(data.input.full)) {
+      // Lol Aiga naming your variable 'thing' really? xD
+      var thing = data.input.full;
+
+      var author_name = data.msg.author.name;
+
+      data.msg.channel.send("There is __**" + Math.floor(Math.random() * 100) + "%**__ love between <@" + data.msg.author.id + "> and **" + thing + "**!" );
+    } else {
+      this.client.reply( data.msg, "You have 100% for ZeRo & M2K's AS5 if you don't specify an object or person!\n\n_Make sure you put an argument! `!love cheesecake`_");
+    }
 
   }
 
 }
 
-module.exports = Example;
+module.exports = Love;

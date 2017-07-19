@@ -1,6 +1,6 @@
 const Command = require('../Command');
 
-class Example extends Command {
+class RollDice extends Command {
 
 	constructor(client) {
 
@@ -8,7 +8,7 @@ class Example extends Command {
 
     // Uncomment to enter different aliases that can be used to use the command.
     // e.g. the ping command can have pi or pg as aliases.
-		// this.aliases = [ "alias1", "alias2"];
+		this.aliases = [ "rd" ];
     
     // Uncomment to customize the text that will be shown when --help is used.
     // this.help = "";
@@ -54,10 +54,38 @@ class Example extends Command {
    */
   tasks(data) {
 
-    this.client.reply(data.msg, 'This is an example command. :O Did you even know this existed?');
+    var roll = Math.floor(Math.random() * 6) + 1;
+
+    var roll_types = [];
+    roll_types.push({
+      message: "_rolls the die normally_",
+      timeout: 1
+    });
+    roll_types.push({
+      message: "_rolls the die violently_\n_the die falls on the ground_",
+      timeout: 2
+    });
+    roll_types.push({
+      message: "_accidentally drops the die on the ground while getting ready_\nOops! Still counts right...?",
+      timeout: 2
+    });
+    roll_types.push({
+      message: "_spins the die_\nWait for it...",
+      timeout: 5
+    });
+
+    var rand = roll_types[Math.floor(Math.random() * roll_types.length)];
+
+    this.client.reply(data.msg, rand.message);
+
+    var client = this.client;
+
+    setTimeout(function(){
+      client.reply(data.msg, " you rolled a **" + roll + "** !");
+    }, 1000 * rand.timeout);
 
   }
 
 }
 
-module.exports = Example;
+module.exports = RollDice;

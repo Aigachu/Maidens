@@ -32,6 +32,9 @@ global.glob = require('glob');
 // Path Resolver
 global.path = require('path');
 
+// Underscore
+global._ = require('underscore');
+
 /**
 * === Exports ===
 * When this folder is required, this is what's sent to the variable.

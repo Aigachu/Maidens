@@ -1,6 +1,19 @@
 const Command = require('../Command');
 
-class Example extends Command {
+/**
+ * Implements the main command.
+ * Randomly selects a main from Super Smash Brothers for Wii U/3DS, for the user of the command.
+ * Posts the image of the main.
+ * Color Palette Randomization too!
+ *
+ * IF BAYONIGGA IS CHOSEN, POP OUT THE "OH NON" MEME AS WELL FOR FUNNIES.
+ *
+ * THIS IS A NICE TO HAVE - NOT A TOP PRIORITY.
+ * SAVES LAST 10 MAINS.
+ *
+ * MP3 FILES OF THE ANNOUNCER SAYING THE NAME OF THE CHARACTER IN A VOICE CHANNEL ONCE THE COMMAND IS USED.
+ */
+class SmashMain extends Command {
 
 	constructor(client) {
 
@@ -8,7 +21,7 @@ class Example extends Command {
 
     // Uncomment to enter different aliases that can be used to use the command.
     // e.g. the ping command can have pi or pg as aliases.
-		// this.aliases = [ "alias1", "alias2"];
+		this.aliases = [ "s4main", "smain"];
     
     // Uncomment to customize the text that will be shown when --help is used.
     // this.help = "";
@@ -54,10 +67,21 @@ class Example extends Command {
    */
   tasks(data) {
 
-    this.client.reply(data.msg, 'This is an example command. :O Did you even know this existed?');
+    // Get all images from Smash 4 resources folder.
+    var smash4_character_directories = fs.readdirSync(resources + "smash4-character-portraits");
+
+    var character_name = smash4_character_directories[Math.floor(Math.random() * smash4_character_directories.length)];
+
+    var character_images = fs.readdirSync(resources + "smash4-character-portraits/" + character_name);
+
+    var random_image = character_images[Math.floor(Math.random() * character_images.length)];
+
+    this.client.reply(data.msg, "! Your new main is..._drumroll_");
+    
+    data.msg.channel.send("", { files: [resources + 'smash4-character-portraits/' + character_name + "/" + random_image]});
 
   }
 
 }
 
-module.exports = Example;
+module.exports = SmashMain;
