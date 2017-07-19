@@ -153,11 +153,11 @@ class CommandManager {
     if (!_.isEmpty(command.options) && !_.isEmpty(input.options)) {
       var error = false;
       Object.keys(input.options).forEach(function(key) {
-        if(!(key in command.options)) {
+        if (!(key in command.options)) {
           error = "InvalidOption";
           return;
         }
-        if (command.options[key].needs_input && input.options[key].constructor.name != "String") {
+        if (command.options[key].needs_text && input.options[key].constructor.name != "String") {
           error = "OptionGivenWithoutInput";
           return;
         }
@@ -178,6 +178,11 @@ class CommandManager {
     command.execute(message, input);
   }
 
+  /**
+   * [getCommandInput description]
+   * @param  {[type]} msg_content [description]
+   * @return {[type]}             [description]
+   */
   getCommandInput(msg_content) {
 
     var input = {};
@@ -186,16 +191,16 @@ class CommandManager {
     var options = {};
 
     // Regex to get any input options in the message.
-    var get_input_options_regex = /-([\w-]?)\"([^"]*)\"/g;
-    var iopts = msg_content.match(get_input_options_regex);
+    var get_options_with_text_regex = /-([\w-]?)\"([^"]*)\"/g;
+    var t_opts = msg_content.match(get_options_with_text_regex);
 
     // If we find some input-options in the message... e.g. '$s ping -c"This is a custom message"'
-    if(iopts != null) {
+    if(t_opts != null) {
       // For each match, add the option to the options array and remove it from the message.
       // This will clean options out of the message so we're only left with the raw input (if needed)
-      iopts.forEach(function(iopt){
-        options[iopt.substr(0, 2).replace("-", "")] = iopt.substr(2, iopt.length).replace(/\"/g, "");
-        msg_content = msg_content.replace(iopt, "");
+      t_opts.forEach(function(t_opt){
+        options[t_opt.substr(0, 2).replace("-", "")] = t_opt.substr(2, t_opt.length).replace(/\"/g, "");
+        msg_content = msg_content.replace(t_opt, "");
       });
     }
 
@@ -208,7 +213,7 @@ class CommandManager {
       // For each match, add the option to the options array and remove it from the message.
       // This will clean options out of the message so we're only left with the raw input (if needed)
       opts.forEach(function(opt){
-        options[opt.replace("-", "")] = true;
+        options[opt.charAt(1)] = (opt.substr(2, opt.length)) ? opt.substr(2, opt.length) : opt.charAt(1);
         msg_content = msg_content.replace(opt, "");
       });
     }

@@ -28,17 +28,17 @@ class RollDice extends Command {
 
     // Uncomment to permit different options in the command
     // Follow the template here to assure functionality of the Synopsis.
-    // this.options = {
-    //   "d": {
-    //     "readable_name" : "Direct Message",
-    //     "description"   : "Send the ping via direct message instead of sending it in the chat.",
-    //   },
-    //   "c": {
-    //     "readable_name" : "Custom Message",
-    //     "description"   : "Send a message defined on the fly instead of the default ping response.",
-    //     "needs_input"   : true,
-    //   }
-    // };
+    this.options = {
+      "n": {
+        "readable_name" : "Number of dice",
+        "description"   : "Customize the number of dice that will be thrown. If no number is specified, it will roll 2 dice instead of one.",
+      },
+      "d": {
+        "readable_name" : "Number of faces",
+        "description"   : "Customize the number of faces the dice you will throw will have.",
+        "needs_text"   : true,
+      }
+    };
 
   }
 
@@ -54,34 +54,76 @@ class RollDice extends Command {
    */
   tasks(data) {
 
-    var roll = Math.floor(Math.random() * 6) + 1;
+    // By default, Sora will roll 6-faced dice.
+    var dice_faces = 6;
+
+    // By default, Sora will only roll 1 die.
+    var dice_count = 1;
+
+    // Keeps a total.
+    var total = 0;
+
+    // Array to hold all of the rolls.
+    var result = "";
+
+    // If the "n" option is used, change the text Sora says.
+    if ("n" in data.input.options) {
+
+      // @todo - Throw an error if the data is not a number.
+      // @todo - Throw an error if the number is too much.
+      dice_count = (data.input.options["n"] == "n") ? 1 : data.input.options["n"];
+    }
+
+    // If the "c" option is used, change the text Sora says.
+    if ("d" in data.input.options) {
+
+      // @todo - Throw an error if the data is not a number.
+      // @todo - Throw an error if the number is too much.
+      dice_faces = (data.input.options["d"] == "d") ? 6 : data.input.options["d"];
+    }
+
+    // Roll the dice
+    for (var i = 0; i < dice_count; i++) {
+      var roll = (Math.floor(Math.random() * dice_faces) + 1);
+      result += roll + ", ";
+      total += roll;
+    }
+
+    result = result.substr(0, result.length - 2);
+
+    var result_msg = " the result of your roll is: **" + result + "**!"
+
+    if(dice_count > 1) {
+      result_msg += "\nThis gives you a total of: **" + total + "**!";
+    }
 
     var roll_types = [];
+
     roll_types.push({
-      message: "_rolls the die normally_",
+      message: "_rolls the dice normally_",
       timeout: 1
     });
     roll_types.push({
-      message: "_rolls the die violently_\n_the die falls on the ground_",
+      message: "_rolls the dice violently_\n_the die falls on the ground_",
       timeout: 2
     });
     roll_types.push({
-      message: "_accidentally drops the die on the ground while getting ready_\nOops! Still counts right...?",
+      message: "_accidentally drops the dice on the ground while getting ready_\nOops! Still counts right...?",
       timeout: 2
     });
     roll_types.push({
-      message: "_spins the die_\nWait for it...",
+      message: "_spins the dice_\nWait for it...",
       timeout: 5
     });
 
     var rand = roll_types[Math.floor(Math.random() * roll_types.length)];
 
-    this.client.reply(data.msg, rand.message);
+    data.msg.channel.send(rand.message);
 
     var client = this.client;
 
     setTimeout(function(){
-      client.reply(data.msg, " you rolled a **" + roll + "** !");
+      client.reply(data.msg, result_msg);
     }, 1000 * rand.timeout);
 
   }

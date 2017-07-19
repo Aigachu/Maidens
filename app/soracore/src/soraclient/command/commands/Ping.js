@@ -27,7 +27,7 @@ class Ping extends Command {
       "c": {
         "readable_name" : "Custom Message",
         "description"   : "Send a message defined on the fly instead of the default ping response.",
-        "needs_input"   : true,
+        "needs_text"   : true,
       }
     };
 

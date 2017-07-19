@@ -1,19 +1,6 @@
 const Command = require('../Command');
 
-/**
- * Implements the main command.
- * Randomly selects a main from Super Smash Brothers for Wii U/3DS, for the user of the command.
- * Posts the image of the main.
- * Color Palette Randomization too!
- *
- * IF BAYONIGGA IS CHOSEN, POP OUT THE "OH NON" MEME AS WELL FOR FUNNIES.
- *
- * THIS IS A NICE TO HAVE - NOT A TOP PRIORITY.
- * SAVES LAST 10 MAINS.
- *
- * MP3 FILES OF THE ANNOUNCER SAYING THE NAME OF THE CHARACTER IN A VOICE CHANNEL ONCE THE COMMAND IS USED.
- */
-class SmashMain extends Command {
+class Google extends Command {
 
 	constructor(client) {
 
@@ -21,7 +8,7 @@ class SmashMain extends Command {
 
     // Uncomment to enter different aliases that can be used to use the command.
     // e.g. the ping command can have pi or pg as aliases.
-		this.aliases = [ "s4main", "smain", "main"];
+		this.aliases = [ "goog"];
     
     // Uncomment to customize the text that will be shown when --help is used.
     // this.help = "";
@@ -31,13 +18,13 @@ class SmashMain extends Command {
     
     // Uncomment to declare that input is required for this command.
     // Follow the template here to assure functionality of the Synopsis.
-    // this.input = {
-    //   "input_name": {
-    //     "type": "plain", // Either text or plain.
-    //     "name": "An example of plain input.",
-    //     "description": "Example of plain input needed for the command to function."
-    //   }
-    // };
+    this.input = {
+      "query": {
+        "type": "text", // Either text or plain.
+        "name": "Query",
+        "description": "Text to send to google for results."
+      }
+    };
 
     // Uncomment to permit different options in the command
     // Follow the template here to assure functionality of the Synopsis.
@@ -67,21 +54,30 @@ class SmashMain extends Command {
    */
   tasks(data) {
 
-    // Get all images from Smash 4 resources folder.
-    var smash4_character_directories = fs.readdirSync(resources + "smash4-character-portraits");
+    google.resultsPerPage = 5;
+    var nextCounter = 0;
+    var result_msg = "";
+     
+    google(data.input.full, function (err, res){
+      if (err) console.error(err)
+     
+      for (var i = 0; i < res.links.length; ++i) {
+        var link = res.links[i];
+        result_msg = link.title + ' - ' + link.href;
+        result_msg += link.description + "\n";
+      }
 
-    var character_name = smash4_character_directories[Math.floor(Math.random() * smash4_character_directories.length)];
+      if (nextCounter < 4) {
+        nextCounter += 1
+        if (res.next) res.next()
+      }
 
-    var character_images = fs.readdirSync(resources + "smash4-character-portraits/" + character_name);
+      data.msg.channel.send(result_msg);
 
-    var random_image = character_images[Math.floor(Math.random() * character_images.length)];
-
-    this.client.reply(data.msg, "! Your new main is..._drumroll_");
-    
-    data.msg.channel.send("", { files: [resources + 'smash4-character-portraits/' + character_name + "/" + random_image]});
+    });
 
   }
 
 }
 
-module.exports = SmashMain;
+module.exports = Google;

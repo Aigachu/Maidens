@@ -36,7 +36,7 @@ class Paint extends Command {
       "s": {
         "readable_name" : "Set Color to yourself.",
         "description"   : "Send a message defined on the fly instead of the default ping response.",
-        "needs_input"   : true,
+        "needs_text"   : true,
       }
     };
 
