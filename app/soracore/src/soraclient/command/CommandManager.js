@@ -55,15 +55,12 @@ class CommandManager {
       return false;
     }
 
-    // First, check if the message is a private message
-    // We don't want regular commands to be triggered in PMs with Sora.
-    // @todo : In the future, we'll work out how to treat commands differently when in PMs.
-    if (msg.channel.isPrivate) {
-      return false;
-    }
-
     // Divide text into distinct parameters.
     var split = msg.content.split(" ");
+
+    if(split[1] == null) {
+      return false;
+    }
 
     // Check if it contains the command syntax.
     if (split[0] != this.client.cprefix || split[1].length == 0) {
@@ -91,22 +88,47 @@ class CommandManager {
    * @param  {[Message]} msg Message heard or received that has been identified as a command.
    * @todo  : Make the IsCommand() function return a command key and parameters. We'll eliminate some duplicate splicing and fiddling.
    */
-  discernCommand(message, key) {
+  discernCommand(msg, key) {
+
+    var command = this.commands[key];
+
+    // We're gonna need to do a couple of extra checks to make sure that whoever invoked the command
+    // is allowed to use it in this given context.
+
+    // Check if the command is allowed by this user.
+    if (!_.isEmpty(command.config.auth.users) && _.indexOf(command.config.auth.users, msg.author.id) < 0) {
+      return false;
+    }
+
+    // Check if the command is being called in PMs and if it's allowed to be.
+    if (msg.channel.type == "dm" && !command.config.auth.pms) {
+      return false;
+    }
+
+    // Check if the command is allowed in this guild.
+    if (!_.isEmpty(command.config.auth.guilds) && _.indexOf(command.config.auth.guilds, msg.guild.id) < 0) {
+      return false;
+    }
+
+    // Check if the command is allowed in this channel.
+    if (!_.isEmpty(command.config.auth.channels) && _.indexOf(command.config.auth.channels, msg.channel.id) < 0) {
+      return false;
+    }
 
     // For the help and description options, we will treat them here if they are present.
     // Nothing else happens if these options are found.
-    if(message.content.includes("--help")) {
-      this.commands[key].help(message);
+    if (msg.content.includes("--help")) {
+      command.help(msg);
       return;
     }
 
-    if(message.content.includes("--desc")) {
-      this.commands[key].desc(message);
+    if (msg.content.includes("--desc")) {
+      command.desc(msg);
       return;
     }
 
     // Analyze the command into it's different parts and process their syntactic roles.
-    this.parseCommand(message, key);
+    this.parseCommand(msg, key);
 
   }
 
@@ -205,7 +227,7 @@ class CommandManager {
     }
 
     // Regex to get regular options in the message.
-    var get_options_regex = /-([\w-]*)/g;
+    var get_options_regex = /-([\w-#!$%?]*)/g;
     var opts = msg_content.match(get_options_regex);
 
     // If we find some regular options in the message... e.g. '$s ping -c -d'

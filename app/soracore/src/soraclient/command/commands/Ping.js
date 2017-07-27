@@ -6,7 +6,7 @@ class Ping extends Command {
 
     super(client);
 
-    this.aliases = ["pi","pg"];
+    this.aliases = ["pi","pg", "p"];
 
     // this.help = "";
     // this.description = "";
@@ -20,15 +20,24 @@ class Ping extends Command {
     // };
 
     this.options = {
-      "d": {
-        "readable_name" : "Direct Message",
-        "description"   : "Send the ping via direct message instead of sending it in the chat.",
+      d: {
+        readable_name : "Direct Message",
+        description   : "Send the ping via direct message instead of sending it in the chat.",
       },
-      "c": {
-        "readable_name" : "Custom Message",
-        "description"   : "Send a message defined on the fly instead of the default ping response.",
-        "needs_text"   : true,
+      c: {
+        readable_name : "Custom Message",
+        description   : "Send a message defined on the fly instead of the default ping response.",
+        needs_text   : true,
       }
+    };
+
+    this.config = {
+      auth: {
+        guilds: ["314130398173069312"],
+        channels: ["327535083164663808"],
+        pms: false,
+        users: ["77517077325287424", "82530619355037696", "83017457488363520"]
+      }, 
     };
 
   }
@@ -40,7 +49,8 @@ class Ping extends Command {
    */
   tasks(data) {
 
-    var ping_message = `Ping! Sora, version 2.0, at your service. ;)`;
+    // Default reply for the ping command.
+    var ping_message = `Pong! Sora, version 2.0, at your service. ;)`;
 
     // If the "c" option is used, change the text Sora says.
     if ("c" in data.input.options) {

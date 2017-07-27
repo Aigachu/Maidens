@@ -54,7 +54,7 @@ class Google extends Command {
    */
   tasks(data) {
 
-    google.resultsPerPage = 5;
+    google.resultsPerPage = 3;
     var nextCounter = 0;
     var result_msg = "";
      
@@ -67,7 +67,7 @@ class Google extends Command {
         result_msg += link.description + "\n";
       }
 
-      if (nextCounter < 4) {
+      if (nextCounter < 2) {
         nextCounter += 1
         if (res.next) res.next()
       }

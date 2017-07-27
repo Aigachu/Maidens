@@ -39,6 +39,15 @@ global._ = require('underscore');
 global.google = require('google');
 
 /**
+ * === Custom Modules ===
+ * Modules that aren't available via NPM, but obtained online.
+ */
+
+// Name That Color
+// http://chir.ag/projects/ntc 
+global.ntc = require('./vendor/ntc');
+
+/**
 * === Exports ===
 * When this folder is required, this is what's sent to the variable.
 */

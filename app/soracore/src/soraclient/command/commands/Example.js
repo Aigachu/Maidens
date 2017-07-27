@@ -19,25 +19,36 @@ class Example extends Command {
     // Uncomment to declare that input is required for this command.
     // Follow the template here to assure functionality of the Synopsis.
     // this.input = {
-    //   "input_name": {
-    //     "type": "plain", // Either text or plain.
-    //     "name": "An example of plain input.",
-    //     "description": "Example of plain input needed for the command to function."
+    //   input_name: {
+    //     type: "plain", // Either text or plain.
+    //     name: "An example of plain input.",
+    //     description: "Example of plain input needed for the command to function."
     //   }
     // };
 
     // Uncomment to permit different options in the command
     // Follow the template here to assure functionality of the Synopsis.
     // this.options = {
-    //   "d": {
+    //   d: {
     //     "readable_name" : "Direct Message",
     //     "description"   : "Send the ping via direct message instead of sending it in the chat.",
     //   },
-    //   "c": {
-    //     "readable_name" : "Custom Message",
-    //     "description"   : "Send a message defined on the fly instead of the default ping response.",
-    //     "needs_text"   : true,
+    //   c: {
+    //     readable_name : "Custom Message",
+    //     description   : "Send a message defined on the fly instead of the default ping response.",
+    //     needs_text   : true,
     //   }
+    // };
+
+    // Uncomment to configure the command.
+    // You can adjust which channels the command can be used in, as well as who can use the command.
+    // this.config = {
+    //   auth: {
+    //     guilds: [],
+    //     channels: [],
+    //     pms: false,
+    //     users: [],
+    //   },
     // };
 
   }

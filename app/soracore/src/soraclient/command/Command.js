@@ -41,6 +41,15 @@ class Command {
     
     this.options    = {};
 
+    this.config     = {
+      auth: {
+        guilds: [],
+        channels: [],
+        pms: false,
+        users: []
+      }, 
+    };
+
   }
 
   /**

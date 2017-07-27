@@ -30,7 +30,7 @@ class Pong extends Command {
 
   tasks(data) {
 
-    this.client.im(data.msg.author, `Pong! Sora, version 2.0, at your service. ;)`);
+    this.client.im(data.msg.author, `Ping! Sora, version 2.0, at your service. ;)`);
 
   }
 
