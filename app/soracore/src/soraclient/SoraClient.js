@@ -51,7 +51,7 @@ class SoraClient extends DiscordClient {
     this.apptoken = settings.apptoken;
     this.cprefix = settings.cprefix;
     this.gods = settings.gods;
-    this.admins = settings.admins;
+    this.admins = Object.assign(settings.admins, settings.gods);
 
      // Plug the command manager to the bot's Client.
     this.commandManager = new CommandManager(this);

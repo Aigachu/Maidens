@@ -7,7 +7,10 @@
  * Sora is now using Discord's main API!
  *
  * Use this link to get others to add her to their servers:
- * https://discordapp.com/oauth2/authorize?&client_id=172474398308040704&scope=bot&permissions=0
+ * https://discordapp.com/oauth2/authorize?&client_id=172474398308040704&scope=bot&permissions=1546959939
+ *
+ * Current valid permission bit: 1546959939
+ * To calculate the permissions bit, go here: https://discordapi.com/permissions.html
  *
  * Last note - See README.md for more details!
  *

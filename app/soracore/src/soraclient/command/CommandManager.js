@@ -169,6 +169,8 @@ class CommandManager {
     
     var input = this.getCommandInput(message.content);
 
+    var client = this.client;
+
     // If the command takes options, and options were submitted, compare the options inputted.
     // Invalid options should not pass through to the command.
     // @todo - show invalid options in error text.
@@ -182,6 +184,18 @@ class CommandManager {
         if (command.options[key].needs_text && input.options[key].constructor.name != "String") {
           error = "OptionGivenWithoutInput";
           return;
+        }
+        if ("oplevel" in command.options[key]) {
+          console.log(client.gods);
+          console.log(message.author.id)
+          if ( command.options[key].oplevel == 1 && !(message.author.id in client.admins)) {
+            console.log(`Deleted ${key} from options. Not permitted. Not Admin.`);
+            delete input.options[key];      
+          }
+          if ( command.options[key].oplevel == 2 && !(message.author.id in client.gods)) {
+            console.log(`Deleted ${key} from options. Not permitted. Not God.`);
+            delete input.options[key];      
+          }
         }
       });
       if (error) {

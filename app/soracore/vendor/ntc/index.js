@@ -59,20 +59,20 @@ class Ntc {
     if(color.length == 4)
       color = "#" + color.substr(1, 1) + color.substr(1, 1) + color.substr(2, 1) + color.substr(2, 1) + color.substr(3, 1) + color.substr(3, 1);
 
-    var rgb = ntc.rgb(color);
+    var rgb = this.rgb(color);
     var r = rgb[0], g = rgb[1], b = rgb[2];
-    var hsl = ntc.hsl(color);
+    var hsl = this.hsl(color);
     var h = hsl[0], s = hsl[1], l = hsl[2];
     var ndf1 = 0, ndf2 = 0, ndf = 0;
     var cl = -1, df = -1;
 
-    for(var i = 0; i < ntc.names.length; i++)
+    for(var i = 0; i < this.names.length; i++)
     {
-      if(color == "#" + ntc.names[i][0])
-        return ["#" + ntc.names[i][0], ntc.names[i][1], true];
+      if(color == "#" + this.names[i][0])
+        return ["#" + this.names[i][0], this.names[i][1], true];
 
-      ndf1 = Math.pow(r - ntc.names[i][2], 2) + Math.pow(g - ntc.names[i][3], 2) + Math.pow(b - ntc.names[i][4], 2);
-      ndf2 = Math.pow(h - ntc.names[i][5], 2) + Math.pow(s - ntc.names[i][6], 2) + Math.pow(l - ntc.names[i][7], 2);
+      ndf1 = Math.pow(r - this.names[i][2], 2) + Math.pow(g - this.names[i][3], 2) + Math.pow(b - this.names[i][4], 2);
+      ndf2 = Math.pow(h - this.names[i][5], 2) + Math.pow(s - this.names[i][6], 2) + Math.pow(l - this.names[i][7], 2);
       ndf = ndf1 + ndf2 * 2;
       if(df < 0 || df > ndf)
       {
@@ -81,7 +81,7 @@ class Ntc {
       }
     }
 
-    return (cl < 0 ? ["#000000", "Invalid Color: " + color, false] : ["#" + ntc.names[cl][0], ntc.names[cl][1], false]);
+    return (cl < 0 ? ["#000000", "Invalid Color: " + color, false] : ["#" + this.names[cl][0], this.names[cl][1], false]);
   }
 
   // adopted from: Farbtastic 1.2
