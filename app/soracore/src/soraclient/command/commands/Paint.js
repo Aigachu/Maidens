@@ -295,7 +295,7 @@ class Paint extends Command {
 
     data.msg.guild.roles.every((role) => {
       if(role.name.includes('.color')){
-        list_msg += `  - ${role} \${role.hexColor}\`\n`;
+        list_msg += `  - ${role} \`${role.hexColor}\`\n`;
       }
       return true;
     });

@@ -17,6 +17,9 @@ global.resources = coreroot + 'assets/';
 // Discord.Js library. Thank you Hydrabolt!
 global.Discord = require("discord.js");
 
+// Tmi.js Library (For Twitch Integration)
+global.tmi = require("tmi.js");
+
 // Get jsonfile module ; Used to facilitate json reading and writing.
 global.jsonfile = require("jsonfile");
 
@@ -40,12 +43,12 @@ global.google = require('google');
 
 /**
  * === Custom Modules ===
- * Modules that aren't available via NPM, but obtained online.
+ * Modules that aren't available via NPM, but obtained online or coded by hand.
  */
 
 // Name That Color
 // http://chir.ag/projects/ntc 
-global.ntc = require('./vendor/ntc');
+global.ntc = require('./custom_modules/ntc');
 
 /**
 * === Exports ===

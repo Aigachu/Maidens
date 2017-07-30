@@ -121,6 +121,16 @@ class SoraClient extends DiscordClient {
     
   }
 
+  startTyping(channel, delay) {
+    return new Promise((resolve, reject) => {
+      channel.startTyping(1);
+      setTimeout(function(){
+        resolve("Success!"); // Yay! Everything went well!
+        channel.stopTyping();
+      }, delay);
+    });
+  }
+
   /**
    * @todo  TypeWrite method
    * This is used for typewriting replies or messages, instead of sending them right away.
