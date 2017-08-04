@@ -1,5 +1,6 @@
 # -------------------------------------
-#              Maiden Ignores
+#              Git Ignores
 # -------------------------------------
-app/config.js
-app/node_modules
+settings.js
+config.js
+node_modules/
