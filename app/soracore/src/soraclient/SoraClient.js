@@ -15,10 +15,10 @@ const DiscordClient = require(coreroot + 'node_modules/discord.js/src/client/Cli
 const CommandManager = require('./command/CommandManager');
 
 // Used to manage text communication.
-const DiscourseManager = require('./discourse/DiscourseManager');
+const CooldownManager = require('./cooldown/CooldownManager');
 
-// @TODO
-// const ReactManager = require('./react/ReactManager');
+// Used to manage quips (replies to certain words!).
+const QuipManager = require('./quip/QuipManager');
 
 // @TODO
 // const ConfigManager = require('./config/ConfigManager');
@@ -53,11 +53,17 @@ class SoraClient extends DiscordClient {
     this.gods = settings.gods;
     this.admins = Object.assign(settings.admins, settings.gods);
 
-     // Plug the command manager to the bot's Client.
+    // Plug the cooldown manager to the bot's Client.
+    this.cooldownManager = new CooldownManager(this);
+
+    // Plug the command manager to the bot's Client.
     this.commandManager = new CommandManager(this);
 
-    // Plug the discourse manager to the bot's Client.
-    this.discourseManager = new DiscourseManager(this);
+    // Plug the quip manager to the bot's Client.
+    this.quipManager = new QuipManager(this);
+
+    // Listeners
+    this.listeners = [];
 
     /**
      * === Events Callbacks ===
@@ -77,8 +83,17 @@ class SoraClient extends DiscordClient {
      */
     this.on("message", (message) => {
 
+      // Fire listeners set by other modules.
+      this.listeners.every((listener) => {
+        listener.listen();
+        return true;
+      })
+
       // The Command Manager interprets the message and decides what to do with it.
       this.commandManager.interpret(message);
+
+      // The Quip Manager interprets the message and decides to respond with.
+      this.quipManager.quip(message);
 
     });
 
@@ -103,8 +118,7 @@ class SoraClient extends DiscordClient {
    */
   im(destination, text) {
 
-    // The Discourse Manager takes care of this. In case Discord.Js changes thing greatly, we would only have to modify things in there.
-    this.discourseManager.instantMessage(destination, text);
+    destination.send(text);
 
   }
 
@@ -116,8 +130,7 @@ class SoraClient extends DiscordClient {
    */
   reply(message, text) {
 
-    // The Discourse Manager takes care of this. In case Discord.Js changes thing greatly, we would only have to modify things in there.
-    this.discourseManager.reply(message, text);
+    message.reply(text);
     
   }
 
@@ -131,15 +144,9 @@ class SoraClient extends DiscordClient {
     });
   }
 
-  /**
-   * @todo  TypeWrite method
-   * This is used for typewriting replies or messages, instead of sending them right away.
-   * @param  {[string]} text        Text to send.
-   * @param  {[Message]} destination Destination to send the text to.
-   */
-  // typewrite(text, destination) {
-  //   this.discourseManager.typeMessage(text, destination);
-  // }
+  cool(type, key, scope, duration) {
+    this.cooldownManager.set(type, key, scope, duration);
+  }
 
 }
 

@@ -50,6 +50,10 @@ class Example extends Command {
     //     users: [],
     //   },
     // };
+    
+    // Uncomment to adjust the cooldown of the command.
+    // The default cooldown is 5 seconds.
+    // this.cooldown = 5;
 
   }
 

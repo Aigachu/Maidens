@@ -8,7 +8,7 @@ class CoinFlip extends Command {
 
     // Uncomment to enter different aliases that can be used to use the command.
     // e.g. the ping command can have pi or pg as aliases.
-    this.aliases = [ "cf", "cflip"];
+    this.aliases = [ "cf", "flip"];
     
     // Uncomment to customize the text that will be shown when --help is used.
     // this.help = "";
@@ -52,29 +52,28 @@ class CoinFlip extends Command {
 
     flip_types.push({
       message: "_Coinflip emulation has begun. Just a moment..._",
-      timeout: 2
+      timeout: 2000
     });
 
     flip_types.push({
       message: "_Coinflip emulation has begun. Looks like..._",
-      timeout: 1
+      timeout: 1000
     });
 
     flip_types.push({
       message: "_Coinflip emulation has begun. The coin spins_\nWait for it...",
-      timeout: 5
+      timeout: 5000
     });
 
     var rand = flip_types[Math.floor(Math.random() * flip_types.length)];
 
-    this.client.im(data.msg.channel, rand.message);
-    // this.client.startTyping(msg.channel);
-    var client = this.client;
-    setTimeout(function(){
-      client.im(data.msg.channel, `<@${data.msg.author.id}> obtained **${result}** !`);
-      // this.client.stopTyping(msg.channel);
-    }, 1000 * rand.timeout);
-
+    data.msg.channel.send(rand.message)
+      .then(() => {
+        this.client.startTyping(data.msg.channel, rand.timeout)
+          .then(() => {
+            data.msg.channel.send(`<@${data.msg.author.id}> obtained **${result}** !`);
+          });
+      });
   }
 
 }

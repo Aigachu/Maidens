@@ -8,7 +8,7 @@ class RollDice extends Command {
 
     // Uncomment to enter different aliases that can be used to use the command.
     // e.g. the ping command can have pi or pg as aliases.
-		this.aliases = [ "rd" ];
+		this.aliases = [ "rd" , "roll"];
     
     // Uncomment to customize the text that will be shown when --help is used.
     // this.help = "";
@@ -101,31 +101,30 @@ class RollDice extends Command {
 
     roll_types.push({
       message: "_rolls the dice normally_",
-      timeout: 1
+      timeout: 1000
     });
     roll_types.push({
       message: "_rolls the dice violently_\n_the die falls on the ground_",
-      timeout: 2
+      timeout: 2000
     });
     roll_types.push({
       message: "_accidentally drops the dice on the ground while getting ready_\nOops! Still counts right...?",
-      timeout: 2
+      timeout: 2000
     });
     roll_types.push({
       message: "_spins the dice_\nWait for it...",
-      timeout: 5
+      timeout: 5000
     });
 
     var rand = roll_types[Math.floor(Math.random() * roll_types.length)];
 
-    data.msg.channel.send(rand.message);
-
-    var client = this.client;
-
-    setTimeout(function(){
-      client.reply(data.msg, result_msg);
-    }, 1000 * rand.timeout);
-
+    data.msg.channel.send(rand.message)
+      .then(() => {
+        this.client.startTyping(data.msg.channel, rand.timeout)
+          .then(() => {
+            data.msg.reply(result_msg);
+          });
+      });
   }
 
 }

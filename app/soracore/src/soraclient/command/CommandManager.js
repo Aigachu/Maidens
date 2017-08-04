@@ -58,12 +58,12 @@ class CommandManager {
     // Divide text into distinct parameters.
     var split = msg.content.split(" ");
 
-    if(split[1] == null) {
+    if(split[1] == null || split[1].length == 0) {
       return false;
     }
 
     // Check if it contains the command syntax.
-    if (split[0] != this.client.cprefix || split[1].length == 0) {
+    if (split[0] != this.client.cprefix && split[0] != `<@${this.client.user.id}>` && split[0] != `<@!${this.client.user.id}>`) {
       return false;
     }
 
@@ -98,6 +98,15 @@ class CommandManager {
     // Check if the command is allowed by this user.
     if (!_.isEmpty(command.config.auth.users) && _.indexOf(command.config.auth.users, msg.author.id) < 0) {
       return false;
+    }
+
+    if ("oplevel" in command.config.auth) {
+      if ( command.config.auth.oplevel == 1 && !(msg.author.id in client.admins)) {
+        return false;      
+      }
+      if ( command.config.auth.oplevel == 2 && !(msg.author.id in client.gods)) {
+        return false;      
+      }
     }
 
     // Check if the command is being called in PMs and if it's allowed to be.
@@ -186,14 +195,10 @@ class CommandManager {
           return;
         }
         if ("oplevel" in command.options[key]) {
-          console.log(client.gods);
-          console.log(message.author.id)
           if ( command.options[key].oplevel == 1 && !(message.author.id in client.admins)) {
-            console.log(`Deleted ${key} from options. Not permitted. Not Admin.`);
             delete input.options[key];      
           }
           if ( command.options[key].oplevel == 2 && !(message.author.id in client.gods)) {
-            console.log(`Deleted ${key} from options. Not permitted. Not God.`);
             delete input.options[key];      
           }
         }

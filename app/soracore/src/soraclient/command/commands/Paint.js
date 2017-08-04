@@ -16,7 +16,7 @@ const Command = require('../Command');
  *  - Preview colors (NTH)
  *  - Mix colors (NTH)
  */
-class Paint extends Command {
+class PaintJob extends Command {
 
 	constructor(client) {
 
@@ -24,7 +24,7 @@ class Paint extends Command {
 
     // Uncomment to enter different aliases that can be used to use the command.
     // e.g. the ping command can have pi or pg as aliases.
-		this.aliases = ["color", "col", "pnt"];
+		this.aliases = ["paint", "color", "col", "pnt"];
     
     // Uncomment to customize the text that will be shown when --help is used.
     this.help = "This command can be used by anyone to customize their own colors.";
@@ -80,6 +80,10 @@ class Paint extends Command {
     //     users: [],
     //   },
     // };
+
+    // Uncomment to adjust the cooldown of the command.
+    // The default cooldown is 5 seconds.
+    this.cooldown = 2; // In seconds.
 
   }
 
@@ -190,8 +194,6 @@ class Paint extends Command {
     if(member_current_color_role !== false) {
       // Remove color if one is set.
       this.removeColorFromMember(data, data.msg.member);
-      data.msg.channel.send(`Any color you may have had previously has been removed. :)`);
-      return false;
     }
 
     // Add the color to the member.
@@ -300,7 +302,20 @@ class Paint extends Command {
       return true;
     });
 
-    data.msg.channel.send(list_msg);
+    data.msg.channel.send(`_Scanning available colors in this server..._`)
+      .then(() => {
+        this.client.startTyping(data.msg.channel, 2500)
+          .then(() => {
+            if (list_msg == `Here is the list of all colors in this server:\n\n`) {
+              data.msg.channel.send(`There are no colors in this server! Better start creating some. :)`);
+            } else {
+              data.msg.channel.send(list_msg);
+            }
+         });
+      });
+
+    return;
+    
   }
 
   deleteAllColorRoles(data) {
@@ -324,4 +339,4 @@ class Paint extends Command {
 
 }
 
-module.exports = Paint;
+module.exports = PaintJob;

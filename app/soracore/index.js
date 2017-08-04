@@ -9,10 +9,10 @@ global.namespace = coreroot + 'src/';
 global.resources = coreroot + 'assets/';
 
 /**
-* === Modules ===
-* Must run 'npm install' in the 'app' folder if any of these modules are not found.
-* It is important to user 'npm install --save' if new packages are added during development. This will update packages.json to include new dependencies.
-*/
+ * === Modules ===
+ * Must run 'npm install' in the 'app' folder if any of these modules are not found.
+ * It is important to user 'npm install --save' if new packages are added during development. This will update packages.json to include new dependencies.
+ */
 
 // Discord.Js library. Thank you Hydrabolt!
 global.Discord = require("discord.js");

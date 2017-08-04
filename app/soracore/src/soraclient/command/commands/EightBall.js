@@ -60,91 +60,92 @@ class EightBall extends Command {
 
       answers.push({
         message: "8ball says: \"_It is certain._\"",
-        timeout: 2
+        timeout: 2000
       });
       answers.push({
         message: "8ball says: \"_It is decidedly so._\"",
-        timeout: 2
+        timeout: 2000
       });
       answers.push({
         message: "8ball says: \"_Without a doubt._\"",
-        timeout: 3
+        timeout: 3000
       });
       answers.push({
         message: "8ball says: \"_Yes, definitely._\"",
-        timeout: 4
+        timeout: 4000
       });
       answers.push({
         message: "8ball says: \"_You may rely on it._\"",
-        timeout: 2
+        timeout: 2000
       });
       answers.push({
         message: "8ball says: \"_As I see it, yes._\"",
-        timeout: 3
+        timeout: 3000
       });
       answers.push({
         message: "8ball says: \"_Most likely._\"",
-        timeout: 4
+        timeout: 4000
       });
       answers.push({
         message: "8ball says: \"_Outlook good._\"",
-        timeout: 2
+        timeout: 2000
       });
       answers.push({
         message: "8ball says: \"_Yes._\"",
-        timeout: 4
+        timeout: 4000
       });
       answers.push({
         message: "8ball says: \"_Signs point to yes._\"",
-        timeout: 2
+        timeout: 2000
       });
       answers.push({
         message: "8ball says: \"_Reply hazy try again._\"",
-        timeout: 2
+        timeout: 2000
       });
       answers.push({
         message: "8ball says: \"_Ask again later._\"",
-        timeout: 2
+        timeout: 2000
       });
       answers.push({
         message: "8ball says: \"_Better not tell you now._\"",
-        timeout: 3
+        timeout: 3000
       });
       answers.push({
         message: "8ball says: \"_Cannot predict now._\"",
-        timeout: 4
+        timeout: 4000
       });
       answers.push({
         message: "8ball says: \"_Concentrate and ask again._\"",
-        timeout: 2
+        timeout: 2000
       });
       answers.push({
         message: "8ball says: \"_Don't count on it._\"",
-        timeout: 3
+        timeout: 3000
       });
       answers.push({
         message: "8ball says: \"_My reply is no._\"",
-        timeout: 4
+        timeout: 4000
       });
       answers.push({
         message: "8ball says: \"_My sources say no._\"",
-        timeout: 2
+        timeout: 2000
       });
       answers.push({
         message: "8ball says: \"_Very doubtful._\"",
-        timeout: 4
+        timeout: 4000
       });
       answers.push({
         message: "8ball says: \"_Outlook not so good._\"",
-        timeout: 2
+        timeout: 2000
       });
 
       var rand = answers[Math.floor(Math.random() * answers.length)];
 
-      var client = this.client;
-      setTimeout(function(){
-        client.reply(data.msg, rand.message);
-      }, 1000 * rand.timeout);
+      this.client.startTyping(data.msg.channel, rand.timeout)
+        .then(() => {
+          data.msg.reply(rand.message);
+        });
+        
     } else {
       this.client.reply( data.msg, "8ball says: \"_Now now, ask me something. Don't be shy!_\"");
     }

@@ -46,9 +46,12 @@ class Command {
         guilds: [],
         channels: [],
         pms: false,
-        users: []
+        users: [],
+        oplevel: 0,
       }, 
     };
+
+    this.cooldown = 5;
 
   }
 
@@ -59,10 +62,18 @@ class Command {
    * @param  {[array]} 	params 	Parameters array extracted from the message.
    */
   execute(msg, input) {
+
+    if (this.client.cooldownManager.check('command', this.key, msg.author.id, this.cooldown)) {
+      this.client.im(msg.author, `That command is on cooldown. :) Please wait!`);
+      return false;
+    }
+
   	this.tasks({
   		msg: msg,
   		input: input
   	});
+
+    this.client.cool('command', this.key, msg.author.id, this.cooldown * 1000);
   }
 
   /**
