@@ -145,10 +145,12 @@ class Command {
 
     this.client.im(msg.author, error_msg);
 
-    this.client.im(msg.author,`Please use the \`--help\` option of the command through the following method.\n\n\`${this.client.cprefix} ${this.key} --help\`\n\nThis will give you more information on how to use the command!`);
+    this.client.im(msg.author,`Please use the \`--help\` option of the command through the following method.\n\n\`${this.key} --help\`\n\nThis will give you more information on how to use the command!`);
   }
 
-  // @TODO - Synopsis generator.
+  synopsis(msg) {
+    var txt = `This is the synopsis for the **${this.key}** command.`;
+  }
 
 }
 

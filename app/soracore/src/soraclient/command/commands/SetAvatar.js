@@ -1,14 +1,14 @@
 const Command = require('../Command');
 
-class Google extends Command {
+class SetName extends Command {
 
-	constructor(client) {
+  constructor(client) {
 
-		super(client);
+    super(client);
 
     // Uncomment to enter different aliases that can be used to use the command.
     // e.g. the ping command can have pi or pg as aliases.
-		this.aliases = [ "goog"];
+    this.aliases = [ "sa"];
     
     // Uncomment to customize the text that will be shown when --help is used.
     // this.helpText = "";
@@ -19,10 +19,10 @@ class Google extends Command {
     // Uncomment to declare that input is required for this command.
     // Follow the template here to assure functionality of the Synopsis.
     this.input = {
-      "query": {
+      avatar: {
         "type": "text", // Either text or plain.
-        "name": "Query",
-        "description": "Text to send to google for results."
+        "name": "Avatar Integer",
+        "description": "New Avatar that Sora will use."
       }
     };
 
@@ -30,13 +30,8 @@ class Google extends Command {
     // Follow the template here to assure functionality of the Synopsis.
     // this.options = {
     //   "d": {
-    //     "readable_name" : "Direct Message",
-    //     "description"   : "Send the ping via direct message instead of sending it in the chat.",
-    //   },
-    //   "c": {
-    //     "readable_name" : "Custom Message",
-    //     "description"   : "Send a message defined on the fly instead of the default ping response.",
-    //     "needs_text"   : true,
+    //     "readable_name" : "Default",
+    //     "description"   : "Set Sora's name to the default name: \"Sora Akanegasaki\"",
     //   }
     // };
 
@@ -54,30 +49,15 @@ class Google extends Command {
    */
   tasks(data) {
 
-    google.resultsPerPage = 3;
-    var nextCounter = 0;
-    var result_msg = "";
-     
-    google(data.input.full, function (err, res){
-      if (err) console.error(err)
-     
-      for (var i = 0; i < res.links.length; ++i) {
-        var link = res.links[i];
-        result_msg = link.title + ' - ' + link.href;
-        result_msg += link.descText + "\n";
-      }
+    var avatar_i = data.input.full;
 
-      if (nextCounter < 2) {
-        nextCounter += 1
-        if (res.next) res.next()
-      }
-
-      data.msg.channel.send(result_msg);
-
-    });
+    // Set username
+    this.client.user.setAvatar(coreroot + 'assets/avatars/' + avatar_i + '.jpg')
+     .then(() => console.log(`New avatar set.`))
+     .catch(console.error);
 
   }
 
 }
 
-module.exports = Google;
+module.exports = SetName;

@@ -8,8 +8,8 @@ class Ping extends Command {
 
     this.aliases = ["pi","pg", "p"];
 
-    // this.help = "";
-    // this.description = "";
+    // this.helpText = "";
+    // this.descText = "";
     
     // this.input = {
     //   "example": {

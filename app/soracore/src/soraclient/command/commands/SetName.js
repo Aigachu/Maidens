@@ -11,10 +11,10 @@ class SetName extends Command {
     this.aliases = [ "sn"];
     
     // Uncomment to customize the text that will be shown when --help is used.
-    // this.help = "";
+    // this.helpText = "";
     
     // Uncomment to customize the text that will be shown when --desc is used.
-    // this.description = "";
+    // this.descText = "";
     
     // Uncomment to declare that input is required for this command.
     // Follow the template here to assure functionality of the Synopsis.

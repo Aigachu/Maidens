@@ -27,10 +27,18 @@ class PaintJob extends Command {
 		this.aliases = ["paint", "color", "col", "pnt"];
     
     // Uncomment to customize the text that will be shown when --help is used.
-    this.help = "This command can be used by anyone to customize their own colors.";
+    this.helpText = 
+    `This command can be used by anyone to customize their own colors!
+    For this command to work properly, Sora's role must be at the top of the server.
+    Check with the server admins to make sure it's the case!\n
+     - \`color -c#124356\` - This creates a color in the server with the given hex value.
+     - \`color -s#124356\` or \`color -sCOLORNAME\` - This sets the given color to yourself.
+     - \`color -r\` - This removes your current color.
+     - \`color -l\` - This lists all colors currently in the server.\n
+    Happy Coloring!`;
     
     // Uncomment to customize the text that will be shown when --desc is used.
-    // this.description = "";
+    // this.descText = "";
     
     // Uncomment to declare that input is required for this command.
     // Follow the template here to assure functionality of the Synopsis.
@@ -199,7 +207,7 @@ class PaintJob extends Command {
     // Add the color to the member.
     data.msg.member.addRole(color_role_to_set)
       .then(() => {
-        data.msg.reply(`Paint job complete! You look good in ${color_role_to_set}! ;)`);
+        data.msg.reply(`all done! You look great in ${color_role_to_set}! ;) :sparkles:`);
       })
       .catch(() => {
         data.msg.author.send(`An error may have occured with the setting of the color.\nThis is most likely caused by the fact that my bot role may not be at the top of the role list in your server. I can't set roles that are above mine. :( You're going to have to move me to the top of your server role list!`);
@@ -219,7 +227,7 @@ class PaintJob extends Command {
 
     member.removeRole(member_current_color_role)
       .then(() => {
-        data.msg.channel.send(`The color you had has been removed. :)`);
+        data.msg.channel.send(`You're all cleaned up! :sparkles:`);
       })
       .catch(() => {
         data.msg.author.send(`An error may have occured with the removing of the color.\nThis is most likely caused by the fact that my bot role may not be at the top of the role list in your server. I can't set roles to users that have a role above mine. :( You're going to have to move me to the top of your server role list!`);
@@ -251,7 +259,6 @@ class PaintJob extends Command {
     // Check if the hex color is valid.
     if(!this.isHexColor(colorHex)) {
       data.msg.reply(`That seems to be an invalid HEX value or color name!`)
-      console.log("Invalid Hex Color: " + colorHex);
       return false;
     }
 
@@ -322,7 +329,7 @@ class PaintJob extends Command {
     data.msg.guild.roles.every((role) => {
       if (role.name.includes('.color')) {
         role.delete()
-          .then(r => console.log(`Deleted role ${r}`))
+          .then(r => console.log(`Deleted color role ${r}`))
           .catch(console.error);
       }
       return true;
