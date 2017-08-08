@@ -318,7 +318,7 @@ class CommandManager {
     });
 
     // Get Maiden Specific Commands
-    glob.sync( client.maidensrc + 'soradiscord/commands**/*.js' ).forEach( function( file ) {
+    glob.sync( client.namespace + 'commands**/*.js' ).forEach( function( file ) {
 
       // Remove a huge part of the path that we don't need. We only want the name of the File at the end.
       var filename = file.replace(/^.*[\\\/]/, '');
@@ -327,7 +327,7 @@ class CommandManager {
       var command_key = filename.replace(/\.[^/.]+$/, "").toLowerCase();
 
       // Require the Command's Class.
-      var CommandClass = require(client.maidensrc + 'soradiscord/commands/' + filename);
+      var CommandClass = require(client.namespace + 'commands/' + filename);
 
       // Instantiate the [Command] and store it in the {commands} array.
       commands[command_key] = new CommandClass(client);

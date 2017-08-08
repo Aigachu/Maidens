@@ -2,7 +2,7 @@
  * Sora's Discord class.
  * "Keep it tidy in here, okay!?" - Sora Akanegasaki
  */
-class SoraDiscord extends MaidenDiscord {
+class ColetteDiscord extends MaidenDiscord {
 
   /**
    * === Class constructor ===
@@ -12,11 +12,11 @@ class SoraDiscord extends MaidenDiscord {
     // Call the constructor of the Discord Client parent Class.
     super(settings);
 
-    // Event: When Sora connects to Discord and is ready.
+    // Event: When Colette connects to Discord and is ready.
     this.on('ready', () => {
 
       // Logs connection event in console.
-      console.log("\nHello Aiga! This is Sora Akanegasaki reporting in. I am now linked to Discord! :)");
+      console.log("\nJack in! Colette! Execute! xD");
 
     });
 
@@ -24,4 +24,4 @@ class SoraDiscord extends MaidenDiscord {
 
 }
 
-module.exports = SoraDiscord;
+module.exports = ColetteDiscord;

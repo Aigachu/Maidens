@@ -50,7 +50,7 @@ class SetName extends Command {
     var avatar_i = data.input.full;
 
     // Set username
-    this.client.user.setAvatar(sora_assets + 'avatars/' + avatar_i + '.jpg')
+    this.client.user.setAvatar(this.client.root + 'assets/avatars/' + avatar_i + '.jpg')
      .then(() => console.log(`New avatar set.`))
      .catch(console.error);
 

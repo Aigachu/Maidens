@@ -47,7 +47,8 @@ class MaidenDiscord extends DiscordClient {
 
     // Set the settings...LOL. SET THE SETTINGS! GET IT?!
     // @see setting.js at the root of the project.
-    this.maidensrc = settings.src;
+    this.root = settings.root;
+    this.namespace = this.root + 'src/' + this.constructor.name.toLowerCase() + '/';
     this.apptoken = settings.apptoken;
     this.cprefix = settings.cprefix;
     this.gods = settings.gods;
@@ -73,7 +74,7 @@ class MaidenDiscord extends DiscordClient {
     this.on('ready', () => {
 
       // Logs connection event in console.
-      console.log("\nSora: I am now properly linked to the Discord infrastructure. Enjoy!");
+      // console.log("\nSora: I am now properly linked to the Discord infrastructure. Enjoy!");
 
     });
 

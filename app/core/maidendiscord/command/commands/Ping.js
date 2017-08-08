@@ -48,7 +48,7 @@ class Ping extends Command {
   tasks(data) {
 
     // Default reply for the ping command.
-    var ping_message = `Pong! Sora, version 2.0, at your service. ;)`;
+    var ping_message = `Pong! Maiden at your service. ;)`;
 
     // If the "c" option is used, change the text Sora says.
     if ("c" in data.input.options) {

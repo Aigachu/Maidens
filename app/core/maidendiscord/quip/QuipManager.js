@@ -50,7 +50,7 @@ class QuipManager {
 
     var quips = {};
 
-    glob.sync( client.maidensrc + 'soradiscord/quips**/*.js' ).forEach( function( file ) {
+    glob.sync( client.namespace + 'quips**/*.js' ).forEach( function( file ) {
 
       // Remove a huge part of the path that we don't need. We only want the name of the File at the end.
       var filename = file.replace(/^.*[\\\/]/, '');
@@ -59,7 +59,7 @@ class QuipManager {
       var quip_key = filename.replace(/\.[^/.]+$/, "").toLowerCase();
 
       // Require the Command's Class.
-      var QuipClass = require( client.maidensrc + 'soradiscord/quips/' + filename);
+      var QuipClass = require( client.namespace + 'quips/' + filename);
 
       // Instantiate the [Command] and store it in the {quips} array.
       quips[quip_key] = new QuipClass(client);

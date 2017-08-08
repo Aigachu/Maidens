@@ -1,14 +1,15 @@
 /**
  * Run File for Sora's main functionalities.
  *
- * Sora likes it when it's clean, so keep it tidy!
+ * Use these links to get others to add the maidens to their servers:
  *
- * UPDATE 4/20/2016 BLAZE IT!!!
- * Sora is now using Discord's main API!
+ * {Sora Akanegasaki}
+ * https://discordapp.com/oauth2/authorize?&client_id=344561767050903554&scope=bot&permissions=1546959939
  *
- * Use this link to get others to add her to their servers:
- * https://discordapp.com/oauth2/authorize?&client_id=172474398308040704&scope=bot&permissions=1546959939
- *
+ * {Colette Brunel}
+ * https://discordapp.com/oauth2/authorize?&client_id=344562549615755285&scope=bot&permissions=1546959939
+
+ * 
  * Current valid permission bit: 1546959939
  * To calculate the permissions bit, go here: https://discordapi.com/permissions.html
  *
@@ -86,4 +87,4 @@ global.ntc = require('./custom_modules/ntc');
 global.sora = require('./app/maidens/sora');
 
 // Core JS file with all of Sora's Components.
-// global.colette = require('./app/maidens/colette');
+global.colette = require('./app/maidens/colette');
