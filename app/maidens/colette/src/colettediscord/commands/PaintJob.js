@@ -27,7 +27,7 @@ class PaintJob extends Command {
     // Uncomment to customize the text that will be shown when --help is used.
     this.helpText = 
     `This command can be used by anyone to customize their own colors!
-    For this command to work properly, Sora's role must be at the top of the server.
+    For this command to work properly, my role must be at the top of the server.
     Check with the server admins to make sure it's the case!\n
      - \`color -c#124356\` - This creates a color in the server with the given hex value.
      - \`color -s#124356\` or \`color -sCOLORNAME\` - This sets the given color to yourself.
@@ -55,6 +55,7 @@ class PaintJob extends Command {
         readable_name : "Create",
         description   : "Send the ping via direct message instead of sending it in the chat.",
         needs_text   : true,
+        oplevel      : 1,
       },
       s: {
         readable_name : "Set",
