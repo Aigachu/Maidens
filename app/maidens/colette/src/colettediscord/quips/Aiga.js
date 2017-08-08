@@ -12,7 +12,7 @@ class Aiga extends Quip {
       `Now that I think about it...Aiga's more loyal to Yuri than me...:thinking:...`
     ];
 
-    this.frq = 30;
+    this.frq = 15;
 
   }
 

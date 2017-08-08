@@ -7,11 +7,10 @@ class Aiga extends Quip {
     this.triggers = ['Aiga'];
 
     this.responses = [
-      'Did you just say Aiga?',
-      'Aiga isn\'t that great at coding...'
+      `Aiga isn't really that good at coding, in my opinion.`,
     ];
 
-    this.frq = 10;
+    this.frq = 5;
 
   }
 

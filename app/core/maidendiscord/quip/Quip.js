@@ -25,10 +25,8 @@ class Quip {
 
     var rng = Math.random();
 
-    console.log(rng);
-
     if(rng <= (this.frq / 100)) {
-      msg.reply(this.responses[Math.floor(Math.random() * this.responses.length)]);
+      msg.channel.send(this.responses[Math.floor(Math.random() * this.responses.length)]);
     }
 
   }
