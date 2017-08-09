@@ -1,4 +1,4 @@
-class Example extends Command {
+class Timeout extends Command {
 
 	constructor(client) {
 
@@ -6,7 +6,7 @@ class Example extends Command {
 
     // Uncomment to enter different aliases that can be used to use the command.
     // e.g. the ping command can have pi or pg as aliases.
-		// this.aliases = [ "alias1", "alias2"];
+		this.aliases = [ "time", "to"];
     
     // Uncomment to customize the text that will be shown when --help is used.
     // this.helpText = "";
@@ -26,29 +26,24 @@ class Example extends Command {
 
     // Uncomment to permit different options in the command
     // Follow the template here to assure functionality of the Synopsis.
-    // this.options = {
-    //   d: {
-    //     "readable_name" : "Direct Message",
-    //     "description"   : "Send the ping via direct message instead of sending it in the chat.",
-    //   },
-    //   c: {
-    //     readable_name : "Custom Message",
-    //     description   : "Send a message defined on the fly instead of the default ping response.",
-    //     needs_text   : true,
-    //   }
-    // };
+    this.options = {
+      d: {
+        "readable_name" : "Duration",
+        "description"   : "How long the person must be timed out.",
+      }
+    };
 
     // Uncomment to configure the command.
     // You can adjust which channels the command can be used in, as well as who can use the command.
-    // this.config = {
-    //   auth: {
-    //     guilds: [],
-    //     channels: [],
-    //     pms: false,
-    //     users: [],
-    //     oplevel: 0,
-    //   },
-    // };
+    this.config = {
+      auth: {
+        guilds: [],
+        channels: [],
+        pms: false,
+        users: [],
+        oplevel: 1,
+      },
+    };
     
     // Uncomment to adjust the cooldown of the command.
     // The default cooldown is 5 seconds.
@@ -68,10 +63,25 @@ class Example extends Command {
    */
   tasks(data) {
 
-    this.client.reply(data.msg, 'This is an example command. :O Did you even know this existed?');
+    var duration = 30;
+
+    // If the "d" option is used, overwrite the duration.
+    if ("d" in data.input.options) {
+      if (!isNaN(data.input.options.d)) {
+        duration = data.input.options.d;
+      }
+    }
+
+    data.input.full = data.input.full.trim();
+    data.input.full = data.input.full.replace('<@', '');
+    data.input.full = data.input.full.replace('>', '');
+
+    var member = data.msg.guild.members.find('id', data.input.full);
+
+    this.client.watchdog.timeout(member, duration);
 
   }
 
 }
 
-module.exports = Example;
+module.exports = Timeout;

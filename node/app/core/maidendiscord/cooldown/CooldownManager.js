@@ -44,7 +44,7 @@ class CooldownManager {
 
     return new Promise((resolve, reject) => {
       var cm = this;
-      setTimeout(function(){
+      setTimeout(() => {
         cm.cooldowns[type][key].splice(cm.cooldowns[type][key].indexOf(scope), 1);
         resolve("Remove cooldown now!"); // Yay! Everything went well!
       }, duration);

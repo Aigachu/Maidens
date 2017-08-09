@@ -65,6 +65,8 @@ class MaidenDiscord extends DiscordClient {
     this.quipManager = new QuipManager(this);
 
     // Listeners
+    // Listeners are extended functions that monitor messages and do actions accordingly.
+    // Custom listeners can be added by other modules or even commands.
     this.listeners = [];
 
     /**
@@ -93,7 +95,7 @@ class MaidenDiscord extends DiscordClient {
 
       // Fire listeners set by other modules.
       this.listeners.every((listener) => {
-        listener.listen();
+        listener.listen(this, message);
         return true;
       })
 

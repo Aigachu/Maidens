@@ -1,4 +1,4 @@
-class Example extends Command {
+class Watchdog extends Command {
 
 	constructor(client) {
 
@@ -6,7 +6,7 @@ class Example extends Command {
 
     // Uncomment to enter different aliases that can be used to use the command.
     // e.g. the ping command can have pi or pg as aliases.
-		// this.aliases = [ "alias1", "alias2"];
+		this.aliases = [ "watch", "wd"];
     
     // Uncomment to customize the text that will be shown when --help is used.
     // this.helpText = "";
@@ -26,29 +26,28 @@ class Example extends Command {
 
     // Uncomment to permit different options in the command
     // Follow the template here to assure functionality of the Synopsis.
-    // this.options = {
-    //   d: {
-    //     "readable_name" : "Direct Message",
-    //     "description"   : "Send the ping via direct message instead of sending it in the chat.",
-    //   },
-    //   c: {
-    //     readable_name : "Custom Message",
-    //     description   : "Send a message defined on the fly instead of the default ping response.",
-    //     needs_text   : true,
-    //   }
-    // };
+    this.options = {
+      e: {
+        readable_name : "Enable",
+        description   : "Enable the watchdog in the current guild.",
+      },
+      d: {
+        readable_name : "Disable",
+        description   : "Disable the watchdog in the current guild.",
+      }
+    };
 
     // Uncomment to configure the command.
     // You can adjust which channels the command can be used in, as well as who can use the command.
-    // this.config = {
-    //   auth: {
-    //     guilds: [],
-    //     channels: [],
-    //     pms: false,
-    //     users: [],
-    //     oplevel: 0,
-    //   },
-    // };
+    this.config = {
+      auth: {
+        guilds: [],
+        channels: [],
+        pms: false,
+        users: [],
+        oplevel: 2,
+      },
+    };
     
     // Uncomment to adjust the cooldown of the command.
     // The default cooldown is 5 seconds.
@@ -68,10 +67,26 @@ class Example extends Command {
    */
   tasks(data) {
 
-    this.client.reply(data.msg, 'This is an example command. :O Did you even know this existed?');
+    // If the "e" option is used
+    if ("e" in data.input.options) {
+      this.client.watchdog.enable(data.msg.guild);
+      data.msg.channel.send('Enabled the watchdog in this server!');
+      return;
+    }
 
+    // If the "d" option is used
+    if ("d" in data.input.options) {
+      this.client.watchdog.disable(data.msg.guild);
+      data.msg.channel.send('Disabled the watchdog in this server!');
+      return;
+    }
+
+    // Enable by default.
+    this.client.watchdog.enable(data.msg.guild);
+    data.msg.channel.send('Enabled the watchdog in this server!');
+    
   }
 
 }
 
-module.exports = Example;
+module.exports = Watchdog;

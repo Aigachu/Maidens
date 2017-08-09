@@ -1,3 +1,5 @@
+const Watchdog = require(__dirname + '/watchdog/Watchdog');
+
 /**
  * Sora's Discord class.
  * "Keep it tidy in here, okay!?" - Sora Akanegasaki
@@ -12,7 +14,7 @@ class MikuchuDiscord extends MaidenDiscord {
     // Call the constructor of the Discord Client parent Class.
     super(settings);
 
-    // Event: When Sora connects to Discord and is ready.
+    // Event: When the bot connects to Discord and is ready.
     this.on('ready', () => {
 
       // Logs connection event in console.
@@ -26,6 +28,9 @@ class MikuchuDiscord extends MaidenDiscord {
 
       // Set game!
       this.user.setGame('Singing coding songs~');
+
+      // Plug and initialize Watchdog.
+      this.watchdog = new Watchdog(this);
 
     });
 

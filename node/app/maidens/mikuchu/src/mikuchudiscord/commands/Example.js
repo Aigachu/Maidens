@@ -28,8 +28,8 @@ class Example extends Command {
     // Follow the template here to assure functionality of the Synopsis.
     // this.options = {
     //   d: {
-    //     "readable_name" : "Direct Message",
-    //     "description"   : "Send the ping via direct message instead of sending it in the chat.",
+    //     readable_name : "Direct Message",
+    //     description   : "Send the ping via direct message instead of sending it in the chat.",
     //   },
     //   c: {
     //     readable_name : "Custom Message",
@@ -46,6 +46,7 @@ class Example extends Command {
     //     channels: [],
     //     pms: false,
     //     users: [],
+    //     oplevel: 0,
     //   },
     // };
     

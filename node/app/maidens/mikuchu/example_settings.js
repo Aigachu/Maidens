@@ -21,11 +21,11 @@ module.exports = {
   // Gods can use all commands at any time.
   // They correspond to oplevel being set to 2.
   'gods': {
-    'Aigachu': '77517077325287424',
+    '77517077325287424': 'Aigachu',
   },
 
   // Admins can use all commands with an oplevel set to 1 or lower.
   'admins': {
-    'Avion': '82530619355037696'
+    '82530619355037696': 'Avion',
   }
 }

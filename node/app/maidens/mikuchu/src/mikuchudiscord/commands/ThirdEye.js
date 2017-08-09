@@ -128,16 +128,16 @@ class ThirdEye extends Command {
       return false;
     }
 
-    this.client.listeners.thirdeye = {
-      listen: (client, msg) => {
-        if (!(msg.guild.id in client.dimension_links)) {
+    this.client.listeners.push({
+      listen: (client, message) => {
+        if (!(message.guild.id in client.dimension_links)) {
           // Nothing to do
           return false;
         }
 
 
       },
-    }
+    });
   }
 
   stopListening(data) {

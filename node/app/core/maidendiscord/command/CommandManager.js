@@ -101,10 +101,10 @@ class CommandManager {
     }
 
     if ("oplevel" in command.config.auth) {
-      if ( command.config.auth.oplevel == 1 && !(msg.author.id in client.admins)) {
+      if ( command.config.auth.oplevel == 1 && !(msg.author.id in this.client.admins)) {
         return false;      
       }
-      if ( command.config.auth.oplevel == 2 && !(msg.author.id in client.gods)) {
+      if ( command.config.auth.oplevel == 2 && !(msg.author.id in this.client.gods)) {
         return false;      
       }
     }
