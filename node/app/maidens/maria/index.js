@@ -1,0 +1,10 @@
+var MariaDiscordClass = require('./src/mariadiscord/MariaDiscord');
+var MariaDiscordClient = new MariaDiscordClass(require('./settings'));
+
+/**
+* === Exports ===
+* When this folder is required, this is what's sent to the variable.
+*/
+module.exports = {
+  MariaDiscord: MariaDiscordClient,
+};

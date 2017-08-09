@@ -8,12 +8,7 @@
  *
  * {Colette Brunel}
  * https://discordapp.com/oauth2/authorize?&client_id=344562549615755285&scope=bot&permissions=1546959939
- *
- * {Lady Maria}
- * https://discordapp.com/oauth2/authorize?&client_id=344885267808911360&scope=bot&permissions=1546959939
- * 
- * {Mikuchu the Devbot}
- * https://discordapp.com/oauth2/authorize?&client_id=344881699928145920&scope=bot&permissions=1546959939
+
  * 
  * Current valid permission bit: 1546959939
  * To calculate the permissions bit, go here: https://discordapi.com/permissions.html
@@ -89,10 +84,4 @@ global.ntc = require('./custom_modules/ntc');
  */
 
 // Core JS file with all of Sora's Components.
-global.sora = require('./app/maidens/sora');
-
-// Core JS file with all of Sora's Components.
-global.colette = require('./app/maidens/colette');
-
-// Core JS file with all of Sora's Components.
-global.maria = require('./app/maidens/maria');
+global.mikuchu = require('./app/maidens/mikuchu');
