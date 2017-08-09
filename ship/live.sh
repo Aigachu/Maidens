@@ -22,4 +22,4 @@ ssh aigachu@138.197.174.254 'forever stopall;'
 ssh aigachu@138.197.174.254 'cd nodejs/apps/discord-maidens/node; git checkout live; git pull;'
 
 # Summon the bots.
-# ssh aigachu@138.197.174.254 'cd nodejs/apps/discord-maidens/node; forever summon.js;'
+ssh aigachu@138.197.174.254 'cd nodejs/apps/discord-maidens/node; forever start summon.js;'
