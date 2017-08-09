@@ -7,7 +7,7 @@ class Example extends Quip {
     this.triggers = ['hi', 'bonjour', 'sup'];
 
     this.responses = [
-      'hello!'
+      'Hi.'
     ];
 
     this.frq = 20;
