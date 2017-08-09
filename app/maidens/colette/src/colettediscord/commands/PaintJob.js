@@ -206,7 +206,7 @@ class PaintJob extends Command {
     // Add the color to the member.
     data.msg.member.addRole(color_role_to_set)
       .then(() => {
-        data.msg.reply(`all done! You look great in ${color_role_to_set}! ;) :sparkles:`);
+        data.msg.reply(`all done! You look great in ${color_role_to_set.name.replace('.color', '')}! ;) :sparkles:`);
       })
       .catch(() => {
         data.msg.author.send(`An error may have occured with the setting of the color.\nThis is most likely caused by the fact that my bot role may not be at the top of the role list in your server. I can't set roles that are above mine. :( You're going to have to move me to the top of your server role list!`);
@@ -303,7 +303,7 @@ class PaintJob extends Command {
 
     data.msg.guild.roles.every((role) => {
       if(role.name.includes('.color')){
-        list_msg += `  - ${role} \`${role.hexColor}\`\n`;
+        list_msg += `  - ${role.name.replace('.color', '')} \`${role.hexColor}\`\n`;
       }
       return true;
     });
