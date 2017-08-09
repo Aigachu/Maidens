@@ -76,6 +76,12 @@ class MaidenDiscord extends DiscordClient {
       // Logs connection event in console.
       // console.log("\nSora: I am now properly linked to the Discord infrastructure. Enjoy!");
 
+      // Home
+      this.home = {
+        guild: this.guilds.find('id', '314130398173069312'),
+        channel: this.channels.find('id', '327535083164663808'),
+      }
+
     });
 
     /**
