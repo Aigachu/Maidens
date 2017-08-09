@@ -49,6 +49,7 @@ class MaidenDiscord extends DiscordClient {
     // @see setting.js at the root of the project.
     this.root = settings.root;
     this.namespace = this.root + 'src/' + this.constructor.name.toLowerCase() + '/';
+    this.assets = this.root + 'assets/';
     this.apptoken = settings.apptoken;
     this.cprefix = settings.cprefix;
     this.gods = settings.gods;
