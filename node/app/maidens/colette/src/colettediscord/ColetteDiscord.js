@@ -1,3 +1,5 @@
+const Watchdog = require(__dirname + '/watchdog/Watchdog');
+
 /**
  * Sora's Discord class.
  * "Keep it tidy in here, okay!?" - Sora Akanegasaki
