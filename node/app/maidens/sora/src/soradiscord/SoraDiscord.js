@@ -20,6 +20,9 @@ class SoraDiscord extends MaidenDiscord {
       // Logs connection event in console.
       console.log("\nHello Aiga! This is Sora Akanegasaki reporting in. I am now linked to Discord! :)");
 
+      // Set game!
+      this.user.setGame('Blick Winkel...');
+
     });
 
   }
