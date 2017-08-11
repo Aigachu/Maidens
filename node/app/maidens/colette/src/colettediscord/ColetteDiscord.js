@@ -12,6 +12,8 @@ class ColetteDiscord extends MaidenDiscord {
     // Call the constructor of the Discord Client parent Class.
     super(settings);
 
+    this.welcome = `Jack in! Colette! Executed! :yum:\nWoo :smile:`;
+
     // Event: When Colette connects to Discord and is ready.
     this.on('ready', () => {
 

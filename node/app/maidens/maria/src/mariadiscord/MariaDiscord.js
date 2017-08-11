@@ -12,6 +12,8 @@ class MariaDiscord extends MaidenDiscord {
     // Call the constructor of the Discord Client parent Class.
     super(settings);
 
+    this.welcome = `A corpse...Should be left well alone Aiga...`;
+
     // Event: When Colette connects to Discord and is ready.
     this.on('ready', () => {
 
