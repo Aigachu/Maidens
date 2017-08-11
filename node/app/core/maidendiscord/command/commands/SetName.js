@@ -25,13 +25,13 @@ class SetName extends Command {
     };
 
     // Uncomment to permit different options in the command
-    // Follow the template here to assure functionality of the Synopsis.
-    this.options = {
-      "d": {
-        "readable_name" : "Default",
-        "description"   : "Set Sora's name to the default name: \"Sora Akanegasaki\"",
-      }
-    };
+    // // Follow the template here to assure functionality of the Synopsis.
+    // this.options = {
+    //   "d": {
+    //     "readable_name" : "Default",
+    //     "description"   : "Set Sora's name to the default name: \"Sora Akanegasaki\"",
+    //   }
+    // };
 
   }
 

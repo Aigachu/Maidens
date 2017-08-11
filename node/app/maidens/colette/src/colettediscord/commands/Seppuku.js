@@ -1,4 +1,4 @@
-class Timeout extends Command {
+class Seppuku extends Command {
 
 	constructor(client) {
 
@@ -6,7 +6,7 @@ class Timeout extends Command {
 
     // Uncomment to enter different aliases that can be used to use the command.
     // e.g. the ping command can have pi or pg as aliases.
-		this.aliases = [ "time", "to"];
+		this.aliases = [ "sepp", "seppu" ];
     
     // Uncomment to customize the text that will be shown when --help is used.
     // this.helpText = "";
@@ -26,24 +26,29 @@ class Timeout extends Command {
 
     // Uncomment to permit different options in the command
     // Follow the template here to assure functionality of the Synopsis.
-    this.options = {
-      d: {
-        readable_name : "Duration",
-        description   : "How long the person must be timed out.",
-      }
-    };
+    // this.options = {
+    //   d: {
+    //     readable_name : "Direct Message",
+    //     description   : "Send the ping via direct message instead of sending it in the chat.",
+    //   },
+    //   c: {
+    //     readable_name : "Custom Message",
+    //     description   : "Send a message defined on the fly instead of the default ping response.",
+    //     needs_text   : true,
+    //   }
+    // };
 
     // Uncomment to configure the command.
     // You can adjust which channels the command can be used in, as well as who can use the command.
-    this.config = {
-      auth: {
-        guilds: [],
-        channels: [],
-        pms: false,
-        users: [],
-        oplevel: 1,
-      },
-    };
+    // this.config = {
+    //   auth: {
+    //     guilds: [],
+    //     channels: [],
+    //     pms: false,
+    //     users: [],
+    //     oplevel: 0,
+    //   },
+    // };
     
     // Uncomment to adjust the cooldown of the command.
     // The default cooldown is 5 seconds.
@@ -63,34 +68,14 @@ class Timeout extends Command {
    */
   tasks(data) {
 
-    var duration = 30;
+    var member = data.msg.member;
 
-    // If the "d" option is used, overwrite the duration.
-    if ("d" in data.input.options) {
-      if (!isNaN(data.input.options.d)) {
-        duration = data.input.options.d;
-      }
-    }
-
-    data.input.full = data.input.full.trim();
-    data.input.full = data.input.full.replace('<@', '');
-    data.input.full = data.input.full.replace('>', '');
-    data.input.full = data.input.full.replace('!', '');
-
-    var member = data.msg.guild.members.find('id', data.input.full);
-
-    if (member === null) {
-      return false;
-    }
-    
-    this.client.watchdog.timeout(member, duration);
-    
-    data.msg.channel.send(`Uh oohhh! Someone was being bad!\nTake a quick **${duration} second** break, ${member}!`);
-
-    data.msg.delete();
+    this.client.watchdog.timeout(member, 5);
+    this.client.watchdog.purge(member, 5);
+    data.msg.channel.send(`_${member} commited sudoku! Byebye. :yum:_`);
 
   }
 
 }
 
-module.exports = Timeout;
+module.exports = Seppuku;

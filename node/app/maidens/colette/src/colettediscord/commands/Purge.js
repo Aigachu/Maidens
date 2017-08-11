@@ -1,4 +1,4 @@
-class Watchdog extends Command {
+class Purge extends Command {
 
 	constructor(client) {
 
@@ -6,7 +6,7 @@ class Watchdog extends Command {
 
     // Uncomment to enter different aliases that can be used to use the command.
     // e.g. the ping command can have pi or pg as aliases.
-		this.aliases = [ "watch", "wd"];
+		this.aliases = [ "pu" ];
     
     // Uncomment to customize the text that will be shown when --help is used.
     // this.helpText = "";
@@ -27,35 +27,27 @@ class Watchdog extends Command {
     // Uncomment to permit different options in the command
     // Follow the template here to assure functionality of the Synopsis.
     this.options = {
-      e: {
-        readable_name : "Enable",
-        description   : "Enable the watchdog in the current guild.",
-      },
-      d: {
-        readable_name : "Disable",
-        description   : "Disable the watchdog in the current guild.",
-      },
-      s: {
-        readable_name : "Status",
-        description   : "Check the status of the watchdog in the current server.",
+      n: {
+        readable_name : "Number",
+        description   : "Number of messages to purge.",
       }
     };
 
     // Uncomment to configure the command.
     // You can adjust which channels the command can be used in, as well as who can use the command.
-    this.config = {
-      auth: {
-        guilds: [],
-        channels: [],
-        pms: false,
-        users: [],
-        oplevel: 2,
-      },
-    };
+    // this.config = {
+    //   auth: {
+    //     guilds: [],
+    //     channels: [],
+    //     pms: false,
+    //     users: [],
+    //     oplevel: 0,
+    //   },
+    // };
     
     // Uncomment to adjust the cooldown of the command.
     // The default cooldown is 5 seconds.
-    this.cooldown = 0;
+    // this.cooldown = 5;
 
   }
 
@@ -71,41 +63,36 @@ class Watchdog extends Command {
    */
   tasks(data) {
 
-    // If the "e" option is used
-    if ("e" in data.input.options) {
-      this.client.watchdog.enable(data.msg.guild);
-      data.msg.channel.send('Enabled the watchdog in this server!');
-      return;
+    var count = 5;
+
+    // If the "d" option is used, overwrite the duration.
+    if ("n" in data.input.options) {
+      if (!isNaN(data.input.options.d)) {
+        count = data.input.options.n;
+        if (count > 10)
+          count = 10;
+      }
     }
 
-    // If the "d" option is used
-    if ("d" in data.input.options) {
-      this.client.watchdog.disable(data.msg.guild);
-      data.msg.channel.send('Disabled the watchdog in this server!');
-      return;
+    data.input.full = data.input.full.trim();
+    data.input.full = data.input.full.replace('<@', '');
+    data.input.full = data.input.full.replace('>', '');
+    data.input.full = data.input.full.replace('!', '');
+
+    var member = data.msg.guild.members.find('id', data.input.full);
+
+    if (member === null) {
+      return false;
     }
 
-    // If the "d" option is used
-    if ("s" in data.input.options) {
-      var status = this.client.watchdog.status(data.msg.guild) ? `Enabled` : `Disabled`;
-      data.msg.channel.send(`Watchdog status: **${status}**.`);
-      return;
-    }
-
-    // Toggle by default.
-    if(this.client.watchdog.status(data.msg.guild)) {
-      this.client.watchdog.disable(data.msg.guild);
-    } else {
-      this.client.watchdog.enable(data.msg.guild);
-    }
-
-    var status = this.client.watchdog.status(data.msg.guild) ? `Enabled` : `Disabled`
-
-    data.msg.channel.send(`Watchdog is now **${status}**.`);
-    return;
+    this.client.watchdog.purge(member, count);
     
+    data.msg.channel.send(`I could have sworn I just saw ${count} messages from ${member}...Now they're gone. :thinking:`);
+
+    data.msg.delete();
+
   }
 
 }
 
-module.exports = Watchdog;
+module.exports = Purge;

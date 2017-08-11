@@ -18,8 +18,8 @@ class ColetteDiscord extends MaidenDiscord {
       // Logs connection event in console.
       console.log("\nJack in! Colette! Execute! xD");
 
-      // Message me to let me know the deployment is done.
-      this.home.channel.send('Whoa...I feel revitalized! Did you do something, Aiga?');
+      // Set game!
+      this.user.setGame('Watchdog is live!');
 
     });
 

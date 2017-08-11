@@ -69,6 +69,8 @@ class MaidenDiscord extends DiscordClient {
     // Custom listeners can be added by other modules or even commands.
     this.listeners = [];
 
+    this.welcome = `Connected.`;
+
     /**
      * === Events Callbacks ===
      */
@@ -84,6 +86,9 @@ class MaidenDiscord extends DiscordClient {
         guild: this.guilds.find('id', '314130398173069312'),
         channel: this.channels.find('id', '327535083164663808'),
       }
+
+      // Message me to let me know the deployment is done.
+      this.home.channel.send(this.welcome);
 
     });
 
