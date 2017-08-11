@@ -35,15 +35,15 @@ class Purge extends Command {
 
     // Uncomment to configure the command.
     // You can adjust which channels the command can be used in, as well as who can use the command.
-    // this.config = {
-    //   auth: {
-    //     guilds: [],
-    //     channels: [],
-    //     pms: false,
-    //     users: [],
-    //     oplevel: 0,
-    //   },
-    // };
+    this.config = {
+      auth: {
+        guilds: [],
+        channels: [],
+        pms: false,
+        users: [],
+        oplevel: 1,
+      },
+    };
     
     // Uncomment to adjust the cooldown of the command.
     // The default cooldown is 5 seconds.
