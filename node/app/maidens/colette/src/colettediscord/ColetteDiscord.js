@@ -23,6 +23,10 @@ class ColetteDiscord extends MaidenDiscord {
       // Set game!
       this.user.setGame('Watchdog is live!');
 
+      // Plug and initialize Watchdog.
+      // @todo - make all 'plugins' activate automatically from a plugins folder.
+      this.watchdog = new Watchdog(this);
+
     });
 
   }
