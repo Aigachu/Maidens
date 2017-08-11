@@ -30,7 +30,11 @@ class Timeout extends Command {
       d: {
         readable_name : "Duration",
         description   : "How long the person must be timed out.",
-      }
+      },
+      c: {
+        readable_name : "Clear all",
+        description   : "Clear timeouts of all users in the server.",
+      },
     };
 
     // Uncomment to configure the command.
@@ -62,6 +66,18 @@ class Timeout extends Command {
    * }
    */
   tasks(data) {
+
+    // If the "c" option is used, overwrite the duration.
+    if ("c" in data.input.options) {
+      data.msg.guild.members.every((member) => {
+        this.client.watchdog.clear(member);
+        return true;
+      });
+
+      data.msg.channel.send(`Cleared all timeouts in the server. FREEEDOOOOM!`);
+
+      return;
+    }
 
     var duration = 30;
 

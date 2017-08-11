@@ -131,6 +131,19 @@ class Watchdog {
 		return;
 	}
 
+	clear(member) {
+		var timeout_role = member.guild.roles.find('name', timeout_role_name);
+
+		if (timeout_role === null) {
+			console.log('Timeout role not found in guild.');
+			return false;
+		}
+
+		member.removeRole(timeout_role);
+
+		return true;
+	}
+
 	purge(member, count) {
 		var memberlog = this.logs[member.guild.id][member.id];
 
@@ -189,6 +202,11 @@ class Watchdog {
 			} else {
 				guild.channels.every((channel) => {
 		    	channel.overwritePermissions(role, {'SEND_MESSAGES': false, 'ATTACH_FILES': false, });
+		    	return true;
+		    });
+
+		    guild.members.every((member) => {
+		    	this.clear(member);
 		    	return true;
 		    });
 			}
