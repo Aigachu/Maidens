@@ -18,8 +18,14 @@ ssh aigachu@138.197.174.254 'echo "Make sure settings.js is set for all maidens.
 # Stop any bot processes that may currently be running.
 ssh aigachu@138.197.174.254 'forever stopall;'
 
-# Checkout the proper branch and pull latest changes.
-ssh aigachu@138.197.174.254 'cd nodejs/apps/discord-maidens/node; git checkout live; git pull;'
+# Prune origin first
+ssh aigachu@138.197.174.254 'cd nodejs/apps/discord-maidens/node; git remote prune origin;'
+
+# Checkout the proper.
+ssh aigachu@138.197.174.254 'cd nodejs/apps/discord-maidens/node; git checkout live;'
+
+# Pull latest changes.
+ssh aigachu@138.197.174.254 'cd nodejs/apps/discord-maidens/node; git pull;'
 
 # Summon the bots.
 ssh aigachu@138.197.174.254 'cd nodejs/apps/discord-maidens/node; forever start summon.js;'

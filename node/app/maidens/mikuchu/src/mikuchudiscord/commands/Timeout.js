@@ -41,7 +41,7 @@ class Timeout extends Command {
         channels: [],
         pms: false,
         users: [],
-        oplevel: 1,
+        oplevel: 2,
       },
     };
     
