@@ -1,4 +1,3 @@
-const enabled_guilds_path = __dirname + '/guilds_enabled.json';;
 const timeout_role_name = 'Colette::Timeout';
 
 // @TODO - Documentation
@@ -11,14 +10,11 @@ class Watchdog {
 
 		this.timeouts = {};
 
-		// The watchdog immediatly creates the timeout functionality in all guilds that are configured to have it.
-		this.guildconfig = this.__loadGuildConfig();
-
 		this.logs = {};
 
 		this.maxSpree = 3;
 
-		// Role setup
+		// Role and configuration setup
 		this.build();
 
 		// Set listener.
@@ -27,19 +23,26 @@ class Watchdog {
 	}
 
 	listen() {
-		this.client.listeners.push({
-			listen: (client, message) => {
+		this.client.on('ready', () => {
+			this.client.listeners.push({
+				listen: (client, message) => {
 
-				if (message.author.id === this.client.user.id) {
-					return false;
-				}
+					// Don't watch the message if the message comes from this client.
+					if (message.author.id === this.client.user.id) {
+						return false;
+					}
 
-				if (this.guildconfig[message.guild.id] === false) {
-					return false;
-				}
+					// Don't watch the message if the watchdog isn't enabled in this guild.
+					if (this.guilds[message.guild.id] === false) {
+						return false;
+					}
 
-				this.watch(message);
-			},
+					// Watch.
+					this.watch(message);
+
+					return;
+				},
+			});
 		});
 	}
 
@@ -167,79 +170,95 @@ class Watchdog {
 	}
 
 	enable(guild) {
-		this.guildconfig[guild.id] = true;
-		fs.writeFileSync(enabled_guilds_path, JSON.stringify(this.guildconfig, null, 2));
+		this.guilds[guild.id] = true;
+		fs.writeFileSync(this.config_path, JSON.stringify(this.guilds, null, 2));
 	}
 
 	disable(guild) {
-		this.guildconfig[guild.id] = false;
-		fs.writeFileSync(enabled_guilds_path, JSON.stringify(this.guildconfig, null, 2));
+		this.guilds[guild.id] = false;
+		fs.writeFileSync(this.config_path, JSON.stringify(this.guilds, null, 2));
 	}
 
 	status(guild) {
-		return this.guildconfig[guild.id];
+		return this.guilds[guild.id];
 	}
 
 	build() {
-		this.client.guilds.every((guild) => {
-			this.logs[guild.id] = {};
-			var role = guild.roles.find('name', timeout_role_name);
 
-			// Create the maiden timeout role.
-			// For disabled guilds, remove the role as it is not needed.
-			if (role === null) {
-				guild.createRole({
-		      name: timeout_role_name,
-		      color: '#36393F',
-		      mentionable: true,
-		      permissions: 1049600,
-		    }).then((new_role) => {
-			    guild.channels.every((channel) => {
-			    	channel.overwritePermissions(new_role, {'SEND_MESSAGES': false, 'ATTACH_FILES': false, });
+		// Build roles in all servers and do necessary cleanup.
+		this.client.on('ready', () => {
+			this.client.guilds.every((guild) => {
+				this.logs[guild.id] = {};
+				var role = guild.roles.find('name', timeout_role_name);
+
+				// Create the maiden timeout role.
+				// For disabled guilds, remove the role as it is not needed.
+				if (role === null) {
+					guild.createRole({
+			      name: timeout_role_name,
+			      color: '#36393F',
+			      mentionable: true,
+			      permissions: 1049600,
+			    }).then((new_role) => {
+				    guild.channels.every((channel) => {
+				    	channel.overwritePermissions(new_role, {'SEND_MESSAGES': false, 'ATTACH_FILES': false, });
+				    	return true;
+				    });
+			    });
+				} else {
+					guild.channels.every((channel) => {
+			    	channel.overwritePermissions(role, {'SEND_MESSAGES': false, 'ATTACH_FILES': false, });
 			    	return true;
 			    });
-		    });
-			} else {
-				guild.channels.every((channel) => {
-		    	channel.overwritePermissions(role, {'SEND_MESSAGES': false, 'ATTACH_FILES': false, });
-		    	return true;
-		    });
 
-		    guild.members.every((member) => {
-		    	this.clear(member);
-		    	return true;
-		    });
+			    guild.members.every((member) => {
+			    	this.clear(member);
+			    	return true;
+			    });
+				}
+
+				return true;
+			});
+
+			// Get path to the appropriate configuration directory or make it if it
+			// doesn't exist.
+			var desired_config_dir = this.client.coreroot + 'plugins/watchdog/config/' + this.client.maiden_name;
+			if (!fs.existsSync(desired_config_dir)) {
+				fs.mkdirSync(desired_config_dir);
 			}
 
-			return true;
+			this.config_path = desired_config_dir + '/guilds.json';
+
+			// Build Configurations
+			this.guilds = {};
+
+			if(fs.existsSync(this.config_path)) {
+				this.guilds = JSON.parse(fs.readFileSync(this.config_path));
+			}
+
+			if (!_.isEmpty(this.guilds)) {
+				this.client.on('ready', () => {
+					console.log('Maiden Watchdog: Loaded guild config from files.');
+					// this.client.home.channel.send(`**Watchdog**: Enabled guilds configuration successfully loaded. @TODO - Show where watchdog is enabled.`);
+				});
+
+				return;
+			}
+
+			this.client.guilds.every((guild) => {
+				this.guilds[guild.id] = false;
+				return true;
+			});
+
+			this.client.on('ready', () => {
+				console.log('Maiden Watchdog: Guild config not found. Created default guild config.');
+				// this.client.home.channel.send(`**Watchdog**: Enabled guilds for watchdog config file not found or empty. Created default file. Watchdog has been disabled in all guilds.`);
+			});
+
+			fs.writeFileSync(this.config_path, JSON.stringify(this.guilds, null, 2));
+
+			return;
 		});
-	}
-
-	__loadGuildConfig() {
-		var config = {};
-
-		if(fs.existsSync(enabled_guilds_path)) {
-			config = JSON.parse(fs.readFileSync(enabled_guilds_path));
-		}
-
-		if (!_.isEmpty(config)) {
-			console.log('Maiden Watchdog: Loaded guild config from files.');
-			this.client.home.channel.send(`**Watchdog**: Enabled guilds configuration successfully loaded. @TODO - Show where watchdog is enabled.`);
-			return config;
-		}
-
-		this.client.guilds.every((guild) => {
-			config[guild.id] = false;
-			return true;
-		});
-
-		console.log('Maiden Watchdog: Guild config not found. Created default guild config.');
-		this.client.home.channel.send(`**Watchdog**: Enabled guilds for watchdog config file not found or empty. Created default file. Watchdog has been disabled in all guilds.`);
-
-		fs.writeFileSync(enabled_guilds_path, JSON.stringify(config, null, 2));
-
-		return config;
-		
 	}
 }
 

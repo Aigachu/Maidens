@@ -1,31 +1,48 @@
 /**
- * Configuration file for Sora's core functionality.
+ * Settings file for the bot's core functionality.
  * This configuration file is needed for the bot to begin functioning when you run 'node sora.js'.
- * If configurations are not set, Sora will prompt you to modify values in here.
+ * @todo - if needed settings are not set, the bot will prompt you for them.
  *
  * Have fun!
  */
 module.exports = {
-  'src':  __dirname + '/src/',
-  // Discord Application Token
-  // This can be obtained from the developers section of the discord site.
-  // Create an application and paste the token here!
-  // @url: https://discordapp.com/developers/docs/intro
-  'apptoken': '',
+  // Root of the bot's files. This should NOT be changed unless you know what you're doing.
+  'root':  __dirname + '/',
 
-  // Sora's Command Prefix
-  // She is currently set up to accept commands like this:
-  // -- $sora COMMAND_KEY param_1 param_2 ... param_n
-  'cprefix': '$s',
+  // Bot's maiden name. The name here should be the same name as the folder this file is housed in.
+  'maiden_name': 'mikuchu',
 
-  // Gods can use all commands at any time.
-  // They correspond to oplevel being set to 2.
-  'gods': {
-    '77517077325287424': 'Aigachu',
-  },
+  // Discord settings.
+  'discord': {
+    // Discord Application Token
+    // This can be obtained from the developers section of the discord site.
+    // Create an application and paste the token here!
+    // @url: https://discordapp.com/developers/docs/intro
+    'apptoken': '',
 
-  // Admins can use all commands with an oplevel set to 1 or lower.
-  'admins': {
-    '82530619355037696': 'Avion',
+    // Command Prefix
+    // All bots commands can be called by tagging them through discord.
+    // Command prefixes are another way to call them if needed.
+    'cprefix': 'maidev',
+
+    // Plugins
+    // These plugins are custom coded and will be loaded.
+    // Plugins can be found in the core maidendiscord folder.
+    // Enter the names of the folders in the 'plugins' folder.
+    'plugins': [
+      // plugin1,
+      // plugin2,
+    ],
+
+    // Gods can use all commands at any time.
+    // They correspond to oplevel being set to 2.
+    'gods': {
+      '77517077325287424': 'Aigachu',
+    },
+
+    // Admins can use all commands with an oplevel set to 1 or lower.
+    'admins': {
+      '82530619355037696': 'Avion',
+    }
   }
 }

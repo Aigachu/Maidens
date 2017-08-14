@@ -1,7 +1,5 @@
-const Watchdog = require(__dirname + '/watchdog/Watchdog');
-
 /**
- * Sora's Discord class.
+ * Bot's Discord class.
  * "Keep it tidy in here, okay!?" - Sora Akanegasaki
  */
 class ColetteDiscord extends MaidenDiscord {
@@ -24,10 +22,6 @@ class ColetteDiscord extends MaidenDiscord {
 
       // Set game!
       this.user.setGame('Watchdog is live!');
-
-      // Plug and initialize Watchdog.
-      // @todo - make all 'plugins' activate automatically from a plugins folder.
-      this.watchdog = new Watchdog(this);
 
     });
 

@@ -47,28 +47,36 @@ class MaidenDiscord extends DiscordClient {
 
     // Set the settings...LOL. SET THE SETTINGS! GET IT?!
     // @see setting.js at the root of the project.
+    this.coreroot = __dirname + '/';
     this.root = settings.root;
+    this.maiden_name = settings.maiden_name;
     this.namespace = this.root + 'src/' + this.constructor.name.toLowerCase() + '/';
     this.assets = this.root + 'assets/';
-    this.apptoken = settings.apptoken;
-    this.cprefix = settings.cprefix;
-    this.gods = settings.gods;
-    this.admins = Object.assign(settings.admins, settings.gods);
+    this.apptoken = settings.discord.apptoken;
+    this.cprefix = settings.discord.cprefix;
+    this.gods = settings.discord.gods;
+    this.admins = Object.assign(settings.discord.admins, settings.discord.gods);
 
-    // Plug the cooldown manager to the bot's Client.
-    this.cooldownManager = new CooldownManager(this);
-
-    // Plug the command manager to the bot's Client.
-    this.commandManager = new CommandManager(this);
-
-    // Plug the quip manager to the bot's Client.
-    this.quipManager = new QuipManager(this);
+    // Plugins
+    // We initiate the plugins first since they may have quips or commands.
+    this.plugins = this.loadPlugins(settings.discord.plugins);
 
     // Listeners
     // Listeners are extended functions that monitor messages and do actions accordingly.
-    // Custom listeners can be added by other modules or even commands.
+    // Custom listeners can be added by plugins or even commands.
     this.listeners = [];
 
+    // Initiate the cooldown manager to the bot's Client.
+    this.cooldownManager = new CooldownManager(this);
+
+    // Initiate the command manager to the bot's Client.
+    this.commandManager = new CommandManager(this);
+
+    // Initiate the quip manager to the bot's Client.
+    this.quipManager = new QuipManager(this);
+
+    // Welcome message when the bot connects to Discord.
+    // This will be sent every time the bot connects. It's a handy way to know if the bots disconnected.
     this.welcome = `Connected.`;
 
     /**
@@ -79,9 +87,9 @@ class MaidenDiscord extends DiscordClient {
     this.on('ready', () => {
 
       // Logs connection event in console.
-      // console.log("\nSora: I am now properly linked to the Discord infrastructure. Enjoy!");
+      // console.log("\nI am now properly linked to the Discord infrastructure. Enjoy!");
 
-      // Home
+      // Home Server - Stairway to Heaven
       this.home = {
         guild: this.guilds.find('id', '314130398173069312'),
         channel: this.channels.find('id', '327535083164663808'),
@@ -107,7 +115,7 @@ class MaidenDiscord extends DiscordClient {
       // The Command Manager interprets the message and decides what to do with it.
       this.commandManager.interpret(message);
 
-      // The Quip Manager interprets the message and decides to respond with.
+      // The Quip Manager interprets the message and decides what to respond with.
       this.quipManager.quip(message);
 
     });
@@ -162,6 +170,26 @@ class MaidenDiscord extends DiscordClient {
 
   cool(type, key, scope, duration) {
     this.cooldownManager.set(type, key, scope, duration);
+  }
+
+  loadPlugins(plugins) {
+    var plugins_array = [];
+
+    plugins.every((plugin) => {
+      var plugin_path = __dirname + '/plugins/' + plugin;
+      var PluginClass = require(plugin_path);
+
+      plugins_array.push({
+        name: plugin,
+        path: plugin_path,
+      });
+
+      this[plugin] = new PluginClass(this);
+
+      return true;
+    });
+
+    return plugins_array;
   }
 
 }

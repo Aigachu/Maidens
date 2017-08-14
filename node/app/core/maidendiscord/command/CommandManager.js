@@ -20,7 +20,9 @@ class CommandManager {
 
     // Instantiate the class properties.
     this.client = client;
-    this.commands = this.__getCommands(this.client);
+
+    // Instantiate the client with core commands.
+    this.build(client);
 
   }
 
@@ -283,12 +285,12 @@ class CommandManager {
   }
 
   /**
-   * Get Commands processor method.
+   * Build all commands into the manager.
    * This method reads all of the files in the "./commands" directory and turns them into commands.
    * @param  {[DiscordClient/BotClient]}  client            The client that will be used and given to commands.
    * @return                              {[Object/Array]}  An array of commands.
    */
-  __getCommands(client) {
+  build(client) {
 
     var commands = {};
 
@@ -340,7 +342,36 @@ class CommandManager {
 
     });
 
-    return commands;
+    // Get Commands from plugins
+    this.client.plugins.every((plugin) => {
+      glob.sync( plugin.path + '/commands**/*.js' ).forEach( function( file ) {
+
+        // Remove a huge part of the path that we don't need. We only want the name of the File at the end.
+        var filename = file.replace(/^.*[\\\/]/, '');
+
+        // Get the key of the command by interpreting the filename.
+        var command_key = filename.replace(/\.[^/.]+$/, "").toLowerCase();
+
+        // Require the Command's Class.
+        var CommandClass = require(plugin.path + '/commands/' + filename);
+
+        // Instantiate the [Command] and store it in the {commands} array.
+        commands[command_key] = new CommandClass(client);
+
+        if (typeof commands[command_key].aliases !== 'undefined' && commands[command_key].aliases.length > 0) {
+          commands[command_key].aliases.forEach( function(alias) {
+            commands.aliases[alias] = command_key;
+          });
+        }
+
+      });
+
+      return true;
+    });
+
+    this.commands = commands;
+
+    return true;
 
   }
 }

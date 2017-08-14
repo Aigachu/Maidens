@@ -1,5 +1,3 @@
-const Watchdog = require(__dirname + '/watchdog/Watchdog');
-
 /**
  * Sora's Discord class.
  * "Keep it tidy in here, okay!?" - Sora Akanegasaki
@@ -27,9 +25,6 @@ class MikuchuDiscord extends MaidenDiscord {
 
       // Set game!
       this.user.setGame('Singing coding songs~');
-
-      // Plug and initialize Watchdog.
-      this.watchdog = new Watchdog(this);
 
     });
 
