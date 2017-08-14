@@ -6,3 +6,5 @@ do
 	git pull
 	git rebase live
 done
+
+git checkout live
