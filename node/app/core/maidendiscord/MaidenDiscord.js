@@ -1,23 +1,23 @@
 /**
- * === Modules ===
- * All of these includes are classes customized for the bot.
- * Ideally, these modules aren't limited to Sora's use only, and can be transferred to other bots if you want to.
+ * === Objects ===
+ * These objects are core objects that the discord bot will use.
+ */
+global.Command = require('./objects/Command');
+global.Quip = require('./objects/Quip');
+
+/**
+ * === Managers ===
+ * Managers that deal with core concepts in discord bot programming.
  */
 
 // Used to manage the interpretation, discernation and processing of Commands.
-const CommandManager = require('./command/CommandManager');
+const CommandManager = require('./MaidenCommandManager');
 
 // Used to manage text communication.
-const CooldownManager = require('./cooldown/CooldownManager');
+const CooldownManager = require('./MaidenCooldownManager');
 
 // Used to manage quips (replies to certain words!).
-const QuipManager = require('./quip/QuipManager');
-
-/**
- * === Classes ===
- */
-global.Command = require('./command/Command');
-global.Quip = require('./quip/Quip');
+const QuipManager = require('./MaidenQuipManager');
 
 // @TODO
 // const ConfigManager = require('./config/ConfigManager');

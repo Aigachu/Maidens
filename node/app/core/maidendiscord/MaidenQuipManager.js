@@ -5,7 +5,7 @@
  * @todo  - documentation
  * 
  */
-class QuipManager {
+class MaidenQuipManager {
 
 	/**
    * Constructor for the QuipManager class.
@@ -86,4 +86,4 @@ class QuipManager {
   }
 }
 
-module.exports = QuipManager;
+module.exports = MaidenQuipManager;

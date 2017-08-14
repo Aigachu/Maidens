@@ -8,7 +8,7 @@
  * - {client}     : The Discord Bot client.
  *
  */
-class CooldownManager {
+class MaidenCooldownManager {
 
   /**
    * Constructor for the CooldownManager class.
@@ -83,4 +83,4 @@ class CooldownManager {
 }
 
 // Export Class.
-module.exports = CooldownManager;
+module.exports = MaidenCooldownManager;

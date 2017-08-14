@@ -10,7 +10,7 @@
  * - {client}     : The Discord Bot client.
  * - {commands}   : Commands retrieved from reading all files in the "./commands" folder.
  */
-class CommandManager {
+class MaidenCommandManager {
 
   /**
    * Constructor for the CommandManager class.
@@ -377,4 +377,4 @@ class CommandManager {
 }
 
 // Export the Command Manager.
-module.exports = CommandManager;
+module.exports = MaidenCommandManager;
