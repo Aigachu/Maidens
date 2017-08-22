@@ -6,6 +6,26 @@ class Reminder {
 
 		this.reminders = {};
 	}
+
+	ping() {
+		
+	}
+
+	remind(reminder) {
+		
+	}
+
+	create(user, timestamp, action) {
+
+	}
+
+	delete(reminder) {
+
+	}
+
+	list(user) {
+
+	}
 }
 
 module.exports = Reminder;

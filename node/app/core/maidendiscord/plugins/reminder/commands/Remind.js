@@ -52,7 +52,7 @@ class Remind extends Command {
     
     // Uncomment to adjust the cooldown of the command.
     // The default cooldown is 5 seconds.
-    // this.cooldown = 5;
+    this.cooldown = 0;
 
   }
 
@@ -68,7 +68,31 @@ class Remind extends Command {
    */
   tasks(data) {
 
+    var input = data.input.full;
 
+    var destination = input.split(' ')[0];
+
+    input = input.replace(destination + ' ', '');
+
+    var subject_regex = /.+?(?= at| in| on)/;
+    var subject = input.match(subject_regex)[0];
+
+    input = input.replace(subject + ' ', '');
+
+    if (input.)
+
+    data.msg.channel.send(`Input: ${data.input.full}`);
+    data.msg.channel.send(`Destination: ${destination}`);
+    data.msg.channel.send(`Subject: ${subject}`);
+
+    var currentTimestamp = moment().startOf('second').format('x');
+    var currentTime = moment().startOf('second').format('MMMM Do YYYY, h:mm:ss a');
+
+
+
+    console.log();
+
+    return;
 
   }
 

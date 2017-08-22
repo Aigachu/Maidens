@@ -70,6 +70,9 @@ global._ = require('underscore');
 // Google
 global.google = require('google');
 
+// Moment - Time management
+global.moment = require('moment');
+
 /**
  * === Custom Modules ===
  * Modules that aren't available via NPM, but obtained online or coded by hand.
