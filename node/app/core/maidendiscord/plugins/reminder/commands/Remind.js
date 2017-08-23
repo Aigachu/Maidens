@@ -165,7 +165,7 @@ class Remind extends Command {
   }
 
   getCountdown(input) {
-    var get_countdown_regex = /(?:in [0-9]+(?:(?:m|s|h(?:r)?|d|w(?:k)?|y(?:r)?)(?:s)?| (?:sec(?:ond)?|min(?:ute)?|hr|hour|d(?:ay)?|wk|week|mth|month|yr|year)(?:s)?))/;
+    var get_countdown_regex = /(?:in [0-9]+(?:(?:m|s|h(?:r)?|d|w(?:k)?|y(?:r)?)(?:s)?| (?:sec(?:ond)?|min(?:ute)?|hr|hour|d(?:ay)?|wk|week|mth|month|yr|year)(?:s)?))(?: |,(?: )?)(?:and )?.+/;
     var countdown = input.match(get_countdown_regex) !== null ? input.match(get_countdown_regex)[0].replace('in ', '') : false;
 
     if (countdown === false) {
@@ -176,6 +176,26 @@ class Remind extends Command {
   }
 
   parseCountdown(countdown) {
+
+    var modifiers = [];
+
+    // get 'in' part with regex
+    // then get the rest of ands or commas
+    var get_first_modifier_regex = /(?:in [0-9]+(?:(?:m|s|h(?:r)?|d|w(?:k)?|y(?:r)?)(?:s)?| (?:sec(?:ond)?|min(?:ute)?|hr|hour|d(?:ay)?|wk|week|mth|month|yr|year)(?:s)?))/;
+    var first_modifier = countdown.match(get_first_modifier_regex) !== null ? countdown.match(get_first_modifier_regex)[0] : false;
+
+    // add first_modifier to modifiers array.
+
+    // remove first modifier from countdown string
+    countdown = countdown.replace(countdown.match(get_first_modifier_regex), '').trim();
+
+    var get_next_modifier_regex = /(?:(?:and |, )[0-9]+(?:(?:m|s|h(?:r)?|d|w(?:k)?|y(?:r)?)(?:s)?| (?:sec(?:ond)?|min(?:ute)?|hr|hour|d(?:ay)?|wk|week|mth|month|yr|year)(?:s)?))/;
+
+    // new function to recursively get the rest of the modifiers
+    // regex to get following countdown strings
+
+    var currentTimestamp = moment().startOf('second').format('x');
+
     return countdown;
   }
 
