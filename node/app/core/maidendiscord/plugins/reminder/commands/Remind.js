@@ -86,42 +86,45 @@ class Remind extends Command {
 
   dissect(message, input) {
 
+    var reminder = {};
+
     // Get the destination object.
-    var destination = this.getDestination(message, input);
+    reminder.destination = this.getDestination(message, input);
 
     // If we don't have a destination, we can't do anything.
-    if (destination === false) {
+    if (reminder.destination === false) {
       return;
     }
-
-    console.log(destination);
+    console.log(reminder.destination);
 
     // Remove destination from the input.
     input = input.replace(input.split(' ')[0] + ' ', '');
 
-    var subject = this.getSubject(input);
+    // Get the subject to be reminded of.
+    reminder.subject = this.getSubject(input);
 
     // If we don't have a subject, we can't do anything.
-    if (subject === false) {
+    if (reminder.subject === false) {
       return;
     }
-
     console.log(subject);
 
     // Remove the subject from the input.
-    input = input.replace(subject + ' ', '');
-
-    console.log(input);
-
-    return {
-      destination: destination,
-      subject: subject,
-      when: input,
-    };
+    input = input.replace(reminder.subject + ' ', '');
     
     // So first, we should check for an 'in', a.k.a. a countdown.
     // If one is found, then we should have enough information to generate the timestamp.
     // The function will end there.
+    
+    // Get any countdowns from the input.
+    var countdown = this.getCountdown(input);
+
+    if (countdown !== false) {
+      reminder.when = this.parseCountdown(countdown);
+      return reminder;
+    }
+
+    return reminder;
     
     // If there's no 'in' (countdown), then we'll search for a date.
     // If a date is given but it's before the current date, an error is fired, saying you can't remind your past self since it's too late.
@@ -135,9 +138,6 @@ class Remind extends Command {
     // If the string has 'in' AND ('on' OR 'at'), we should fire en error.
     // You either give a countdown alone, a time alone, or a date and time together.
     // @TODO - Maybe in the future, we'll handle cases where a date is given alone.
-
-    var get_countdown_regex = /(?:in [0-9]+(?:(?:m|s|h(?:r)?|d|w(?:k)?|y(?:r)?)(?:s)?| (?:sec(?:ond)?|min(?:ute)?|hr|hour|d(?:ay)?|wk|week|mth|month|yr|year)(?:s)?))/;
-    var countdown = input.match(get_countdown_regex)[0].replace('in ', '');
 
     input = input.replace(input.match(get_countdown_regex)[0], '').trim();
 
@@ -162,6 +162,21 @@ class Remind extends Command {
     }
 
     return subject;
+  }
+
+  getCountdown(input) {
+    var get_countdown_regex = /(?:in [0-9]+(?:(?:m|s|h(?:r)?|d|w(?:k)?|y(?:r)?)(?:s)?| (?:sec(?:ond)?|min(?:ute)?|hr|hour|d(?:ay)?|wk|week|mth|month|yr|year)(?:s)?))/;
+    var countdown = input.match(get_countdown_regex) !== null ? input.match(get_countdown_regex)[0].replace('in ', '') : false;
+
+    if (countdown === false) {
+      console.log('No Countdown found. Returning.')
+    }
+
+    return countdown;
+  }
+
+  parseCountdown(countdown) {
+    return countdown;
   }
 
   getDestination(message, input) {
