@@ -27,6 +27,11 @@ class Watchdog {
 			this.client.listeners.push({
 				listen: (client, message) => {
 
+					// Don't watch the message if it's in a PMChannel.
+					if (message.channel.type == 'dm') {
+						return false;
+					}
+
 					// Don't watch the message if the message comes from this client.
 					if (message.author.id === this.client.user.id) {
 						return false;
