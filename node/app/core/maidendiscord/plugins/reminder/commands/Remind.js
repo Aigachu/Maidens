@@ -68,46 +68,156 @@ class Remind extends Command {
    */
   tasks(data) {
 
-    var input = data.input.full;
+    // Full input given.
+    // Everything after 'remind' will be stored in here, pre-trimmed.
+    var reminder = this.dissect(data.msg, data.input.full);
 
-    var destination = input.split(' ')[0];
+    data.msg.channel.send(`Input: ${data.input.full}`);
+    data.msg.channel.send(`Destination: ${reminder.destination}`);
+    data.msg.channel.send(`Subject: ${reminder.subject}`);
+    data.msg.channel.send(`When: ${reminder.when}`);
 
-    input = input.replace(destination + ' ', '');
+    // var currentTimestamp = moment().startOf('second').format('x');
+    // var currentTime = moment().startOf('second').format('MMMM Do YYYY, h:mm:ss a');
 
-    var subject_regex = /.+?(?= at [0-9]+| in [0-9]+| on (?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May?|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)| on the [0-9].)/;
-    var subject = input.match(subject_regex)[0];
+    return;
 
+  }
+
+  dissect(message, input) {
+
+    // Get the destination object.
+    var destination = this.getDestination(message, input);
+
+    // If we don't have a destination, we can't do anything.
+    if (destination === false) {
+      return;
+    }
+
+    console.log(destination);
+
+    // Remove destination from the input.
+    input = input.replace(input.split(' ')[0] + ' ', '');
+
+    var subject = this.getSubject(input);
+
+    // If we don't have a subject, we can't do anything.
+    if (subject === false) {
+      return;
+    }
+
+    console.log(subject);
+
+    // Remove the subject from the input.
     input = input.replace(subject + ' ', '');
 
     console.log(input);
 
+    return {
+      destination: destination,
+      subject: subject,
+      when: input,
+    };
+    
+    // So first, we should check for an 'in', a.k.a. a countdown.
+    // If one is found, then we should have enough information to generate the timestamp.
+    // The function will end there.
+    
+    // If there's no 'in' (countdown), then we'll search for a date.
+    // If a date is given but it's before the current date, an error is fired, saying you can't remind your past self since it's too late.
+    // If no date is found, the default date is today.
+    
+    // After the date, we'll look for a time.
+    // If a date has been given, we can generate the timestamp with the given date and times together.
+    // If no date is given, which will default it to the current date, we'll compare the time to the current time of day.
+    // If the time given is already passed, the reminder will be set for the following day.
+    
+    // If the string has 'in' AND ('on' OR 'at'), we should fire en error.
+    // You either give a countdown alone, a time alone, or a date and time together.
+    // @TODO - Maybe in the future, we'll handle cases where a date is given alone.
+
     var get_countdown_regex = /(?:in [0-9]+(?:(?:m|s|h(?:r)?|d|w(?:k)?|y(?:r)?)(?:s)?| (?:sec(?:ond)?|min(?:ute)?|hr|hour|d(?:ay)?|wk|week|mth|month|yr|year)(?:s)?))/;
     var countdown = input.match(get_countdown_regex)[0].replace('in ', '');
 
-    input = input.replace(countdown, '').trim();
+    input = input.replace(input.match(get_countdown_regex)[0], '').trim();
+
+    var get_date_regex = /test/;
+    var date = input.match(get_date_regex)[0].replace('at ', '').replace('the ', '');
+
+    date = input.replace(input.match(get_date_regex)[0], '').trim();
 
     var get_time_regex = /\b(at )?\b((0?[1-9]|1[012])([:.][0-5][0-9])?([:.][0-5][0-9])?(\s?[apAP][mM])|([01]?[0-9]|2[0-3])([:.][0-5][0-9]))\b/;
     var time = input.match(get_time_regex)[0].replace('at ', '');
 
-    input = input.replace(time, '').trim();
+    input = input.replace(input.match(get_time_regex)[0], '').trim();
+  }
 
-    // If the string has 'in' AND 'on' OR 'at', we should fire en error.
-    // If a date is specified, but no time, set a default time OR fire an error.
-    // If a countdown is specified, we shouldn't have a date OR a time!
+  getSubject(input) {
+    // Regex to get the subject that the destination should be reminded of.
+    var subject_regex = /.+?(?= at [0-9]+| in [0-9]+| on (?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May?|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)| on the [0-9].)/;
+    var subject = input.match(subject_regex) !== null ? input.match(subject_regex)[0] : false;
 
-    data.msg.channel.send(`Input: ${data.input.full}`);
-    data.msg.channel.send(`Destination: ${destination}`);
-    data.msg.channel.send(`Subject: ${subject}`);
+    if (subject === false) {
+      console.log('Subject could not be determined from the given input. Returning.')
+    }
 
-    var currentTimestamp = moment().startOf('second').format('x');
-    var currentTime = moment().startOf('second').format('MMMM Do YYYY, h:mm:ss a');
+    return subject;
+  }
 
+  getDestination(message, input) {
+    // The first word after 'remind' is the destination, always.
+    // This destination is either 'me', a Member/User tag or a TextChannel tag.
+    var destination = input.split(' ')[0];
 
+    // If there is no destination, let's stop here.
+    if (_.isEmpty(destination)) {
+      // @TODO - Throw error for empty input.
+      console.log('Empty destination. Returning.');
+      return false;
+    }
 
-    console.log();
+    // If the destination is 'me', we get the id of the caller.
+    if (destination == 'me') {
+      return message.author;
+    }
 
-    return;
+    // At this point, if the message is in dms, but the destination is not 'me', we shouldn't do anything.
+    if (message.channel.type == 'dm') {
+      console.log('Remind called in dms, but destination was not caller. Returning.')
+      return false;
+    }
 
+    // Remove unneeded alligators.
+    destination = destination.replace('<', '');
+    destination = destination.replace('>', '');
+
+    // If the tag is a user nickname tag, get the guild member.
+    if (destination.indexOf('@!') >= 0) {
+      var member = message.guild.members.find('id', destination.replace('@!', ''));
+      return member;
+    }
+
+    // If the tag is a role tag, get the role.
+    if (destination.indexOf('@&') >= 0) {
+      var role = message.guild.roles.find('id', destination.replace('@&', ''));
+      return role;
+    }
+
+    // If the tag is a basic user tag, get the user.
+    if (destination.indexOf('@') >= 0) {
+      var member = message.guild.members.find('id', destination.replace('@', ''));
+      return member;
+    }
+
+    // If the tag is a channel tag, get the channel.
+    if (destination.indexOf('#') >= 0) {
+      var channel = message.guild.channels.find('id', destination.replace('#', ''));
+      return channel;
+    }
+
+    // Return false if nothing is obtained. This most likely means an error in the input.
+    console.log('Destination could not be dissected. Reached the end of the getDestination() function. Returning.')
+    return false;
   }
 
 }
