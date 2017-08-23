@@ -74,12 +74,26 @@ class Remind extends Command {
 
     input = input.replace(destination + ' ', '');
 
-    var subject_regex = /.+?(?= at| in| on)/;
+    var subject_regex = /.+?(?= at [0-9]+| in [0-9]+| on (?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May?|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)| on the [0-9].)/;
     var subject = input.match(subject_regex)[0];
 
     input = input.replace(subject + ' ', '');
 
-    if (input.)
+    console.log(input);
+
+    var get_countdown_regex = /(?:in [0-9]+(?:(?:m|s|h(?:r)?|d|w(?:k)?|y(?:r)?)(?:s)?| (?:sec(?:ond)?|min(?:ute)?|hr|hour|d(?:ay)?|wk|week|mth|month|yr|year)(?:s)?))/;
+    var countdown = input.match(get_countdown_regex)[0].replace('in ', '');
+
+    input = input.replace(countdown, '').trim();
+
+    var get_time_regex = /\b(at )?\b((0?[1-9]|1[012])([:.][0-5][0-9])?([:.][0-5][0-9])?(\s?[apAP][mM])|([01]?[0-9]|2[0-3])([:.][0-5][0-9]))\b/;
+    var time = input.match(get_time_regex)[0].replace('at ', '');
+
+    input = input.replace(time, '').trim();
+
+    // If the string has 'in' AND 'on' OR 'at', we should fire en error.
+    // If a date is specified, but no time, set a default time OR fire an error.
+    // If a countdown is specified, we shouldn't have a date OR a time!
 
     data.msg.channel.send(`Input: ${data.input.full}`);
     data.msg.channel.send(`Destination: ${destination}`);
