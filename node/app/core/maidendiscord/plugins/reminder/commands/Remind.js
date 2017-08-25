@@ -72,8 +72,10 @@ class Remind extends Command {
     // Everything after 'remind' will be stored in here, pre-trimmed.
     var reminder = this.dissect(data.msg, data.input.full);
 
+    console.log(reminder);
+
     if (reminder === null) {
-      console.log('Execution stopped.');
+      console.log('Execution stopped. Check log for errors.');
     }
 
     // data.msg.channel.send(`Input: ${data.input.full}`);
@@ -101,6 +103,7 @@ class Remind extends Command {
     // If we don't have a destination, we can't do anything.
     if (reminder.destination === false) {
       console.log('ERROR: Destination could not be resolved. Stopping execution.');
+      console.log('-------------------------------------------------------------');
       return null;
     }
 
@@ -114,10 +117,6 @@ class Remind extends Command {
     // "to eat at 3pm"
     // "to eat at 3pm on January 5th, 2016"
     // ********************************************
-
-    // So first, we should check for an 'in', a.k.a. a TUF (Time Until Fire).
-    // If one is found, then we should have enough information to generate the timestamp.
-    // The function will end there.
     
     // Get any TUFs from the input.
     var time_until_fire = this.getTUF(input);
@@ -126,77 +125,52 @@ class Remind extends Command {
     var target_time = this.getTargetTime(input);
 
     // Get any target time from input.
-    var target_date = this.getTargetTime(input);
+    var target_date = this.getTargetDate(input);
 
-    // Throw error if nothing is found.
+    // Throw error if nothing is found concerning the timestamp.
     if (!time_until_fire && !target_time && !target_date) {
       console.log('ERROR: No desired moment specified for reminder. Stopping execution.');
+      console.log('-------------------------------------------------------------');
       return null;
     }
 
-    // Throw error if a TUF is set with anything else.
+    // Throw error if a TUF is set with any other timestamp specifications.
     if (time_until_fire !== false && (target_time !== false || target_date !== false)) {
       console.log('ERROR: TUF set with Time & Date specifications. Stopping execution.');
+      console.log('-------------------------------------------------------------');
       return null;
     }
 
     // If a time until fire exists, we'll set it now and return the reminder.
     if (time_until_fire !== false) {
-      reminder.when = this.parseTUF(time_until_fire.replace('in ', ''));
+      reminder.tuf = this.parseTUF(time_until_fire);
       input = input.replace(time_until_fire, '').trim();
-      
-      // The action is whatever is left.
-      reminder.action = input;
-
-      return reminder;
     }
 
     // If a desired date is set in the reminder, get it.
-
-    // If a desired time is set in the reminder, get it.
-    if(time !== false) {
-      reminder.when = this.parseTargetTime(time.replace('at ', ''));
-      input = input.replace(time, '').trim();
-
-      // The action is whatever is left.
-      reminder.action = input;
-
-      return reminder;
+    if(target_date !== false) {
+      reminder.date = this.parseTargetDate(target_date);
+      input = input.replace(target_date, '').trim();
     }
 
+    // If a desired time is set in the reminder, get it.
+    if(target_time !== false) {
+      reminder.time = this.parseTargetTime(target_time);
+      input = input.replace(target_time, '').trim();
+    }
+
+    // The action is whatever is left.
+    reminder.action = input;
+    console.log('Action: ' + reminder.action);
 
     if (_.isEmpty(reminder.action)) {
       console.log('Umm...What am I supposed to remind you of?');
+      console.log('-------------------------------------------------------------');
       // @TODO - Fire error.
       return false;
     }
 
-    console.log('Action: ' + reminder.action + '[END]');
-
     return reminder;
-    
-    // If there's no 'in' (countdown), then we'll search for a date.
-    // If a date is given but it's before the current date, an error is fired, saying you can't remind your past self since it's too late.
-    // If no date is found, the default date is today.
-    
-    // After the date, we'll look for a time.
-    // If a date has been given, we can generate the timestamp with the given date and times together.
-    // If no date is given, which will default it to the current date, we'll compare the time to the current time of day.
-    // If the time given is already passed, the reminder will be set for the following day.
-    
-    // If the string has 'in' AND ('on' OR 'at'), we should fire en error.
-    // You either give a countdown alone, a time alone, or a date and time together.
-    // @TODO - Maybe in the future, we'll handle cases where a date is given alone.
-
-    // var get_date_regex = /test/;
-    // var date = input.match(get_date_regex)[0].replace('at ', '').replace('the ', '');
-
-    // date = input.replace(input.match(get_date_regex)[0], '').trim();
-
-    // var get_time_regex = /\b(at )?\b((0?[1-9]|1[012])([:.][0-5][0-9])?([:.][0-5][0-9])?(\s?[apAP][mM])|([01]?[0-9]|2[0-3])([:.][0-5][0-9]))\b/;
-    // var time = input.match(get_time_regex)[0].replace('at ', '');
-
-    // input = input.replace(input.match(get_time_regex)[0], '').trim();
 
   }
 
@@ -206,59 +180,61 @@ class Remind extends Command {
    * @return {[type]}       [description]
    */
   getTUF(input) {
-    var get_tuf_regex = /in (?:[0-9]+(?:(?:m|s|h(?:r)?|d|w(?:k)?|y(?:r)?)(?:s)?| (?:sec(?:ond)?|min(?:ute)?|hr|hour|d(?:ay)?|wk|week|mth|month|yr|year)(?:s)?)(?: |,(?: )?)?(?:and )?)*/;
+    var get_tuf_regex = /(in)\s+(\d+((m(inute)?(onth)?(on)?|s(econd)?|h(our)?(r)?|d(ay)?|w(eek)?(k)?|y(ear)?(r)?)(s)?|\s+(sec(ond)?|min(ute)?|hr|hour|d(ay)?|wk|week|mth|month|yr|year)(s)?)(\s+|,(?:\s+)?)?(?:and\s+)?)+/i;
     var tuf = input.match(get_tuf_regex) !== null ? input.match(get_tuf_regex)[0] : false;
-
-    console.log('TUF: ' + tuf);
-
-    if (tuf === false) {
-      console.log('No Time Until Fire found. Returning.')
-    }
 
     return tuf;
   }
 
-  getTargetTime(input) {
-    var get_target_time_regex = /\b(at )?\b((0?[1-9]|1[012])([:.][0-5][0-9])?([:.][0-5][0-9])?(\s?[apAP][mM])|([01]?[0-9]|2[0-3])([:.][0-5][0-9]))\b/;
-    var target_time = input.match(get_target_time_regex) !== null input.match(get_target_time_regex)[0] ? : false;
-
-    if (target_time === false) {
-      console.log('No Target Time found. Returning.')
-    }
-
-    return target_time;
-  }
-
   getTargetDate(input) {
-    var get_target_date_regex = /a/;
-    var target_date = input.match(get_target_date_regex) !== null input.match(get_target_date_regex)[0] ? : false;
-
-    if (target_date === false) {
-      console.log('No target Date found. Returning.')
-    }
+    var get_target_date_regex = /(on)\s+((the\s+\d{1,2}(st|nd|rd|th)?\s+of\s+)?(Jan(uary)?|Feb(ruary)?|Mar(ch)?|Apr(il)?|May|Jun(e)?|Jul(y)?|Aug(ust)?|Sep(tember)?|Oct(ober)?|Nov(ember)?|Dec(ember)?)(\s+\d{1,2}(st|nd|rd|th)?)?,\s+\d{4})/i;
+    var target_date = input.match(get_target_date_regex) !== null ? input.match(get_target_date_regex)[0] : false;
 
     return target_date;
   }
 
+  getTargetTime(input) {
+    var get_target_time_regex = /(at)\s+(((0)?[1-9]|(1)[012])([:.][0-5]\d)?([:.][0-5]\d)?(\s?[apAP][mM])|([01]?\d|(2)[0-3])([:.][0-5]\d))/i;
+    var target_time = input.match(get_target_time_regex) !== null ? input.match(get_target_time_regex)[0] : false;
+
+    return target_time;
+  }
+
   parseTUF(tuf) {
 
-    // Modifiers are the user inputs, and will be added to the current date.
-    var modifiers = [];
+    // Clean user input.
+    tuf = tuf.replace('in', '').trim();
+
+    // Get current time.
+    var timestamp = moment().startOf('second');
+
+    // Mutators are the user inputs, and will be added to the current date.
+    var mutators = [];
 
     // get 'in' part with regex
     // then get the rest of ands or commas
-    var get_modifiers_regex = /(?:[0-9]+(?:(?:m|s|h(?:r)?|d|w(?:k)?|y(?:r)?)(?:s)?| (?:sec(?:ond)?|min(?:ute)?|hr|hour|d(?:ay)?|wk|week|mth|month|yr|year)(?:s)?))/gm;
-    console.log(tuf.match(get_modifiers_regex));
+    var get_mutators_regex = /(\d+((m(inute)?(onth)?(on)?|s(econd)?|h(our)?(r)?|d(ay)?|w(eek)?(k)?|y(ear)?(r)?)(s)?|\s+(sec(ond)?|min(ute)?|hr|hour|d(ay)?|wk|week|mth|month|yr|year)(s)?))/gmi;
+    mutators = tuf.match(get_mutators_regex);
 
-    // remove modifier from countdown string
-    // countdown = countdown.replace(countdown.match(get_next_modifier_regex), '').trim();
+    mutators.every((mutator) => {
+      mutator = mutator.replace(/\d+(?=\w+)/i, "$& ");
+      var mutator_amount = mutator.split(' ')[0];
+      var mutator_key = this.getMutatorKey(mutator.split(' ')[1]);
+      timestamp.add(mutator.split(' ')[0], mutator_key);
+      return true;
+    });
 
-    // new function to recursively get the rest of the modifiers
-    // regex to get following countdown strings
+    return timestamp.format('x');
+  }
 
-    var currentTimestamp = moment().startOf('second').format('x');
+  parseTargetDate(target_date) {
+    // Clean user input.
+    tuf = tuf.replace('on', '').trim();
+  }
 
-    return tuf;
+  parseTargetTime(target_time) {
+    // Clean user input.
+    tuf = tuf.replace('at', '').trim();
   }
 
   /**
@@ -275,7 +251,7 @@ class Remind extends Command {
     // If there is no destination, let's stop here.
     if (_.isEmpty(destination)) {
       // @TODO - Throw error for empty input.
-      console.log('Empty destination. Returning.');
+      console.log('ERROR: Empty destination. Returning.');
       return false;
     }
 
@@ -286,7 +262,7 @@ class Remind extends Command {
 
     // At this point, if the message is in dms, but the destination is not 'me', we shouldn't do anything.
     if (message.channel.type == 'dm') {
-      console.log('Remind called in dms, but destination was not caller. Returning.')
+      console.log('ERROR: Remind called in dms, but destination was not caller. Returning.')
       return false;
     }
 
@@ -319,8 +295,67 @@ class Remind extends Command {
     }
 
     // Return false if nothing is obtained. This most likely means an error in the input.
-    console.log('Destination could not be dissected. Reached the end of the getDestination() function. Returning.')
+    console.log('ERROR: Destination could not be dissected. Reached the end of the getDestination() function. Returning.')
     return false;
+  }
+
+  getMutatorKey(mutator_input) {
+
+    // If the key is in plural, remove the last s.
+    // This will make the array below cleaner.
+    if (mutator_input[mutator_input.length - 1] == 's' && mutator_input.length != 1) {
+      mutator_input = mutator_input.substr(0, mutator_input.length - 1);
+    }
+
+    console.log(mutator_input);
+
+    // Asssociation array for mutators.
+    // Depending on the user input, we decide what to do.
+    var mutator_assoc = {
+
+      // Seconds
+      s:      'seconds',
+      sec:    'seconds',
+      second: 'seconds',
+
+      // Minutes
+      m:      'minutes',
+      min:    'minutes',
+      minute: 'minutes',
+
+      // Hours
+      h:      'hours',
+      hr:     'hours',
+      hour:   'hours',
+
+      // Days
+      d:      'days',
+      day:    'days',
+
+      // Weeks
+      w:      'weeks',
+      wk:     'weeks',
+      week:   'weeks',
+
+      // Months
+      mon:    'months',
+      month:  'months',
+
+      // Years
+      y:      'years',
+      yr:     'years',
+      year:   'years',
+
+    }
+
+    var key = mutator_assoc[mutator_input];
+
+    if (key === null) {
+      console.log('ERROR: Invalid Mutator was somehow given. Please check the code!');
+      return false;
+    }
+
+    return mutator_assoc[mutator_input];
   }
 
 }
