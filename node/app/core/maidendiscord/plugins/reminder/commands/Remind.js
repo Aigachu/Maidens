@@ -72,10 +72,14 @@ class Remind extends Command {
     // Everything after 'remind' will be stored in here, pre-trimmed.
     var reminder = this.dissect(data.msg, data.input.full);
 
-    data.msg.channel.send(`Input: ${data.input.full}`);
-    data.msg.channel.send(`Destination: ${reminder.destination}`);
-    data.msg.channel.send(`Subject: ${reminder.subject}`);
-    data.msg.channel.send(`When: ${reminder.when}`);
+    if (reminder === null) {
+      console.log('Execution stopped.');
+    }
+
+    // data.msg.channel.send(`Input: ${data.input.full}`);
+    // data.msg.channel.send(`Destination: ${reminder.destination}`);
+    // data.msg.channel.send(`Action: ${reminder.action}`);
+    // data.msg.channel.send(`When: ${reminder.when}`);
 
     // var currentTimestamp = moment().startOf('second').format('x');
     // var currentTime = moment().startOf('second').format('MMMM Do YYYY, h:mm:ss a');
@@ -88,41 +92,86 @@ class Remind extends Command {
 
     var reminder = {};
 
+    // === Getting the Destination ===
+    // ********************************************
+
     // Get the destination object.
     reminder.destination = this.getDestination(message, input);
 
     // If we don't have a destination, we can't do anything.
     if (reminder.destination === false) {
-      return;
+      console.log('ERROR: Destination could not be resolved. Stopping execution.');
+      return null;
     }
-    console.log(reminder.destination);
 
     // Remove destination from the input.
     input = input.replace(input.split(' ')[0] + ' ', '');
 
-    // Get the subject to be reminded of.
-    reminder.subject = this.getSubject(input);
+    // === Getting the timestamp ===
+    // At this point, the destination is removed.
+    // We are left with:
+    // "to eat in 12 hours, 5 minutes and 13 seconds"
+    // "to eat at 3pm"
+    // "to eat at 3pm on January 5th, 2016"
+    // ********************************************
 
-    // If we don't have a subject, we can't do anything.
-    if (reminder.subject === false) {
-      return;
-    }
-    console.log(subject);
-
-    // Remove the subject from the input.
-    input = input.replace(reminder.subject + ' ', '');
-    
-    // So first, we should check for an 'in', a.k.a. a countdown.
+    // So first, we should check for an 'in', a.k.a. a TUF (Time Until Fire).
     // If one is found, then we should have enough information to generate the timestamp.
     // The function will end there.
     
-    // Get any countdowns from the input.
-    var countdown = this.getCountdown(input);
+    // Get any TUFs from the input.
+    var time_until_fire = this.getTUF(input);
 
-    if (countdown !== false) {
-      reminder.when = this.parseCountdown(countdown);
+    // Get any target time from input.
+    var target_time = this.getTargetTime(input);
+
+    // Get any target time from input.
+    var target_date = this.getTargetTime(input);
+
+    // Throw error if nothing is found.
+    if (!time_until_fire && !target_time && !target_date) {
+      console.log('ERROR: No desired moment specified for reminder. Stopping execution.');
+      return null;
+    }
+
+    // Throw error if a TUF is set with anything else.
+    if (time_until_fire !== false && (target_time !== false || target_date !== false)) {
+      console.log('ERROR: TUF set with Time & Date specifications. Stopping execution.');
+      return null;
+    }
+
+    // If a time until fire exists, we'll set it now and return the reminder.
+    if (time_until_fire !== false) {
+      reminder.when = this.parseTUF(time_until_fire.replace('in ', ''));
+      input = input.replace(time_until_fire, '').trim();
+      
+      // The action is whatever is left.
+      reminder.action = input;
+
       return reminder;
     }
+
+    // If a desired date is set in the reminder, get it.
+
+    // If a desired time is set in the reminder, get it.
+    if(time !== false) {
+      reminder.when = this.parseTargetTime(time.replace('at ', ''));
+      input = input.replace(time, '').trim();
+
+      // The action is whatever is left.
+      reminder.action = input;
+
+      return reminder;
+    }
+
+
+    if (_.isEmpty(reminder.action)) {
+      console.log('Umm...What am I supposed to remind you of?');
+      // @TODO - Fire error.
+      return false;
+    }
+
+    console.log('Action: ' + reminder.action + '[END]');
 
     return reminder;
     
@@ -139,66 +188,85 @@ class Remind extends Command {
     // You either give a countdown alone, a time alone, or a date and time together.
     // @TODO - Maybe in the future, we'll handle cases where a date is given alone.
 
-    input = input.replace(input.match(get_countdown_regex)[0], '').trim();
+    // var get_date_regex = /test/;
+    // var date = input.match(get_date_regex)[0].replace('at ', '').replace('the ', '');
 
-    var get_date_regex = /test/;
-    var date = input.match(get_date_regex)[0].replace('at ', '').replace('the ', '');
+    // date = input.replace(input.match(get_date_regex)[0], '').trim();
 
-    date = input.replace(input.match(get_date_regex)[0], '').trim();
+    // var get_time_regex = /\b(at )?\b((0?[1-9]|1[012])([:.][0-5][0-9])?([:.][0-5][0-9])?(\s?[apAP][mM])|([01]?[0-9]|2[0-3])([:.][0-5][0-9]))\b/;
+    // var time = input.match(get_time_regex)[0].replace('at ', '');
 
-    var get_time_regex = /\b(at )?\b((0?[1-9]|1[012])([:.][0-5][0-9])?([:.][0-5][0-9])?(\s?[apAP][mM])|([01]?[0-9]|2[0-3])([:.][0-5][0-9]))\b/;
-    var time = input.match(get_time_regex)[0].replace('at ', '');
+    // input = input.replace(input.match(get_time_regex)[0], '').trim();
 
-    input = input.replace(input.match(get_time_regex)[0], '').trim();
   }
 
-  getSubject(input) {
-    // Regex to get the subject that the destination should be reminded of.
-    var subject_regex = /.+?(?= at [0-9]+| in [0-9]+| on (?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May?|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)| on the [0-9].)/;
-    var subject = input.match(subject_regex) !== null ? input.match(subject_regex)[0] : false;
+  /**
+   * From an input, get Time Until Fire
+   * @param  {[type]} input [description]
+   * @return {[type]}       [description]
+   */
+  getTUF(input) {
+    var get_tuf_regex = /in (?:[0-9]+(?:(?:m|s|h(?:r)?|d|w(?:k)?|y(?:r)?)(?:s)?| (?:sec(?:ond)?|min(?:ute)?|hr|hour|d(?:ay)?|wk|week|mth|month|yr|year)(?:s)?)(?: |,(?: )?)?(?:and )?)*/;
+    var tuf = input.match(get_tuf_regex) !== null ? input.match(get_tuf_regex)[0] : false;
 
-    if (subject === false) {
-      console.log('Subject could not be determined from the given input. Returning.')
+    console.log('TUF: ' + tuf);
+
+    if (tuf === false) {
+      console.log('No Time Until Fire found. Returning.')
     }
 
-    return subject;
+    return tuf;
   }
 
-  getCountdown(input) {
-    var get_countdown_regex = /(?:in [0-9]+(?:(?:m|s|h(?:r)?|d|w(?:k)?|y(?:r)?)(?:s)?| (?:sec(?:ond)?|min(?:ute)?|hr|hour|d(?:ay)?|wk|week|mth|month|yr|year)(?:s)?))(?: |,(?: )?)(?:and )?.+/;
-    var countdown = input.match(get_countdown_regex) !== null ? input.match(get_countdown_regex)[0].replace('in ', '') : false;
+  getTargetTime(input) {
+    var get_target_time_regex = /\b(at )?\b((0?[1-9]|1[012])([:.][0-5][0-9])?([:.][0-5][0-9])?(\s?[apAP][mM])|([01]?[0-9]|2[0-3])([:.][0-5][0-9]))\b/;
+    var target_time = input.match(get_target_time_regex) !== null input.match(get_target_time_regex)[0] ? : false;
 
-    if (countdown === false) {
-      console.log('No Countdown found. Returning.')
+    if (target_time === false) {
+      console.log('No Target Time found. Returning.')
     }
 
-    return countdown;
+    return target_time;
   }
 
-  parseCountdown(countdown) {
+  getTargetDate(input) {
+    var get_target_date_regex = /a/;
+    var target_date = input.match(get_target_date_regex) !== null input.match(get_target_date_regex)[0] ? : false;
 
+    if (target_date === false) {
+      console.log('No target Date found. Returning.')
+    }
+
+    return target_date;
+  }
+
+  parseTUF(tuf) {
+
+    // Modifiers are the user inputs, and will be added to the current date.
     var modifiers = [];
 
     // get 'in' part with regex
     // then get the rest of ands or commas
-    var get_first_modifier_regex = /(?:in [0-9]+(?:(?:m|s|h(?:r)?|d|w(?:k)?|y(?:r)?)(?:s)?| (?:sec(?:ond)?|min(?:ute)?|hr|hour|d(?:ay)?|wk|week|mth|month|yr|year)(?:s)?))/;
-    var first_modifier = countdown.match(get_first_modifier_regex) !== null ? countdown.match(get_first_modifier_regex)[0] : false;
+    var get_modifiers_regex = /(?:[0-9]+(?:(?:m|s|h(?:r)?|d|w(?:k)?|y(?:r)?)(?:s)?| (?:sec(?:ond)?|min(?:ute)?|hr|hour|d(?:ay)?|wk|week|mth|month|yr|year)(?:s)?))/gm;
+    console.log(tuf.match(get_modifiers_regex));
 
-    // add first_modifier to modifiers array.
-
-    // remove first modifier from countdown string
-    countdown = countdown.replace(countdown.match(get_first_modifier_regex), '').trim();
-
-    var get_next_modifier_regex = /(?:(?:and |, )[0-9]+(?:(?:m|s|h(?:r)?|d|w(?:k)?|y(?:r)?)(?:s)?| (?:sec(?:ond)?|min(?:ute)?|hr|hour|d(?:ay)?|wk|week|mth|month|yr|year)(?:s)?))/;
+    // remove modifier from countdown string
+    // countdown = countdown.replace(countdown.match(get_next_modifier_regex), '').trim();
 
     // new function to recursively get the rest of the modifiers
     // regex to get following countdown strings
 
     var currentTimestamp = moment().startOf('second').format('x');
 
-    return countdown;
+    return tuf;
   }
 
+  /**
+   * Get destination where the reminder should be sent.
+   * @param  {[type]} message [description]
+   * @param  {[type]} input   [description]
+   * @return {[type]}         [description]
+   */
   getDestination(message, input) {
     // The first word after 'remind' is the destination, always.
     // This destination is either 'me', a Member/User tag or a TextChannel tag.
