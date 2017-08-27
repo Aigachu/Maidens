@@ -1,3 +1,11 @@
+/**
+ * Reminder Command
+ *
+ * @author Aigachu (aigachu.sama@gmail.com)
+ * @comment By far the hardest thing I've had to do so far. :sweat:
+ *
+ * This command tries it's best to mimic the '/remind me' in Slack.
+ */
 class Remind extends Command {
 
 	constructor(client) {
@@ -68,11 +76,10 @@ class Remind extends Command {
    */
   tasks(data) {
 
-    // Full input given.
-    // Everything after 'remind' will be stored in here, pre-trimmed.
-    var reminder = this.dissect(data.msg, data.input.full);
+    // Uses the dissest function to parse the input and find out what to do.
+    var reminder = this.parse(data.msg, data.input.full);
 
-    console.log(reminder);
+    // sconsole.log(reminder);
 
     if (reminder === null) {
       console.log('Execution stopped. Check log for errors.');
@@ -90,28 +97,30 @@ class Remind extends Command {
 
   }
 
-  dissect(message, input) {
+  parse(message, input) {
 
+    // Our reminder will be an object.
     var reminder = {};
 
-    // === Getting the Destination ===
+    // === Getting the Receiver ===
+    // The receiver is the object that will get the reminder.
     // ********************************************
 
-    // Get the destination object.
-    reminder.destination = this.getDestination(message, input);
+    // Get the receiver object.
+    reminder.receiver = this.getReceiver(message, input);
 
-    // If we don't have a destination, we can't do anything.
-    if (reminder.destination === false) {
-      console.log('ERROR: Destination could not be resolved. Stopping execution.');
+    // If we don't have a receiver, we can't do anything.
+    if (reminder.receiver === false) {
+      console.log('ERROR: Receiver could not be resolved. Stopping execution.');
       console.log('-------------------------------------------------------------');
       return null;
     }
 
-    // Remove destination from the input.
+    // Remove receiver from the input.
     input = input.replace(input.split(' ')[0] + ' ', '');
 
     // === Getting the timestamp ===
-    // At this point, the destination is removed.
+    // At this point, the receiver is removed.
     // We are left with:
     // "to eat in 12 hours, 5 minutes and 13 seconds"
     // "to eat at 3pm"
@@ -148,13 +157,13 @@ class Remind extends Command {
     }
 
     // If a desired date is set in the reminder, get it.
-    if(target_date !== false) {
+    if (target_date !== false) {
       reminder.date = this.parseTargetDate(target_date);
       input = input.replace(target_date, '').trim();
     }
 
     // If a desired time is set in the reminder, get it.
-    if(target_time !== false) {
+    if (target_time !== false) {
       reminder.time = this.parseTargetTime(target_time);
       input = input.replace(target_time, '').trim();
     }
@@ -187,7 +196,7 @@ class Remind extends Command {
   }
 
   getTargetDate(input) {
-    var get_target_date_regex = /(on)\s+((the\s+\d{1,2}(st|nd|rd|th)?\s+of\s+)?(Jan(uary)?|Feb(ruary)?|Mar(ch)?|Apr(il)?|May|Jun(e)?|Jul(y)?|Aug(ust)?|Sep(tember)?|Oct(ober)?|Nov(ember)?|Dec(ember)?)(\s+\d{1,2}(st|nd|rd|th)?)?,\s+\d{4})/i;
+    var get_target_date_regex = /(on)\s+(((the\s+\d{1,2}(st|nd|rd|th)?\s+of\s+)?(Jan(uary)?|Feb(ruary)?|Mar(ch)?|Apr(il)?|May|Jun(e)?|Jul(y)?|Aug(ust)?|Sep(tember)?|Oct(ober)?|Nov(ember)?|Dec(ember)?)(\s+\d{1,2}(st|nd|rd|th)?)?(,)?\s+\d{4})|\d{4}(-|\/)\d{2}(-|\/)\d{2})/i;
     var target_date = input.match(get_target_date_regex) !== null ? input.match(get_target_date_regex)[0] : false;
 
     return target_date;
@@ -229,73 +238,115 @@ class Remind extends Command {
 
   parseTargetDate(target_date) {
     // Clean user input.
-    tuf = tuf.replace('on', '').trim();
+    target_date = target_date.replace('on', '').trim();
+    target_date = target_date.replace('the', '').trim();
+    target_date = target_date.replace('of', '').trim();
+    target_date = target_date.replace(',', '').trim();
+
+    // Check if the date is already in ISO format
+    var iso_format_regex = /\d{4}(-|\/)\d{2}(-|\/)\d{2}/i;
+
+    // If the user entered it in ISO format, we don't need to parse anything. Return as is.
+    if (target_date.match(iso_format_regex) !== null) {
+      return target_date.replace('/', '-');
+    }
+
+    // The goal now is to have an ISO format.
+    // i.e. 2017-05-22;
+
+    // Use a regex to get the year from the string.
+    // This code assumes that the only collection of 4 numbers is the year. Technically this is true, since the string that's being treated has gone through a regex prior to this.
+    var year = target_date.match(/\d{4}/); 
+    target_date = target_date.replace(year, '').trim();
+
+    // Use a regex to get and remove the month from the string.
+    var d = Date.parse(target_date.match(/(Jan(uary)?|Feb(ruary)?|Mar(ch)?|Apr(il)?|May|Jun(e)?|Jul(y)?|Aug(ust)?|Sep(tember)?|Oct(ober)?|Nov(ember)?|Dec(ember)?)/i) + "1, 2012");
+    if(!isNaN(d)){
+      var month = new Date(d).getMonth() + 1;
+      month = month.toString().length == 1 ? '0' + month : month;
+    } else {
+      console.log('ERROR: There was a problem parsing the month from the given date. Stopping execution.');
+      return null;
+    }
+    target_date = target_date.replace(/(Jan(uary)?|Feb(ruary)?|Mar(ch)?|Apr(il)?|May|Jun(e)?|Jul(y)?|Aug(ust)?|Sep(tember)?|Oct(ober)?|Nov(ember)?|Dec(ember)?)/i, '').trim();
+
+    var day = target_date.replace('st', '').replace('nd', '').replace('rd', '').replace('th', '');
+    day = day.length == 1 ? '0' + day : day;
+
+    var parsed_target_date = year + '-' + month + '-' + day
+
+    console.log('Target Date Parser: ' + parsed_target_date);
+
+    return parsed_target_date;
+
   }
 
   parseTargetTime(target_time) {
     // Clean user input.
-    tuf = tuf.replace('at', '').trim();
+    target_time = target_time.replace('at', '').trim();
+
+    console.log('Target Time Parser: ' + target_time);
   }
 
   /**
-   * Get destination where the reminder should be sent.
+   * Get the object that will receive the reminder.
    * @param  {[type]} message [description]
    * @param  {[type]} input   [description]
    * @return {[type]}         [description]
    */
-  getDestination(message, input) {
-    // The first word after 'remind' is the destination, always.
-    // This destination is either 'me', a Member/User tag or a TextChannel tag.
-    var destination = input.split(' ')[0];
+  getReceiver(message, input) {
+    // The first word after 'remind' is the receiver, always.
+    // This receiver is either 'me', a Member/User tag or a TextChannel tag.
+    var receiver = input.split(' ')[0];
 
-    // If there is no destination, let's stop here.
-    if (_.isEmpty(destination)) {
+    // If there is no receiver, let's stop here.
+    if (_.isEmpty(receiver)) {
       // @TODO - Throw error for empty input.
-      console.log('ERROR: Empty destination. Returning.');
+      console.log('ERROR: Empty receiver. Returning.');
       return false;
     }
 
-    // If the destination is 'me', we get the id of the caller.
-    if (destination == 'me') {
+    // If the receiver is 'me', we get the id of the caller.
+    if (receiver == 'me') {
       return message.author;
     }
 
-    // At this point, if the message is in dms, but the destination is not 'me', we shouldn't do anything.
+    // At this point, if the message is in dms, but the receiver is not 'me', we shouldn't do anything.
     if (message.channel.type == 'dm') {
-      console.log('ERROR: Remind called in dms, but destination was not caller. Returning.')
+      console.log('ERROR: Remind called in dms, but receiver was not caller. Returning.')
       return false;
     }
 
     // Remove unneeded alligators.
-    destination = destination.replace('<', '');
-    destination = destination.replace('>', '');
+    receiver = receiver.replace('<', '');
+    receiver = receiver.replace('>', '');
 
     // If the tag is a user nickname tag, get the guild member.
-    if (destination.indexOf('@!') >= 0) {
-      var member = message.guild.members.find('id', destination.replace('@!', ''));
+    if (receiver.indexOf('@!') >= 0) {
+      var member = message.guild.members.find('id', receiver.replace('@!', ''));
       return member;
     }
 
     // If the tag is a role tag, get the role.
-    if (destination.indexOf('@&') >= 0) {
-      var role = message.guild.roles.find('id', destination.replace('@&', ''));
+    if (receiver.indexOf('@&') >= 0) {
+      var role = message.guild.roles.find('id', receiver.replace('@&', ''));
       return role;
     }
 
     // If the tag is a basic user tag, get the user.
-    if (destination.indexOf('@') >= 0) {
-      var member = message.guild.members.find('id', destination.replace('@', ''));
+    if (receiver.indexOf('@') >= 0) {
+      var member = message.guild.members.find('id', receiver.replace('@', ''));
       return member;
     }
 
     // If the tag is a channel tag, get the channel.
-    if (destination.indexOf('#') >= 0) {
-      var channel = message.guild.channels.find('id', destination.replace('#', ''));
+    if (receiver.indexOf('#') >= 0) {
+      var channel = message.guild.channels.find('id', receiver.replace('#', ''));
       return channel;
     }
 
     // Return false if nothing is obtained. This most likely means an error in the input.
-    console.log('ERROR: Destination could not be dissected. Reached the end of the getDestination() function. Returning.')
+    console.log('ERROR: Receiver could not be dissected. Reached the end of the getReceiver() function. Returning.')
     return false;
   }
 
@@ -348,14 +399,14 @@ class Remind extends Command {
 
     }
 
-    var key = mutator_assoc[mutator_input];
+    var key = mutator_assoc[mutator_input.toLowerCase()];
 
     if (key === null) {
       console.log('ERROR: Invalid Mutator was somehow given. Please check the code!');
       return false;
     }
 
-    return mutator_assoc[mutator_input];
+    return key;
   }
 
 }
