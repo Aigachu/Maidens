@@ -79,7 +79,7 @@ class Remind extends Command {
     // Uses the dissest function to parse the input and find out what to do.
     var reminder = this.parse(data.msg, data.input.full);
 
-    // sconsole.log(reminder);
+    console.log(reminder);
 
     if (reminder === null) {
       console.log('Execution stopped. Check log for errors.');
@@ -170,7 +170,6 @@ class Remind extends Command {
 
     // The action is whatever is left.
     reminder.action = input;
-    console.log('Action: ' + reminder.action);
 
     if (_.isEmpty(reminder.action)) {
       console.log('Umm...What am I supposed to remind you of?');
@@ -203,7 +202,7 @@ class Remind extends Command {
   }
 
   getTargetTime(input) {
-    var get_target_time_regex = /(at)\s+(((0)?[1-9]|(1)[012])([:.][0-5]\d)?([:.][0-5]\d)?(\s?[apAP][mM])|([01]?\d|(2)[0-3])([:.][0-5]\d))/i;
+    var get_target_time_regex = /(at)\s+((\d{2})([:.]\d{2})?([:.]\d{2})?(\s?[apAP][mM])|(\d{2}|\d{2})([:.]\d{2}))/i;
     var target_time = input.match(get_target_time_regex) !== null ? input.match(get_target_time_regex)[0] : false;
 
     return target_time;
@@ -275,8 +274,6 @@ class Remind extends Command {
 
     var parsed_target_date = year + '-' + month + '-' + day
 
-    console.log('Target Date Parser: ' + parsed_target_date);
-
     return parsed_target_date;
 
   }
@@ -285,7 +282,18 @@ class Remind extends Command {
     // Clean user input.
     target_time = target_time.replace('at', '').trim();
 
-    console.log('Target Time Parser: ' + target_time);
+    // Check if there is a AM/PM in the text.
+    var target_time_array = target_time.split(' ');
+
+    if (!_.isEmpty(target_time_array[1]) && target_time_array[1].toLowerCase() == 'pm') {
+      var input_hour = target_time_array[0].split(':')[0];
+      var target_hour = parseInt(input_hour) + 12 == 24 ? '00' : parseInt(input_hour) + 12;
+      var parsed_target_time = target_time_array[0].replace(input_hour, target_hour);
+
+      return target_time_array[0].replace(input_hour, target_hour);
+    }
+
+    return target_time_array[0];
   }
 
   /**
