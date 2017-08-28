@@ -158,6 +158,12 @@ class MaidenDiscord extends DiscordClient {
     
   }
 
+  /**
+   * [startTyping description]
+   * @param  {[type]} channel [description]
+   * @param  {[type]} delay   [description]
+   * @return {[type]}         [description]
+   */
   startTyping(channel, delay) {
     return new Promise((resolve, reject) => {
       channel.startTyping(1);
@@ -172,6 +178,11 @@ class MaidenDiscord extends DiscordClient {
     this.cooldownManager.set(type, key, scope, duration);
   }
 
+  /**
+   * [loadPlugins description]
+   * @param  {[type]} plugins [description]
+   * @return {[type]}         [description]
+   */
   loadPlugins(plugins) {
     var plugins_array = [];
 

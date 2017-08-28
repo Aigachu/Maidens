@@ -85,11 +85,6 @@ class Remind extends Command {
       console.log('Execution stopped. Check log for errors.');
     }
 
-    // data.msg.channel.send(`Input: ${data.input.full}`);
-    // data.msg.channel.send(`Destination: ${reminder.destination}`);
-    // data.msg.channel.send(`Action: ${reminder.action}`);
-    // data.msg.channel.send(`When: ${reminder.when}`);
-
     // var currentTimestamp = moment().startOf('second').format('x');
     // var currentTime = moment().startOf('second').format('MMMM Do YYYY, h:mm:ss a');
 
@@ -97,6 +92,12 @@ class Remind extends Command {
 
   }
 
+  /**
+   * [parse description]
+   * @param  {[type]} message [description]
+   * @param  {[type]} input   [description]
+   * @return {[type]}         [description]
+   */
   parse(message, input) {
 
     // Our reminder will be an object.
@@ -194,6 +195,11 @@ class Remind extends Command {
     return tuf;
   }
 
+  /**
+   * [getTargetDate description]
+   * @param  {[type]} input [description]
+   * @return {[type]}       [description]
+   */
   getTargetDate(input) {
     var get_target_date_regex = /(on)\s+(((the\s+\d{1,2}(st|nd|rd|th)?\s+of\s+)?(Jan(uary)?|Feb(ruary)?|Mar(ch)?|Apr(il)?|May|Jun(e)?|Jul(y)?|Aug(ust)?|Sep(tember)?|Oct(ober)?|Nov(ember)?|Dec(ember)?)(\s+\d{1,2}(st|nd|rd|th)?)?(,)?\s+\d{4})|\d{4}(-|\/)\d{2}(-|\/)\d{2})/i;
     var target_date = input.match(get_target_date_regex) !== null ? input.match(get_target_date_regex)[0] : false;
@@ -201,6 +207,11 @@ class Remind extends Command {
     return target_date;
   }
 
+  /**
+   * [getTargetTime description]
+   * @param  {[type]} input [description]
+   * @return {[type]}       [description]
+   */
   getTargetTime(input) {
     var get_target_time_regex = /(at)\s+((\d{2})([:.]\d{2})?([:.]\d{2})?(\s?[apAP][mM])|(\d{2}|\d{2})([:.]\d{2}))/i;
     var target_time = input.match(get_target_time_regex) !== null ? input.match(get_target_time_regex)[0] : false;
@@ -208,6 +219,11 @@ class Remind extends Command {
     return target_time;
   }
 
+  /**
+   * [parseTUF description]
+   * @param  {[type]} tuf [description]
+   * @return {[type]}     [description]
+   */
   parseTUF(tuf) {
 
     // Clean user input.
@@ -235,6 +251,11 @@ class Remind extends Command {
     return timestamp.format('x');
   }
 
+  /**
+   * [parseTargetDate description]
+   * @param  {[type]} target_date [description]
+   * @return {[type]}             [description]
+   */
   parseTargetDate(target_date) {
     // Clean user input.
     target_date = target_date.replace('on', '').trim();
@@ -278,6 +299,11 @@ class Remind extends Command {
 
   }
 
+  /**
+   * [parseTargetTime description]
+   * @param  {[type]} target_time [description]
+   * @return {[type]}             [description]
+   */
   parseTargetTime(target_time) {
     // Clean user input.
     target_time = target_time.replace('at', '').trim();
@@ -358,6 +384,11 @@ class Remind extends Command {
     return false;
   }
 
+  /**
+   * [getMutatorKey description]
+   * @param  {[type]} mutator_input [description]
+   * @return {[type]}               [description]
+   */
   getMutatorKey(mutator_input) {
 
     // If the key is in plural, remove the last s.
