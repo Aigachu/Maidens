@@ -44,12 +44,13 @@ echo "Make sure dependencies are installed."
 echo "--------------------------------------"
 echo "cd nodejs/apps/discord-maidens/node; npm install;"
 ssh aigachu@138.197.174.254 'cd nodejs/apps/discord-maidens/node; npm install;'
+echo "--------------------------------------"
 
 # Alert for settings.
 # DO NOT track settings for each bot.
 # Different environnements will have different settings and because github is public,
 # people will have access to their tokens. You do NOT want that to happen!
-echo "Make sure settings.js is set for all maidens."
+echo "[WARNING] - Make sure settings.js is set for all maidens!!"
 
 # Summon the bots.
 echo "Summoning bots..."
