@@ -11,6 +11,9 @@
  *
  * {Lady Maria}
  * https://discordapp.com/oauth2/authorize?&client_id=344885267808911360&scope=bot&permissions=1546959939
+ *
+ * {Plain Doll}
+ * https://discordapp.com/oauth2/authorize?&client_id=352563648398360576&scope=bot&permissions=1546959939
  * 
  * {Mikuchu the Devbot}
  * https://discordapp.com/oauth2/authorize?&client_id=344881699928145920&scope=bot&permissions=1546959939
@@ -91,8 +94,11 @@ global.ntc = require('./custom_modules/ntc');
 // Core JS file with all of Sora's Components.
 global.sora = require('./app/maidens/sora');
 
-// Core JS file with all of Sora's Components.
+// Core JS file with all of Colette's Components.
 global.colette = require('./app/maidens/colette');
 
-// Core JS file with all of Sora's Components.
+// Core JS file with all of Maria's Components.
 global.maria = require('./app/maidens/maria');
+
+// Core JS file with all of the Plain Doll's Components.
+global.doll = require('./app/maidens/doll');
