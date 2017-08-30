@@ -5,6 +5,19 @@
  * @comment By far the hardest thing I've had to do so far. :sweat:
  *
  * This command tries it's best to mimic the '/remind me' in Slack.
+ *
+ * Test Cases
+
+remind me to put the light on in my kitchen in 10 minutes
+remind me in 10 minutes to put the light on in my kitchen
+remind me to put the light on in my kitchen in 10 minutes at 5pm
+remind me to put the light on in my kitchen at 4pm
+remind me to put the light on in my kitchen at 4:00:00 PM
+remind me at 4 PM to put the light on in my kitchen
+remind me at 4 PM to put the light on in my kitchen on January 31st, 2018
+remind me at 4 PM to put the light on in my kitchen on Jan 31st, 2018
+remind me at 4 PM to put the light on in my kitchen on 31/01/2018
+remind me at 4 PM to put the light on in my kitchen on 31-01-2018
  */
 class Remind extends Command {
 
@@ -213,7 +226,7 @@ class Remind extends Command {
    * @return {[type]}       [description]
    */
   getTargetTime(input) {
-    var get_target_time_regex = /(at)\s+((\d{2})([:.]\d{2})?([:.]\d{2})?(\s?[apAP][mM])|(\d{2}|\d{2})([:.]\d{2}))/i;
+    var get_target_time_regex = /(at)\s+((\d{1,2})([:.]\d{2})?([:.]\d{2})?(\s?[apAP][mM])|(\d{2}|\d{2})([:.]\d{2}))/i;
     var target_time = input.match(get_target_time_regex) !== null ? input.match(get_target_time_regex)[0] : false;
 
     return target_time;
@@ -308,6 +321,9 @@ class Remind extends Command {
     // Clean user input.
     target_time = target_time.replace('at', '').trim();
 
+    // @TODO - If there are no spaces between time and AM/PM, put one.
+    // @TODO - Return properly parsed time (so 16:00:00 if only 4pm is given)
+
     // Check if there is a AM/PM in the text.
     var target_time_array = target_time.split(' ');
 
@@ -396,8 +412,6 @@ class Remind extends Command {
     if (mutator_input[mutator_input.length - 1] == 's' && mutator_input.length != 1) {
       mutator_input = mutator_input.substr(0, mutator_input.length - 1);
     }
-
-    console.log(mutator_input);
 
     // Asssociation array for mutators.
     // Depending on the user input, we decide what to do.
