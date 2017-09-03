@@ -92,11 +92,24 @@ class Remind extends Command {
     // Uses the dissest function to parse the input and find out what to do.
     var reminder = this.parse(data.msg, data.input.full);
 
-    console.log(reminder);
-
     if (reminder === null) {
       console.log('Execution stopped. Check log for errors.');
+      return;
     }
+
+    // Send TUF if it's set.
+    if (!_.isEmpty(reminder.tuf)) {
+      // this.client.reminder.remind(data.msg.member, reminder.tuf, reminder.action, reminder.receiver);
+    }
+
+    // If not, we'll generate a timestamp real quick using our time and/or date values.
+    var time = !_.isEmpty(reminder.time) ? reminder.time : '00:00:00';
+    var date = !_.isEmpty(reminder.date) ? reminder.date : moment().format('YYYY-MM-DD');
+
+    // this.client.reminder.remind(data.msg.member, reminder.tuf, reminder.action, reminder.receiver);
+
+    console.log(time);
+    console.log(date);
 
     // var currentTimestamp = moment().startOf('second').format('x');
     // var currentTime = moment().startOf('second').format('MMMM Do YYYY, h:mm:ss a');
@@ -189,7 +202,7 @@ class Remind extends Command {
       console.log('Umm...What am I supposed to remind you of?');
       console.log('-------------------------------------------------------------');
       // @TODO - Fire error.
-      return false;
+      return null;
     }
 
     return reminder;
@@ -321,21 +334,20 @@ class Remind extends Command {
     // Clean user input.
     target_time = target_time.replace('at', '').trim();
 
-    // @TODO - If there are no spaces between time and AM/PM, put one.
-    // @TODO - Return properly parsed time (so 16:00:00 if only 4pm is given)
-
     // Check if there is a AM/PM in the text.
-    var target_time_array = target_time.split(' ');
+    // If the meridiem indicator is glued to the time indicator, we need to seperate them.
+    var target_time_array = target_time.split(' ').length == 1 ? target_time.replace(/\B([ap][m])/i, ' $1').split(' ') : target_time.split(' ');
+
+    var split_target_time = target_time_array[0].split(':');
+    var input_hour = split_target_time[0];
+    var input_minutes = !_.isEmpty(split_target_time[1]) ? split_target_time[1] : '00';
+    var input_seconds = !_.isEmpty(split_target_time[2]) ? split_target_time[2] : '00';
 
     if (!_.isEmpty(target_time_array[1]) && target_time_array[1].toLowerCase() == 'pm') {
-      var input_hour = target_time_array[0].split(':')[0];
-      var target_hour = parseInt(input_hour) + 12 == 24 ? '00' : parseInt(input_hour) + 12;
-      var parsed_target_time = target_time_array[0].replace(input_hour, target_hour);
-
-      return target_time_array[0].replace(input_hour, target_hour);
+      input_hour = parseInt(input_hour) + 12 == 24 ? '00' : parseInt(input_hour) + 12;
     }
 
-    return target_time_array[0];
+    return input_hour + ':' + input_minutes + ':' + input_seconds;
   }
 
   /**

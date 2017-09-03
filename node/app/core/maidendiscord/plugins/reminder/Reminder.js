@@ -15,7 +15,7 @@ class Reminder {
 		
 	}
 
-	create(user, timestamp, action) {
+	create(user, timestamp, action, receiver) {
 
 	}
 
