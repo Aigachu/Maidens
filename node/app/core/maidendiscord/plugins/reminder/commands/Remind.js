@@ -93,26 +93,36 @@ class Remind extends Command {
     var reminder = this.parse(data.msg, data.input.full);
 
     if (reminder === null) {
-      console.log('Execution stopped. Check log for errors.');
+      // Do nothing. An error definitely occured.
       return;
     }
 
-    // Send TUF if it's set.
+    // Send TUF if it's set and return immediatly..
     if (!_.isEmpty(reminder.tuf)) {
-      // this.client.reminder.remind(data.msg.member, reminder.tuf, reminder.action, reminder.receiver);
+      this.client.reminder.create(data.msg, data.msg.member, reminder.tuf, reminder.action, reminder.receiver);
+      return;
     }
 
     // If not, we'll generate a timestamp real quick using our time and/or date values.
     var time = !_.isEmpty(reminder.time) ? reminder.time : '00:00:00';
     var date = !_.isEmpty(reminder.date) ? reminder.date : moment().format('YYYY-MM-DD');
 
-    // this.client.reminder.remind(data.msg.member, reminder.tuf, reminder.action, reminder.receiver);
+    var timestamp = moment(`${date} ${time}`).format('x');
 
-    console.log(time);
-    console.log(date);
+    if (timestamp == 'Invalid date') {
+      data.msg.channel.send(`An invalid date somehow got through. Can't process it. :(`);
+      return;
+    }
 
-    // var currentTimestamp = moment().startOf('second').format('x');
-    // var currentTime = moment().startOf('second').format('MMMM Do YYYY, h:mm:ss a');
+    var current_moment = moment().format('x');
+
+    if (current_moment > timestamp) {
+      data.msg.channel.send(`Mmm...Sorry ${data.msg.member}...Aiga didn't code time travel into me yet, so I can't really remind past you yet! Maybe in the future? :thinking: But if he does code it in the future...Then wouldn't I be able to?...:thinking:...My core hurts. :laughing:`);
+      return;
+    }
+
+    // If everything's good, let's continue.
+    this.client.reminder.create(data.msg, data.msg.member, timestamp, reminder.action, reminder.receiver);
 
     return;
 
@@ -137,9 +147,8 @@ class Remind extends Command {
     reminder.receiver = this.getReceiver(message, input);
 
     // If we don't have a receiver, we can't do anything.
-    if (reminder.receiver === false) {
-      console.log('ERROR: Receiver could not be resolved. Stopping execution.');
-      console.log('-------------------------------------------------------------');
+    if (reminder.receiver === null) {
+      message.reply(`it seems like I couldn't assert who to send the reminder to...You may have made a typo!`);
       return null;
     }
 
@@ -165,15 +174,13 @@ class Remind extends Command {
 
     // Throw error if nothing is found concerning the timestamp.
     if (!time_until_fire && !target_time && !target_date) {
-      console.log('ERROR: No desired moment specified for reminder. Stopping execution.');
-      console.log('-------------------------------------------------------------');
+      message.reply(`I couldn't figure out _when_ you want me to remind you! Check if you made a mistake or ask Aiga for help!`);
       return null;
     }
 
     // Throw error if a TUF is set with any other timestamp specifications.
     if (time_until_fire !== false && (target_time !== false || target_date !== false)) {
-      console.log('ERROR: TUF set with Time & Date specifications. Stopping execution.');
-      console.log('-------------------------------------------------------------');
+      message.reply(`your request is kind of confusing...Are you sure it makes sense? :thinking:`);
       return null;
     }
 
@@ -199,9 +206,7 @@ class Remind extends Command {
     reminder.action = input;
 
     if (_.isEmpty(reminder.action)) {
-      console.log('Umm...What am I supposed to remind you of?');
-      console.log('-------------------------------------------------------------');
-      // @TODO - Fire error.
+      message.reply(`umm...What am I supposed to remind you of? :joy:`);
       return null;
     }
 
@@ -311,7 +316,7 @@ class Remind extends Command {
       var month = new Date(d).getMonth() + 1;
       month = month.toString().length == 1 ? '0' + month : month;
     } else {
-      console.log('ERROR: There was a problem parsing the month from the given date. Stopping execution.');
+      // Error parsing the month. Return null.
       return null;
     }
     target_date = target_date.replace(/(Jan(uary)?|Feb(ruary)?|Mar(ch)?|Apr(il)?|May|Jun(e)?|Jul(y)?|Aug(ust)?|Sep(tember)?|Oct(ober)?|Nov(ember)?|Dec(ember)?)/i, '').trim();
@@ -363,9 +368,8 @@ class Remind extends Command {
 
     // If there is no receiver, let's stop here.
     if (_.isEmpty(receiver)) {
-      // @TODO - Throw error for empty input.
-      console.log('ERROR: Empty receiver. Returning.');
-      return false;
+      // Empty input. Let's get out of here.
+      return null;
     }
 
     // If the receiver is 'me', we get the id of the caller.
@@ -375,8 +379,8 @@ class Remind extends Command {
 
     // At this point, if the message is in dms, but the receiver is not 'me', we shouldn't do anything.
     if (message.channel.type == 'dm') {
-      console.log('ERROR: Remind called in dms, but receiver was not caller. Returning.')
-      return false;
+      message.reply(`since you're messaging me in dms, the only valid receiver is **me**. :( Try again!`);
+      return null;
     }
 
     // Remove unneeded alligators.
@@ -408,8 +412,8 @@ class Remind extends Command {
     }
 
     // Return false if nothing is obtained. This most likely means an error in the input.
-    console.log('ERROR: Receiver could not be dissected. Reached the end of the getReceiver() function. Returning.')
-    return false;
+    message.reply(`not quite sure what happened in my code...But I couldn't determine where to send the reminder. :( Ask Aiga for help!`)
+    return null;
   }
 
   /**
