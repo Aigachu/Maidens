@@ -4,7 +4,8 @@ class Reminder {
 	constructor(client) {
 		this.client = client;
 
-		this.reminders = {};
+		// Plugin setup.
+		this.build();
 
 		var pinger = setInterval(() => {
 			this.ping();
@@ -25,11 +26,13 @@ class Reminder {
 				if (reminder.timestamp < now) {
 					this.remind(reminder);
 					caller_cache.splice(caller_cache.indexOf(reminder), 1);
+					this.save();
 				}
 				return true;
 			});
-			return true;
 		}
+
+		return;
 	}
 
 	remind(reminder) {
@@ -61,7 +64,41 @@ class Reminder {
 			receiver: receiver,
 		});
 
+		console.log(this.reminders);
+
+		this.save();
+
 		return;
+	}
+
+	build() {
+		// Get path to the appropriate configuration directory or make it if it
+		// doesn't exist.
+		var db_dir = this.client.coreroot + 'plugins/reminder/db/' + this.client.maiden_name;
+		if (!fs.existsSync(db_dir)) {
+			fs.mkdirSync(db_dir);
+		}
+
+		this.db_path = db_dir + '/reminders.json';
+
+		// Build Configurations
+		this.reminders = {};
+
+		if(fs.existsSync(this.db_path)) {
+			this.reminders = JSON.parse(fs.readFileSync(this.db_path));
+		}
+
+		if (!_.isEmpty(this.reminders)) {
+			this.client.on('ready', () => {
+				console.log('Maiden Watchdog: Loaded reminders from database.');
+			});
+
+			return;
+		}
+	}
+
+	save() {
+		fs.writeFileSync(this.db_path, JSON.stringify(this.reminders, null, 2));
 	}
 
 	list(user) {
