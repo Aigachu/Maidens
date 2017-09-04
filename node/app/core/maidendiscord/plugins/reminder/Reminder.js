@@ -46,7 +46,7 @@ class Reminder {
 		return;
 	}
 
-	create(message, caller, timestamp, action, receiver) {
+	create(message, reminder) {
 
 		// Theoretically, everything should be set for us to set the reminder.
 		// Error checks have been done through the command already. :)
@@ -57,12 +57,7 @@ class Reminder {
 		}
 
 		// Set the reminder.
-		this.reminders[caller.id].push({
-			caller: caller,
-			timestamp: timestamp,
-			action: action,
-			receiver: receiver,
-		});
+		this.reminders[caller.id].push({reminder});
 
 		console.log(this.reminders);
 

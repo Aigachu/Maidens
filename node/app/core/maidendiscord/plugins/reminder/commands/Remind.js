@@ -90,22 +90,30 @@ class Remind extends Command {
   tasks(data) {
 
     // Uses the dissest function to parse the input and find out what to do.
-    var reminder = this.parse(data.msg, data.input.full);
+    var parsed_data = this.parse(data.msg, data.input.full);
 
-    if (reminder === null) {
+    if (parsed_data === null) {
       // Do nothing. An error definitely occured.
       return;
     }
 
+    // Initialize reminder object.
+    var reminder = {
+      caller: parsed_data.caller,
+      receiver: parsed_data.receiver,
+      action: parsed_data.action,
+    };
+
     // Send TUF if it's set and return immediatly..
-    if (!_.isEmpty(reminder.tuf)) {
-      this.client.reminder.create(data.msg, data.msg.member, reminder.tuf, reminder.action, reminder.receiver);
+    if (!_.isEmpty(parsed_data.tuf)) {
+      reminder.timestamp = parsed_data.tuf;
+      this.client.parsed_data.create(data.msg, reminder);
       return;
     }
 
     // If not, we'll generate a timestamp real quick using our time and/or date values.
-    var time = !_.isEmpty(reminder.time) ? reminder.time : '00:00:00';
-    var date = !_.isEmpty(reminder.date) ? reminder.date : moment().format('YYYY-MM-DD');
+    var time = !_.isEmpty(parsed_data.time) ? parsed_data.time : '00:00:00';
+    var date = !_.isEmpty(parsed_data.date) ? parsed_data.date : moment().format('YYYY-MM-DD');
 
     var timestamp = moment(`${date} ${time}`).format('x');
 
@@ -121,8 +129,10 @@ class Remind extends Command {
       return;
     }
 
+    reminder.timestamp = timestamp;
+
     // If everything's good, let's continue.
-    this.client.reminder.create(data.msg, data.msg.member, timestamp, reminder.action, reminder.receiver);
+    this.client.data.create(data.msg, reminder);
 
     return;
 
@@ -136,18 +146,18 @@ class Remind extends Command {
    */
   parse(message, input) {
 
-    // Our reminder will be an object.
-    var reminder = {};
+    // Our data will be an object.
+    var data = {};
 
     // === Getting the Receiver ===
-    // The receiver is the object that will get the reminder.
+    // The receiver is the object that will get the data.
     // ********************************************
 
     // Get the receiver object.
-    reminder.receiver = this.getReceiver(message, input);
+    data.receiver = this.getReceiver(message, input);
 
     // If we don't have a receiver, we can't do anything.
-    if (reminder.receiver === null) {
+    if (data.receiver === null) {
       message.reply(`it seems like I couldn't assert who to send the reminder to...You may have made a typo!`);
       return null;
     }
@@ -186,31 +196,31 @@ class Remind extends Command {
 
     // If a time until fire exists, we'll set it now and return the reminder.
     if (time_until_fire !== false) {
-      reminder.tuf = this.parseTUF(time_until_fire);
+      data.tuf = this.parseTUF(time_until_fire);
       input = input.replace(time_until_fire, '').trim();
     }
 
     // If a desired date is set in the reminder, get it.
     if (target_date !== false) {
-      reminder.date = this.parseTargetDate(target_date);
+      data.date = this.parseTargetDate(target_date);
       input = input.replace(target_date, '').trim();
     }
 
     // If a desired time is set in the reminder, get it.
     if (target_time !== false) {
-      reminder.time = this.parseTargetTime(target_time);
+      data.time = this.parseTargetTime(target_time);
       input = input.replace(target_time, '').trim();
     }
 
     // The action is whatever is left.
-    reminder.action = input;
+    data.action = input;
 
-    if (_.isEmpty(reminder.action)) {
+    if (_.isEmpty(data.action)) {
       message.reply(`umm...What am I supposed to remind you of? :joy:`);
       return null;
     }
 
-    return reminder;
+    return data;
 
   }
 
