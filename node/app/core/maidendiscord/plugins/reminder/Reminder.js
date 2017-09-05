@@ -90,7 +90,7 @@ class Reminder {
 		// Confirmation message.
 		message.channel.send(confirmation)
 		  .then((msg) => {
-          msg.delete(5000);
+          msg.delete(30000);
         });
 
 		this.save();

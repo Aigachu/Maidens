@@ -122,7 +122,7 @@ class Remind extends Command {
     if (timestamp == 'Invalid date') {
       data.msg.channel.send(`An invalid date somehow got through. Can't process it. :(`)
         .then((msg) => {
-          msg.delete(5000);
+          msg.delete(10000);
         });
       return;
     }
@@ -168,7 +168,7 @@ class Remind extends Command {
     if (data.receiver === null) {
       message.reply(`it seems like I couldn't assert who to send the reminder to...You may have made a typo!`)
         .then((msg) => {
-          msg.delete(5000);
+          msg.delete(10000);
         });
       return null;
     }
@@ -197,7 +197,7 @@ class Remind extends Command {
     if (!time_until_fire && !target_time && !target_date) {
       message.reply(`I couldn't figure out _when_ you want me to remind you! Check if you made a mistake or ask Aiga for help!`)
         .then((msg) => {
-          msg.delete(5000);
+          msg.delete(10000);
         });
       return null;
     }
@@ -206,7 +206,7 @@ class Remind extends Command {
     if (time_until_fire !== false && (target_time !== false || target_date !== false)) {
       message.reply(`your request is kind of confusing...Are you sure it makes sense? :thinking:`)
         .then((msg) => {
-          msg.delete(5000);
+          msg.delete(10000);
         });
       return null;
     }
@@ -235,7 +235,7 @@ class Remind extends Command {
     if (_.isEmpty(data.action)) {
       message.reply(`umm...What am I supposed to remind you of? :joy:`)
         .then((msg) => {
-          msg.delete(5000);
+          msg.delete(10000);
         });
       return null;
     }
@@ -416,7 +416,7 @@ class Remind extends Command {
     if (message.channel.type == 'dm') {
       message.reply(`since you're messaging me in dms, the only valid receiver is **me**. :( Try again!`)
         .then((msg) => {
-          msg.delete(5000);
+          msg.delete(10000);
         });
       return null;
     }
@@ -452,7 +452,7 @@ class Remind extends Command {
     // Return false if nothing is obtained. This most likely means an error in the input.
     message.reply(`not quite sure what happened in my code...But I couldn't determine where to send the reminder. :( Ask Aiga for help!`)
       .then((msg) => {
-          msg.delete(5000);
+          msg.delete(10000);
         });
       
     return null;
