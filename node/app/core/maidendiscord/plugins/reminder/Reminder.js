@@ -24,24 +24,51 @@ class Reminder {
 
 			caller_cache.every((reminder) => {
 				if (reminder.timestamp < now) {
-					this.remind(reminder);
+					this.sendReminder(reminder);
 					caller_cache.splice(caller_cache.indexOf(reminder), 1);
-					this.save();
 				}
 				return true;
 			});
+
+			if (_.isEmpty(this.reminders[key])) {
+				delete this.reminders[key];
+			}
+
+			this.save();
 		}
 
 		return;
 	}
 
-	remind(reminder) {
+	sendReminder(reminder) {
 
-		if (reminder.caller.id === reminder.receiver.id) {
-			reminder.caller = 'You';
+		var caller = this.getCaller(reminder);
+		var receiver = this.getReceiver(reminder);
+		var action = reminder.action;
+		var message = '';
+
+		if (caller.id === receiver.id) {
+			caller = 'You';
 		}
 
-		reminder.receiver.send(`${reminder.caller} asked me to remind you to **"${reminder.action}"** at this moment!`);
+		switch (reminder.receiver.object_type) {
+
+			case 'user':
+				message = `${caller} asked me to remind you **"${action}"** at this moment!`;
+				receiver.send(message);
+				break;
+
+			case 'channel':
+				message = `Hey @here! ${caller} asked me to remind you guys **"${action}"**!`;
+				receiver.send(message);
+				break;
+
+			case 'role':
+				message = `${caller} asked me to remind ${receiver} **"${action}"** at this moment!`;
+				this.client.guilds.find('id', reminder.guild_id).channels.find('id', reminder.channel_id).send(message);
+				break;
+
+		}
 
 		return;
 	}
@@ -52,14 +79,16 @@ class Reminder {
 		// Error checks have been done through the command already. :)
 		
 		// Check if user has a reminder cache set.
-		if (_.isEmpty(this.reminders[caller.id])) {
-			this.reminders[caller.id] = [];
+		if (_.isEmpty(this.reminders[reminder.caller_id])) {
+			this.reminders[reminder.caller_id] = [];
 		}
 
 		// Set the reminder.
-		this.reminders[caller.id].push({reminder});
+		this.reminders[reminder.caller_id].push(reminder);
 
-		console.log(this.reminders);
+		var confirmation = `Alright ${message.author}! I'll remind ${this.getReceiver(reminder)} **${reminder.action}** at the following date and time: **${moment(parseInt(reminder.timestamp)).format("MMMM Do YYYY, h:mm:ss a")}**!`;
+		// Confirmation message.
+		message.channel.send(confirmation);
 
 		this.save();
 
@@ -96,7 +125,34 @@ class Reminder {
 		fs.writeFileSync(this.db_path, JSON.stringify(this.reminders, null, 2));
 	}
 
-	list(user) {
+	getCaller(reminder) {
+		return this.client.guilds.find('id', reminder.guild_id).members.find('id', reminder.caller_id);
+	}
+
+	getReceiver(reminder) {
+
+		switch (reminder.receiver.object_type) {
+
+			case 'user':
+				return this.client.guilds.find('id', reminder.guild_id).members.find('id', reminder.receiver.object_id);
+				break;
+
+			case 'channel':
+				return this.client.guilds.find('id', reminder.guild_id).channels.find('id', reminder.receiver.object_id);
+				break;
+
+			case 'role':
+				return this.client.guilds.find('id', reminder.guild_id).roles.find('id', reminder.receiver.object_id);
+				break;
+
+		}
+
+		// If we reach here, we have a problem in our code...
+		console.log("Reached a deadzone...Check the code.");
+		return null;
+	}
+
+	list(user_id) {
 
 	}
 }

@@ -99,15 +99,17 @@ class Remind extends Command {
 
     // Initialize reminder object.
     var reminder = {
-      caller: parsed_data.caller,
+      caller_id: data.msg.author.id,
       receiver: parsed_data.receiver,
+      guild_id: data.msg.guild.id,
+      channel_id: data.msg.channel.id,
       action: parsed_data.action,
     };
 
     // Send TUF if it's set and return immediatly..
     if (!_.isEmpty(parsed_data.tuf)) {
       reminder.timestamp = parsed_data.tuf;
-      this.client.parsed_data.create(data.msg, reminder);
+      this.client.reminder.create(data.msg, reminder);
       return;
     }
 
@@ -132,7 +134,7 @@ class Remind extends Command {
     reminder.timestamp = timestamp;
 
     // If everything's good, let's continue.
-    this.client.data.create(data.msg, reminder);
+    this.client.reminder.create(data.msg, reminder);
 
     return;
 
@@ -282,7 +284,7 @@ class Remind extends Command {
     mutators = tuf.match(get_mutators_regex);
 
     mutators.every((mutator) => {
-      mutator = mutator.replace(/\d+(?=\w+)/i, "$& ");
+      mutator = mutator.replace(/\d+(?=[a-z])/i, "$& ");
       var mutator_amount = mutator.split(' ')[0];
       var mutator_key = this.getMutatorKey(mutator.split(' ')[1]);
       timestamp.add(mutator.split(' ')[0], mutator_key);
@@ -384,7 +386,7 @@ class Remind extends Command {
 
     // If the receiver is 'me', we get the id of the caller.
     if (receiver == 'me') {
-      return message.author;
+      return {object_type: 'user', object_id: message.author.id};
     }
 
     // At this point, if the message is in dms, but the receiver is not 'me', we shouldn't do anything.
@@ -400,25 +402,25 @@ class Remind extends Command {
     // If the tag is a user nickname tag, get the guild member.
     if (receiver.indexOf('@!') >= 0) {
       var member = message.guild.members.find('id', receiver.replace('@!', ''));
-      return member;
+      return {object_type: 'user', object_id: member.id};
     }
 
     // If the tag is a role tag, get the role.
     if (receiver.indexOf('@&') >= 0) {
       var role = message.guild.roles.find('id', receiver.replace('@&', ''));
-      return role;
+      return {object_type: 'role', object_id: role.id};
     }
 
     // If the tag is a basic user tag, get the user.
     if (receiver.indexOf('@') >= 0) {
       var member = message.guild.members.find('id', receiver.replace('@', ''));
-      return member;
+      return {object_type: 'user', object_id: member.id};
     }
 
     // If the tag is a channel tag, get the channel.
     if (receiver.indexOf('#') >= 0) {
       var channel = message.guild.channels.find('id', receiver.replace('#', ''));
-      return channel;
+      return {object_type: 'channel', object_id: channel.id};
     }
 
     // Return false if nothing is obtained. This most likely means an error in the input.
