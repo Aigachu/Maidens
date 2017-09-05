@@ -86,9 +86,12 @@ class Reminder {
 		// Set the reminder.
 		this.reminders[reminder.caller_id].push(reminder);
 
-		var confirmation = `Alright ${message.author}! I'll remind ${this.getReceiver(reminder)} **${reminder.action}** at the following date and time: **${moment(parseInt(reminder.timestamp)).format("MMMM Do YYYY, h:mm:ss a")}**!`;
+		var confirmation = `Got it, ${message.author}! I'll remind ${this.getReceiver(reminder)} **${reminder.action}** at the following date and time: **${moment(parseInt(reminder.timestamp)).format("MMMM Do YYYY, h:mm:ss a")}**!`;
 		// Confirmation message.
-		message.channel.send(confirmation);
+		message.channel.send(confirmation)
+		  .then((msg) => {
+          msg.delete(5000);
+        });
 
 		this.save();
 
@@ -114,7 +117,7 @@ class Reminder {
 
 		if (!_.isEmpty(this.reminders)) {
 			this.client.on('ready', () => {
-				console.log('Maiden Watchdog: Loaded reminders from database.');
+				console.log('Reminder Plugin: Loaded reminders from database.');
 			});
 
 			return;
@@ -122,6 +125,7 @@ class Reminder {
 	}
 
 	save() {
+		// Write reminders to the database.
 		fs.writeFileSync(this.db_path, JSON.stringify(this.reminders, null, 2));
 	}
 
@@ -153,7 +157,7 @@ class Reminder {
 	}
 
 	list(user_id) {
-
+		// Will list all reminders for the given user with the List command.
 	}
 }
 
