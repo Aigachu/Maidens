@@ -226,6 +226,10 @@ class MaidenCommandManager {
 
     var input = {};
 
+    input.raw = msg_content.split(' ')
+    input.raw.splice(0, 2)
+    input.raw = input.raw.join(' ').trim();
+
     // Array to store options keys found in the command message.
     var options = {};
 

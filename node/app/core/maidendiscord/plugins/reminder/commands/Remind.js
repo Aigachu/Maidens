@@ -91,7 +91,7 @@ class Remind extends Command {
   tasks(data) {
 
     // Uses the dissest function to parse the input and find out what to do.
-    var parsed_data = this.parse(data.msg, data.msg.content);
+    var parsed_data = this.parse(data.msg, data.input.raw);
 
     if (parsed_data === null) {
       // Do nothing. An error definitely occured.
