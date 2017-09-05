@@ -168,7 +168,7 @@ class Reminder {
 		if (_.isEmpty(this.reminders[user.id])) {
 			message.reply(`you don't seem to have any reminders in my database. :o`)
 				.then((msg) => {
-					msg.delete(7000);
+					msg.delete(30000);
 				});
 
 			return;
