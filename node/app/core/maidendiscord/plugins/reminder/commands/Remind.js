@@ -132,7 +132,7 @@ class Remind extends Command {
     if (current_moment > timestamp) {
       data.msg.channel.send(`Mmm...Sorry ${data.msg.member}...Aiga didn't code time travel into me yet, so I can't really remind past you yet! Maybe in the future? :thinking: But if he does code it in the future...Then wouldn't I be able to?...:thinking:...My core hurts. :laughing:`)
         .then((msg) => {
-          msg.delete(5000);
+          msg.delete(15000);
         });
       return;
     }

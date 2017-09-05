@@ -225,6 +225,12 @@ class Watchdog {
 				return true;
 			});
 
+			// Make configuration directory if it doesn't exist.
+			var config_dir = this.client.coreroot + 'plugins/watchdog/config';
+			if (!fs.existsSync(config_dir)) {
+				fs.mkdirSync(config_dir);
+			}
+
 			// Get path to the appropriate configuration directory or make it if it
 			// doesn't exist.
 			var desired_config_dir = this.client.coreroot + 'plugins/watchdog/config/' + this.client.maiden_name;

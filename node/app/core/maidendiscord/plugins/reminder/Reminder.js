@@ -99,6 +99,13 @@ class Reminder {
 	}
 
 	build() {
+
+		// Make database directory if it doesn't exist.
+		var desired_db_dir = this.client.coreroot + 'plugins/reminder/db';
+		if (!fs.existsSync(desired_db_dir)) {
+			fs.mkdirSync(desired_db_dir);
+		}
+
 		// Get path to the appropriate configuration directory or make it if it
 		// doesn't exist.
 		var db_dir = this.client.coreroot + 'plugins/reminder/db/' + this.client.maiden_name;
