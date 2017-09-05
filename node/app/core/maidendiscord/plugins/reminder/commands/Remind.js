@@ -1,5 +1,5 @@
 /**
- * Reminder Command
+ * Remind Command
  *
  * @author Aigachu (aigachu.sama@gmail.com)
  * @comment By far the hardest thing I've had to do so far. :sweat:
@@ -27,7 +27,7 @@ class Remind extends Command {
 
     // Uncomment to enter different aliases that can be used to use the command.
     // e.g. the ping command can have pi or pg as aliases.
-		// this.aliases = [ "alias1", "alias2"];
+		// this.aliases = [ "reminder" ];
     
     // Uncomment to customize the text that will be shown when --help is used.
     // this.helpText = "";
@@ -48,13 +48,14 @@ class Remind extends Command {
     // Uncomment to permit different options in the command
     // Follow the template here to assure functionality of the Synopsis.
     // this.options = {
-    //   d: {
-    //     "readable_name" : "Direct Message",
-    //     "description"   : "Send the ping via direct message instead of sending it in the chat.",
+    //   l: {
+    //     readable_name : "List Reminders",
+    //     description   : "List all reminders you have stored in the database.",
+    //     needs_text   : true,
     //   },
-    //   c: {
-    //     readable_name : "Custom Message",
-    //     description   : "Send a message defined on the fly instead of the default ping response.",
+    //   x: {
+    //     readable_name : "Clear Reminders",
+    //     description   : "Delete all of your defined reminders from the database.",
     //     needs_text   : true,
     //   }
     // };
@@ -90,7 +91,7 @@ class Remind extends Command {
   tasks(data) {
 
     // Uses the dissest function to parse the input and find out what to do.
-    var parsed_data = this.parse(data.msg, data.input.full);
+    var parsed_data = this.parse(data.msg, data.msg.content);
 
     if (parsed_data === null) {
       // Do nothing. An error definitely occured.

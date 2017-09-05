@@ -173,7 +173,6 @@ class MaidenCommandManager {
     // Now we check if the command is optionless. If it is, then no options should be given.
     if (_.isEmpty(command.options) && message.content.match(get_options_regex) !== null) {
       command.error(message.content, "OptionsGivenWhenOptionlessCommand", message);
-      return;
     }
 
     // To do any following checks, we need the input of the command.
@@ -190,11 +189,9 @@ class MaidenCommandManager {
       Object.keys(input.options).forEach(function(key) {
         if (!(key in command.options)) {
           error = "InvalidOption";
-          return;
         }
         if (command.options[key].needs_text && input.options[key].constructor.name != "String") {
           error = "OptionGivenWithoutInput";
-          return;
         }
         if ("oplevel" in command.options[key]) {
           if ( command.options[key].oplevel == 1 && !(message.author.id in client.admins)) {
@@ -207,7 +204,6 @@ class MaidenCommandManager {
       });
       if (error) {
         command.error(key, error, message);
-        return;
       }
     }
 

@@ -31,7 +31,7 @@ class Reminder {
 			});
 
 			if (_.isEmpty(this.reminders[key])) {
-				delete this.reminders[key];
+				this.clear(key);
 			}
 
 			this.save();
@@ -163,8 +163,36 @@ class Reminder {
 		return null;
 	}
 
-	list(user_id) {
-		// Will list all reminders for the given user with the List command.
+	sendList(message, user) {
+
+		if (_.isEmpty(this.reminders[user.id])) {
+			message.reply(`you don't seem to have any reminders in my database. :o`)
+				.then((msg) => {
+					msg.delete(7000);
+				});
+
+			return;
+		}
+
+		var list = `Here is the list of your reminders:\n\n`;
+
+		this.reminders[user.id].every((reminder) => {
+			list += `Action: **"${reminder.action}"**`;
+			list += `\n`;
+			list += `Time: **${moment(parseInt(reminder.timestamp)).format("MMMM Do YYYY, h:mm:ss a")}**`;
+			list += `\n`;
+			list += `Destination: **${this.getReceiver(reminder)}**`;
+			list += `\n`;
+			list += `---------------------------------------------------`;
+			list += `\n`;
+			return true;
+		});
+
+		user.send(list);
+	}
+
+	clear(user_id) {
+		delete this.reminders[user_id];
 	}
 }
 
