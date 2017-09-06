@@ -7,17 +7,6 @@
  * This command tries it's best to mimic the '/remind me' in Slack.
  *
  * Test Cases
-
-remind me to put the light on in my kitchen in 10 minutes
-remind me in 10 minutes to put the light on in my kitchen
-remind me to put the light on in my kitchen in 10 minutes at 5pm
-remind me to put the light on in my kitchen at 4pm
-remind me to put the light on in my kitchen at 4:00:00 PM
-remind me at 4 PM to put the light on in my kitchen
-remind me at 4 PM to put the light on in my kitchen on January 31st, 2018
-remind me at 4 PM to put the light on in my kitchen on Jan 31st, 2018
-remind me at 4 PM to put the light on in my kitchen on 31/01/2018
-remind me at 4 PM to put the light on in my kitchen on 31-01-2018
  */
 class Remind extends Command {
 
@@ -83,9 +72,11 @@ class Remind extends Command {
    * Options are handled by the developer of the command accordingly.
    * @param  {[type]} data Data that was obtained from the message, such as input and other things.
    * (Object) data {
-   *   options => Contains all of the options organized in an object by key, similar to above.
-   *   array => Contains the input seperated into an array. (Shoutouts to old params style)
-   *   full => Contains the full input in a text string.
+   *   (Object) options => Contains all of the options organized in an object by key, similar to above.
+   *   (Array)  input   => Contains the input seperated into an array. (Shoutouts to old params style)
+   *     (String) full    => Contains the full input in a text string.
+   *     (Array)  array   => Contains the input seperated in an array.
+   *     (String) raw     => Contains the input without any modifications made to it. Useful for some commands.
    * }
    */
   tasks(data) {
