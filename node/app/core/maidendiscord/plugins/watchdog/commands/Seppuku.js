@@ -81,9 +81,6 @@ class Seppuku extends Command {
     // Timeout the member for 5 seconds.
     this.client.watchdog.timeout(member, 5);
 
-    // Purge the member's last 5 messages.
-    this.client.watchdog.purge(member, 5);
-
     // Send a joyful message to celebrate the death.
     data.msg.channel.send(`_${member} commited sudoku! Byebye. :yum:_`);
 
