@@ -326,16 +326,16 @@ class PaintJob extends Command {
    * @param  {Object}         data    Command data obtained from parsing.
    * @return {Discord Role|Boolean}         Return the role object if found, else return FALSE.
    */
-  findColorInCurrentGuild(color, data) {
+  findColorInCurrentGuild(colorData, data) {
 
     // Try to find the color through Hex Value.
-    var color = data.msg.guild.roles.find('hexColor', color.hex);
+    var color = data.msg.guild.roles.find('hexColor', colorData.hex);
     if (color !== null) {
       return color;
     }
 
     // Try to find the color through name.
-    var color = data.msg.guild.roles.find('name', color.name);
+    var color = data.msg.guild.roles.find('name', colorData.name);
     if (color !== null) {
       return color;
     }
