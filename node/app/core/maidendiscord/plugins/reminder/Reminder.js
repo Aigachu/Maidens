@@ -86,7 +86,14 @@ class Reminder {
 		// Set the reminder.
 		this.reminders[reminder.caller_id].push(reminder);
 
-		var confirmation = `Got it, ${message.author}! I'll remind ${this.getReceiver(reminder)} **${reminder.action}** at the following date and time: **${moment(parseInt(reminder.timestamp)).format("MMMM Do YYYY, h:mm:ss a")}**!`;
+		var receiver = this.getReceiver(reminder);
+		var time = moment(parseInt(reminder.timestamp)).format("MMMM Do YYYY, h:mm:ss a");
+
+		if (receiver.id === message.author.id) {
+			receiver = 'you';
+		}
+
+		var confirmation = `Got it, ${message.author}! I'll remind ${receiver} **${reminder.action}** at the following date and time: **${time}**!`;
 		// Confirmation message.
 		message.channel.send(confirmation)
 		  .then((msg) => {
