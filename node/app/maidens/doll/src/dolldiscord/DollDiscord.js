@@ -23,9 +23,6 @@ class DollDiscord extends MaidenDiscord {
       // Set status to DND!
       this.user.setStatus('dnd');
 
-      // Set game!
-      this.user.setGame('Sleeping...');
-
     });
 
   }

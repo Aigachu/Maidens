@@ -12,7 +12,7 @@ class MariaDiscord extends MaidenDiscord {
     super(settings);
 
     // Customize welcome message.
-    this.welcome = `A corpse...Should be left well alone Aiga...`;
+    this.welcome = `A corpse...Should be left well alone Aigachu...`;
 
     // Event: When Colette connects to Discord and is ready.
     this.on('ready', () => {
@@ -22,9 +22,6 @@ class MariaDiscord extends MaidenDiscord {
 
       // Set status to DND!
       this.user.setStatus('dnd');
-
-      // Set game!
-      this.user.setGame('dead.');
 
     });
 

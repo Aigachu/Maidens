@@ -25,6 +25,10 @@ module.exports = {
     // Command prefixes are another way to call them if needed.
     'cprefix': 'maidev',
 
+    // Game name that will show on her user.
+    // This is fun to set!
+    'game': 'ERROR: undefined...LOL JK!',
+
     // Plugins
     // These plugins are custom coded and will be loaded.
     // Plugins can be found in the core maidendiscord folder.

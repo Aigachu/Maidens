@@ -24,9 +24,6 @@ class MikuchuDiscord extends MaidenDiscord {
       // Set status to DND!
       this.user.setStatus('dnd');
 
-      // Set game!
-      this.user.setGame('Singing coding songs~');
-
     });
 
   }

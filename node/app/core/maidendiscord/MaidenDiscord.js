@@ -120,6 +120,10 @@ class MaidenDiscord extends DiscordClient {
     // This is the default value. For each bot, we can change this.
     this.welcome = `Connected.`;
 
+    // Game
+    // The game is fetched from the settings as well. :)
+    this.game = settings.discord.game;
+
     /**
      * === Events Callbacks ===
      */
@@ -137,6 +141,10 @@ class MaidenDiscord extends DiscordClient {
 
       // Message me to let me know the deployment is done.
       this.home.channel.send(this.welcome);
+
+      // Set game text.
+      // @TODO - I set the URL to google because without it, it mysteriously doesn't work...
+      this.user.setGame(this.game, 'http://google.com');
 
     });
 
