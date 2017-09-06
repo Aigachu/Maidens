@@ -68,6 +68,12 @@ class Purge extends Command {
    */
   tasks(data) {
 
+    // Can't purge if the watchdog is not enabled in the server.
+    if (!this.client.watchdog.status(data.msg.guild)) {
+      data.msg.reply(`the watchdog is disabled in this server...So I can't purge anyone. :/`);
+      return;
+    }
+
     // Variable containing the number of messages to purge.
     var count = 5;
 
@@ -105,6 +111,8 @@ class Purge extends Command {
 
     // Delete the caller's command. Remove all traces of the act...
     data.msg.delete();
+
+    return;
 
   }
 
