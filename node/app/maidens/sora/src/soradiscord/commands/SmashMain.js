@@ -10,6 +10,9 @@
  * SAVES LAST 10 MAINS.
  *
  * MP3 FILES OF THE ANNOUNCER SAYING THE NAME OF THE CHARACTER IN A VOICE CHANNEL ONCE THE COMMAND IS USED.
+ *
+ * @TODO - FIX THIS COMMAND. IT IS CURRENTLY NOT WORKING BECAUSE OF THIS ISSUE.
+ * https://github.com/Aigachu/discord-maidens/issues/12
  */
 class SmashMain extends Command {
 
@@ -58,9 +61,11 @@ class SmashMain extends Command {
    * Options are handled by the developer of the command accordingly.
    * @param  {[type]} data Data that was obtained from the message, such as input and other things.
    * (Object) data {
-   *   options => Contains all of the options organized in an object by key, similar to above.
-   *   array => Contains the input seperated into an array. (Shoutouts to old params style)
-   *   full => Contains the full input in a text string.
+   *   (Object) options => Contains all of the options organized in an object by key, similar to above.
+   *   (Array)  input   => Contains the input seperated into an array. (Shoutouts to old params style)
+   *     (String) full    => Contains the full input in a text string.
+   *     (Array)  array   => Contains the input seperated in an array.
+   *     (String) raw     => Contains the input without any modifications made to it. Useful for some commands.
    * }
    */
   tasks(data) {

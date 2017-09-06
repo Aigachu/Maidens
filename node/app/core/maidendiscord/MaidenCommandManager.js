@@ -4,7 +4,7 @@
  * This class defines the properties of a [CommandManager] object.
  * The CommandManager is the interpreter for commands, and will read every message
  * received in Discord and determine if there's anything to do with them. Directly
- * related to [Command] type objects, that can be found in the file in the same folder.
+ * related to [Command] type objects, that can be found in the file in the './objects' folder.
  *
  * === Properties ===
  * - {client}     : The Discord Bot client.
@@ -29,7 +29,7 @@ class MaidenCommandManager {
   /**
    * Interpret method.
    * Determines what to do with a message that has been heard.
-   * @param  {[type]} msg Message received (or heard) in Discord.
+   * @param  {Discord Message Object} msg Message received (or heard) in Discord.
    */
   interpret(msg) {
 
@@ -45,10 +45,11 @@ class MaidenCommandManager {
   }
 
   /**
-   * IsCommand method.
+   * detectCommand method.
    * Simple. Checks if the message heard is a command or not.
-   * @param  {[Message]}  msg Message received (or heard) in Discord.
-   * @return {Boolean}        Whether or not the message is a command.
+   * @param  {Discord Message Object}  msg  Message received (or heard) in Discord.
+   * @return {String}                       Key of the command that was detected.
+   * @return {Boolean}                      False if no command is found.
    */
   detectCommand(msg) {
 
@@ -60,21 +61,28 @@ class MaidenCommandManager {
     // Divide text into distinct parameters.
     var split = msg.content.split(" ");
 
+    // Checks if there are even two words seperated by a space in the given text.
     if(split[1] == null || split[1].length == 0) {
       return false;
     }
 
     // Check if it contains the command syntax.
+    // The command syntax can be described in the following examples.
+    // @Mikuchu setname Hatsune Miku -- @BOT_TAG COMMAND_KEY INPUT
+    // maidev setname Hatsune Miku -- COMMAND_PREFIX COMMAND_KEY INPUT
     if (split[0] != this.client.cprefix && split[0] != `<@${this.client.user.id}>` && split[0] != `<@!${this.client.user.id}>`) {
       return false;
     }
 
-    // If the command is in the list of command definitions, return it
+    // If the command is in the list of command definitions, return it.
+    // Commands have already been loaded, so we can check if the given key is in the object.
     if (split[1].toLowerCase() in this.commands) {
       return split[1].toLowerCase();
     }
 
     // Check if the second word in the message is a command alias, and return the key of the parent command.
+    // Some commands have aliases (extra keys) that they can be called from. Check if the user is
+    // using one of those aliases.
     if (split[1].toLowerCase() in this.commands.aliases) {
       return this.commands.aliases[split[1].toLowerCase()];
     }
@@ -85,23 +93,27 @@ class MaidenCommandManager {
   /**
    * Discern Command method.
    * This determines what to do with a command that has been heard.
-   * Depending on options of parameters, the outcome may be different.
+   * Depending on options or parameters, the outcome may be different.
    *
-   * @param  {[Message]} msg Message heard or received that has been identified as a command.
-   * @todo  : Make the IsCommand() function return a command key and parameters. We'll eliminate some duplicate splicing and fiddling.
+   * @param  {Discord Message} msg Message heard or received that has been identified as a command.
    */
   discernCommand(msg, key) {
 
     var command = this.commands[key];
 
-    // We're gonna need to do a couple of extra checks to make sure that whoever invoked the command
+    // Here, we're gonna need to do a couple of extra checks to make sure that whoever invoked the command
     // is allowed to use it in this given context.
 
     // Check if the command is allowed by this user.
+    // We'll only do this check if the command's 'users' auth is not empty.
     if (!_.isEmpty(command.config.auth.users) && _.indexOf(command.config.auth.users, msg.author.id) < 0) {
       return false;
     }
 
+    // If an 'oplevel' is defined, we'll make some checks to see if the user
+    // is an admin or a god.
+    // It's important to note that when loaded, gods are automatically merged into the
+    // admins. So this check works fine.
     if ("oplevel" in command.config.auth) {
       if ( command.config.auth.oplevel == 1 && !(msg.author.id in this.client.admins)) {
         return false;      
@@ -117,11 +129,13 @@ class MaidenCommandManager {
     }
 
     // Check if the command is allowed in this guild.
+    // We'll only do this check if the command's 'guilds' auth is not empty.
     if (!_.isEmpty(command.config.auth.guilds) && _.indexOf(command.config.auth.guilds, msg.guild.id) < 0) {
       return false;
     }
 
     // Check if the command is allowed in this channel.
+    // We'll only do this check if the command's 'channels' auth is not empty.
     if (!_.isEmpty(command.config.auth.channels) && _.indexOf(command.config.auth.channels, msg.channel.id) < 0) {
       return false;
     }
@@ -144,7 +158,7 @@ class MaidenCommandManager {
   }
 
   /**
-   * Extract Parameters method.
+   * Parse Command
    * Use this to extract parameters from a heard command.
    * Words surrounded by "" should be treated as one parameter.
    * @param  {[Message]} message  The message object of the message heard as a command.
@@ -154,20 +168,25 @@ class MaidenCommandManager {
 
     // Adding extra documentation here because the parsing of commands has undergone quite a change.
     // Follow through properly!
+    
+    // !! September 2017 Note !!
+    // I have removed all 'return' calls from error throws because commands were way too strict.
+    // We will check what to do with this but for now, as long as the commands still run, it's fine.
+    // @TODO -- Adding this here to check on this at a later date.
 
-    // The command that will be parsed.
+    // Get the command that will be parsed.
     var command = this.commands[key];
 
     // First, we check if the command is a Simple command.
     // Simple commands don't have any input, or options. You simply enter the
     // command key, and it'll handle the rest.
     // If any input is given, an error should be thrown.
-    // if (_.isEmpty(command.input) && _.isEmpty(command.options) && message.content.trim().replace(/\s{2,}/g, ' ').split(" ").length > 2) {
-    //   command.error(message.content, "InputGivenWhenSimpleCommand", message);
-    //   return;
-    // }
+    if (_.isEmpty(command.input) && _.isEmpty(command.options) && message.content.trim().replace(/\s{2,}/g, ' ').split(" ").length > 2) {
+      command.error(message.content, "InputGivenWhenSimpleCommand", message);
+    }
 
     // Regex to get regular options in the message.
+    // i.e. -x -d -o
     var get_options_regex = /-([\w-]*)/g;
 
     // Now we check if the command is optionless. If it is, then no options should be given.
@@ -176,13 +195,15 @@ class MaidenCommandManager {
     }
 
     // To do any following checks, we need the input of the command.
-    
     var input = this.getCommandInput(message.content);
 
+    // We're diving into callback lake, so we'll set the client to a variable for safety.
     var client = this.client;
 
     // If the command takes options, and options were submitted, compare the options inputted.
     // Invalid options should not pass through to the command.
+    // NOTE: As stated above, return statements were removed. So commands will no longer stop execution
+    // even if errors are thrown.
     // @todo - show invalid options in error text.
     if (!_.isEmpty(command.options) && !_.isEmpty(input.options)) {
       var error = false;
@@ -208,27 +229,35 @@ class MaidenCommandManager {
     }
 
     // If the command takes input, check to see if the command's input was entered.
-    // if (!_.isEmpty(command.input) && _.isEmpty(input.array)) {
-    //   command.error(message.content, "InputRequiredButNotEntered", message);
-    //   return;
-    // }
+    if (!_.isEmpty(command.input) && _.isEmpty(input.array)) {
+      command.error(message.content, "InputRequiredButNotEntered", message);
+    }
 
     // Run Command if it passed through the parsing.
     command.execute(message, input);
   }
 
   /**
-   * [getCommandInput description]
-   * @param  {[type]} msg_content [description]
-   * @return {[type]}             [description]
+   * Get input from a command.
+   * Input 
+   * @param  {String} msg_content Raw content of the message from the received command.
+   * @return {Array}              Array containing the input that was obtained in different formats.
    */
   getCommandInput(msg_content) {
 
+    // We'll store the input in this object.
     var input = {};
 
+    // We'll get the raw input first.
+    // Raw input is everything that comes after the command prefix or bot tag, and the command key.
+    // Some commands don't take any options into consideration. They'll always use raw input.
     input.raw = msg_content.split(' ')
     input.raw.splice(0, 2)
     input.raw = input.raw.join(' ').trim();
+
+    // @TODO - Set a flag in commands for the type of input they take.
+    // If we do this, we can avoid running all the code below when commands don't
+    // take any options.
 
     // Array to store options keys found in the command message.
     var options = {};
@@ -275,11 +304,15 @@ class MaidenCommandManager {
     // Get an array with all words in the message seperate by a space.
     var raw_input_array = msg_content.trim().split(" ");
 
+    // The difference between input.full and input.raw is that input.full has all of the
+    // options text stripped. Commands that don't care about the options will want to have all text,
+    // regardless of all the manipulations and regex we have above.
     input.array = raw_input_array;
-
     raw_input_array.splice(0, 2);
-
     input.full = raw_input_array.join(' ').trim();
+
+    // @TODO - All commands that don't use options should use input.raw in their tasks.
+    // Otherwise, they'll use input.full. We need a task to check all of the commands and do this cleanup.
 
     return input;
   }
@@ -292,12 +325,16 @@ class MaidenCommandManager {
    */
   build(client) {
 
+    // Object to store the commands we're about to get.
     var commands = {};
 
+    // We'll store the aliases inside of the object itself.
     commands.aliases = {};
 
     // Get General Commands
-    glob.sync( __dirname + '/commands**/*.js' ).forEach( function( file ) {
+    // General commands are commands that will be callable through all Maidens.
+    // They can be found in the './commands' folder.
+    glob.sync(__dirname + '/commands**/*.js').forEach((file) => {
 
       // Remove a huge part of the path that we don't need. We only want the name of the File at the end.
       var filename = file.replace(/^.*[\\\/]/, '');
@@ -311,8 +348,9 @@ class MaidenCommandManager {
       // Instantiate the [Command] and store it in the {commands} array.
       commands[command_key] = new CommandClass(client);
 
+      // If the instantiated command has aliases, we'll add them to the aliases array.
       if (typeof commands[command_key].aliases !== 'undefined' && commands[command_key].aliases.length > 0) {
-        commands[command_key].aliases.forEach( function(alias) {
+        commands[command_key].aliases.forEach((alias) => {
           commands.aliases[alias] = command_key;
         });
       }
@@ -320,7 +358,11 @@ class MaidenCommandManager {
     });
 
     // Get Maiden Specific Commands
-    glob.sync( client.namespace + 'commands**/*.js' ).forEach( function( file ) {
+    // Maiden specific commands are found in the maiden's namespace.
+    // They each have their own 'commands' folders, and these are commands
+    // that can only be called through them. For the given client, we'll load
+    // these too.
+    glob.sync(client.namespace + 'commands**/*.js').forEach((file) => {
 
       // Remove a huge part of the path that we don't need. We only want the name of the File at the end.
       var filename = file.replace(/^.*[\\\/]/, '');
@@ -334,8 +376,9 @@ class MaidenCommandManager {
       // Instantiate the [Command] and store it in the {commands} array.
       commands[command_key] = new CommandClass(client);
 
+      // If the instantiated command has aliases, we'll add them to the aliases array.
       if (typeof commands[command_key].aliases !== 'undefined' && commands[command_key].aliases.length > 0) {
-        commands[command_key].aliases.forEach( function(alias) {
+        commands[command_key].aliases.forEach((alias) => {
           commands.aliases[alias] = command_key;
         });
       }
@@ -343,8 +386,10 @@ class MaidenCommandManager {
     });
 
     // Get Commands from plugins
+    // Plugins have their own commands too, and have their own 'commands' folders.
+    // We'll load commands for each plugin this client has 'plugged' to it.
     this.client.plugins.every((plugin) => {
-      glob.sync( plugin.path + '/commands**/*.js' ).forEach( function( file ) {
+      glob.sync(plugin.path + '/commands**/*.js').forEach((file) => {
 
         // Remove a huge part of the path that we don't need. We only want the name of the File at the end.
         var filename = file.replace(/^.*[\\\/]/, '');
@@ -358,8 +403,9 @@ class MaidenCommandManager {
         // Instantiate the [Command] and store it in the {commands} array.
         commands[command_key] = new CommandClass(client);
 
+        // If the instantiated command has aliases, we'll add them to the aliases array.
         if (typeof commands[command_key].aliases !== 'undefined' && commands[command_key].aliases.length > 0) {
-          commands[command_key].aliases.forEach( function(alias) {
+          commands[command_key].aliases.forEach((alias) => {
             commands.aliases[alias] = command_key;
           });
         }
@@ -367,11 +413,13 @@ class MaidenCommandManager {
       });
 
       return true;
+
     });
 
+    // Set the commands to the command manager.
     this.commands = commands;
 
-    return true;
+    return;
 
   }
 }

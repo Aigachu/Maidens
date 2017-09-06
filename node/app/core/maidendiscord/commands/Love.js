@@ -1,3 +1,10 @@
+/**
+ * Love command.
+ *
+ * Determines the % of love between the caller and the input they give.
+ *
+ * Returns % of love.
+ */
 class Love extends Command {
 
 	constructor(client) {
@@ -45,23 +52,41 @@ class Love extends Command {
    * Options are handled by the developer of the command accordingly.
    * @param  {[type]} data Data that was obtained from the message, such as input and other things.
    * (Object) data {
-   *   options => Contains all of the options organized in an object by key, similar to above.
-   *   array => Contains the input seperated into an array. (Shoutouts to old params style)
-   *   full => Contains the full input in a text string.
+   *   (Object) options => Contains all of the options organized in an object by key, similar to above.
+   *   (Array)  input   => Contains the input seperated into an array. (Shoutouts to old params style)
+   *     (String) full    => Contains the full input in a text string.
+   *     (Array)  array   => Contains the input seperated in an array.
+   *     (String) raw     => Contains the input without any modifications made to it. Useful for some commands.
    * }
    */
   tasks(data) {
 
+    // Variable to hold the message.
+    var message = '';
+
+    // Processes the command only if there's input.
     if(!_.isEmpty(data.input.full)) {
+      
+      // Get the thing the caller is getting love percentage for.
       // Lol Aiga naming your variable 'thing' really? xD
       var thing = data.input.full;
 
-      var author_name = data.msg.author.name;
-
-      data.msg.channel.send("There is __**" + Math.floor(Math.random() * 100) + "%**__ love between <@" + data.msg.author.id + "> and **" + thing + "**!" );
+      // Calculate the percent.
+      // It's completely random.
+      // @TODO - Make it calculate a percent using an algorithm, so the result is always the same.
+      var percent = Math.floor(Math.random() * 100);
+      
+      // Store the message to be returned.
+      message = `There is __**${percent}%**__ love between ${data.msg.author} and **${thing}**!`;
+    
+    // I'll be honest, I forget the joke behind the message that is returned here. But it seems funny.
     } else {
-      this.client.reply( data.msg, "You have 100% for ZeRo & M2K's AS5 if you don't specify an object or person!\n\n_Make sure you put an argument! `!love cheesecake`_");
+      // Store the message to be returned.
+      message = `${data.msg.author}, you have 100% for ZeRo & M2K's AS5es if you don't specify an object or person!`;
     }
+
+    // Send the message.
+    data.msg.channel.send(message);
 
   }
 

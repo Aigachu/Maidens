@@ -1,6 +1,5 @@
 /**
- * Bot's Discord class.
- * "Keep it tidy in here, okay!?" - Sora Akanegasaki
+ * Colette's Discord class.
  */
 class ColetteDiscord extends MaidenDiscord {
 
@@ -12,7 +11,8 @@ class ColetteDiscord extends MaidenDiscord {
     // Call the constructor of the Discord Client parent Class.
     super(settings);
 
-    this.welcome = `Jack in! Colette! Executed! :yum:\nWoo :smile:`;
+    // Customize her welcome message.
+    this.welcome = `Jack in! Colette! Execute! :yum:\nWoo :smile:`;
 
     // Event: When Colette connects to Discord and is ready.
     this.on('ready', () => {

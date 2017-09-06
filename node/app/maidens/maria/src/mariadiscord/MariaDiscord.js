@@ -1,6 +1,5 @@
 /**
- * Sora's Discord class.
- * "Keep it tidy in here, okay!?" - Sora Akanegasaki
+ * Maria's Discord class.
  */
 class MariaDiscord extends MaidenDiscord {
 
@@ -12,6 +11,7 @@ class MariaDiscord extends MaidenDiscord {
     // Call the constructor of the Discord Client parent Class.
     super(settings);
 
+    // Customize welcome message.
     this.welcome = `A corpse...Should be left well alone Aiga...`;
 
     // Event: When Colette connects to Discord and is ready.
@@ -24,7 +24,7 @@ class MariaDiscord extends MaidenDiscord {
       this.user.setStatus('dnd');
 
       // Set game!
-      this.user.setGame('Sleeping...');
+      this.user.setGame('dead.');
 
     });
 

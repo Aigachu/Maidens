@@ -1,3 +1,12 @@
+/**
+ * LifeRead command.
+ *
+ * Emulates the famous 'Life Reading: n' from Ever17.
+ *
+ * This checks how many people are alive and online in the server. Returns it right after.
+ *
+ * Very simple stuff.
+ */
 class LifeRead extends Command {
 
 	constructor(client) {
@@ -56,28 +65,45 @@ class LifeRead extends Command {
    * Options are handled by the developer of the command accordingly.
    * @param  {[type]} data Data that was obtained from the message, such as input and other things.
    * (Object) data {
-   *   options => Contains all of the options organized in an object by key, similar to above.
-   *   array => Contains the input seperated into an array. (Shoutouts to old params style)
-   *   full => Contains the full input in a text string.
+   *   (Object) options => Contains all of the options organized in an object by key, similar to above.
+   *   (Array)  input   => Contains the input seperated into an array. (Shoutouts to old params style)
+   *     (String) full    => Contains the full input in a text string.
+   *     (Array)  array   => Contains the input seperated in an array.
+   *     (String) raw     => Contains the input without any modifications made to it. Useful for some commands.
    * }
    */
   tasks(data) {
 
+    // Variable to store the life readings.
     var lifereadings = 0;
+
+    // Variable to store offline users.
+    // Not sure if it's used right now.
     var offline = 0;
 
+    // Loop through all members in the guild where the command was called.
     data.msg.guild.members.every((member) => {
+
+      // If the member is a bot, we don't want to count them.
       if (member.user.bot == true) {
+        // do nothing and return.
         return true;
       }
+
+      // If the member is not offline, we'll count them.
       if (member.user.presence.status != 'offline') {
         lifereadings++;
+
+      // If they ARE offline, add them to the offline array.
       } else {
         offline++;
       }
+
       return true;
+
     });
 
+    // Send the results to the channel.
     data.msg.reply(`_Scanning server life readings..._`)
       .then(() => {
         this.client.startTyping(data.msg.channel, 3000)

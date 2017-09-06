@@ -32,38 +32,78 @@ const QuipManager = require('./MaidenQuipManager');
 // const Reminder = require('./Reminder');
 
 /**
- * Sora's Discord class.
+ * Maiden's Discord class.
+ * This class extends the DiscordClient class and adds functionality for the maidens.
+ *
+ *
+ * A little words from the girls...
+ * 
  * "Keep it tidy in here, okay!?" - Sora Akanegasaki
+ * 
+ * "I'm really glad you revived me Aiga...This is cleaner than ever!" - Colette Brunel
+ * 
+ * "Would you like some Blood, Aigachu?" - Maria
+ * 
+ * "I'm not quite sure what my purpose is..." - Plain Doll
+ *
+ * Let's get started.
  */
 class MaidenDiscord extends DiscordClient {
 
   /**
    * === Class constructor ===
+   * Settings are added in the constructor, and the object is retrieved from
+   * the 'settings.js' in the given bot files.
+   *
+   * Check an individual maiden's code to see an example settings.js file.
    */
   constructor(settings) {
 
     // Call the constructor of the Discord Client parent Class.
     super();
 
-    // Set the settings...LOL. SET THE SETTINGS! GET IT?!
-    // @see setting.js at the root of the project.
+    // Root of the 'core' directory. The directory that THIS file is in.
+    // Bots will sometimes need to access this directory and it's files.
     this.coreroot = __dirname + '/';
+
+    // A Maiden's root is set in their 'settings.js' file. This is to access all of their
+    // respective assets and files properly.
     this.root = settings.root;
+
+    // The Maiden Name is also set in their settings. This is to know the name of their
+    // folder, and will be used to set foldernames for their databases.
     this.maiden_name = settings.maiden_name;
+
+    // The namespace for their DISCORD code.
+    // We'll get this path using the path to their root, followed by src and then the name of the constructor.
     this.namespace = this.root + 'src/' + this.constructor.name.toLowerCase() + '/';
+
+    // The path to the assets folder for the Maiden.
     this.assets = this.root + 'assets/';
+
+    // Discord Bot apptoken, also set in the Maiden's 'settings.js'.
     this.apptoken = settings.discord.apptoken;
+
+    // Command prefix, also set in the Maiden's 'settings.js'.
     this.cprefix = settings.discord.cprefix;
+
+    // Gods array, also set in the Maiden's 'settings.js'.
     this.gods = settings.discord.gods;
+
+    // Admins, also set in the Maiden's 'settings.js'.
+    // The gods array is merged into this one.
     this.admins = Object.assign(settings.discord.admins, settings.discord.gods);
 
     // Plugins
-    // We initiate the plugins first since they may have quips or commands.
+    // All plugins can be found in the folder called 'plugins' in the same directory as this file.
+    // Plugins are 'plugged'to the Maidens in their 'settings.js' files.
+    // We initiate the plugins first since they may (surely) have commands.
     this.plugins = this.loadPlugins(settings.discord.plugins);
 
     // Listeners
     // Listeners are extended functions that monitor messages and do actions accordingly.
-    // Custom listeners can be added by plugins or even commands.
+    // Custom listeners can be added by plugins or commands.
+    // i.e. Colette's Watchdog.
     this.listeners = [];
 
     // Initiate the cooldown manager to the bot's Client.
@@ -77,6 +117,7 @@ class MaidenDiscord extends DiscordClient {
 
     // Welcome message when the bot connects to Discord.
     // This will be sent every time the bot connects. It's a handy way to know if the bots disconnected.
+    // This is the default value. For each bot, we can change this.
     this.welcome = `Connected.`;
 
     /**
@@ -86,10 +127,9 @@ class MaidenDiscord extends DiscordClient {
     // Event: When Sora connects to Discord and is ready.
     this.on('ready', () => {
 
-      // Logs connection event in console.
-      // console.log("\nI am now properly linked to the Discord infrastructure. Enjoy!");
-
       // Home Server - Stairway to Heaven
+      // When the bots connect, I want them to send a message to this guild each time.
+      // It allows me to know when they disconnect and reconnect.
       this.home = {
         guild: this.guilds.find('id', '314130398173069312'),
         channel: this.channels.find('id', '327535083164663808'),
@@ -101,7 +141,7 @@ class MaidenDiscord extends DiscordClient {
     });
 
     /**
-     * Event that fires when Sora receives a message.
+     * Event that fires when Maidens receive messages.
      * @param  {Object} message :: https://discord.js.org/#/docs/main/stable/class/Message
      */
     this.on("message", (message) => {
@@ -120,7 +160,7 @@ class MaidenDiscord extends DiscordClient {
 
     });
 
-    // Event: When Sora disconnects from Discord.
+    // Event: When the Maiden disconnects from Discord.
     this.on('disconnected', () => {
 
       // Logs disconnection event in console.
@@ -129,7 +169,7 @@ class MaidenDiscord extends DiscordClient {
 
     });
 
-    // Sora will automatically login when instanciated.
+    // Maiden will automatically login when instanciated.
     super.login(this.apptoken);
 
   }
@@ -142,6 +182,7 @@ class MaidenDiscord extends DiscordClient {
    */
   im(destination, text) {
 
+    // @see: https://discord.js.org/#/docs/main/stable/general/welcome
     destination.send(text);
 
   }
@@ -154,15 +195,16 @@ class MaidenDiscord extends DiscordClient {
    */
   reply(message, text) {
 
+    // @see: https://discord.js.org/#/docs/main/stable/general/welcome
     message.reply(text);
     
   }
 
   /**
-   * [startTyping description]
-   * @param  {[type]} channel [description]
-   * @param  {[type]} delay   [description]
-   * @return {[type]}         [description]
+   * Function to start typing.
+   * @param  {[Discord Channel]}  channel Discord channel the typing indicator should appear in.
+   * @param  {[Integer]}          delay   How much time the typing indication should last.
+   * @return {[Promise]}                  Return promise so I can do some sick '.then()' chains.
    */
   startTyping(channel, delay) {
     return new Promise((resolve, reject) => {
@@ -174,33 +216,43 @@ class MaidenDiscord extends DiscordClient {
     });
   }
 
-  cool(type, key, scope, duration) {
-    this.cooldownManager.set(type, key, scope, duration);
-  }
-
   /**
-   * [loadPlugins description]
-   * @param  {[type]} plugins [description]
-   * @return {[type]}         [description]
+   * Load all plugins into the client.
+   * @param  {String} plugins Array of plugin folder names that should be loaded.
+   * @return {Array}          Array of all plugins with their name and their absolute path.
    */
   loadPlugins(plugins) {
+
+    // Initialize array for plugins.
     var plugins_array = [];
 
+    // For every plugin name...
     plugins.every((plugin) => {
+
+      // Get the path to the plugin.
       var plugin_path = __dirname + '/plugins/' + plugin;
+
+      // Require the plugin Class.
       var PluginClass = require(plugin_path);
 
+      // Push the plugin to the plugins array that will be returned.
       plugins_array.push({
         name: plugin,
         path: plugin_path,
       });
 
+      // Set the plugin to the client.
+      // i.e. 'this.watchdog' will now be the Watchdog class.
       this[plugin] = new PluginClass(this);
 
+      // .every() callback needs to return true to continue execution of other elements.
       return true;
+
     });
 
+    // Return array of all plugins by name and path.
     return plugins_array;
+    
   }
 
 }

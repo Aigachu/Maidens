@@ -1,3 +1,5 @@
+// @todo - RETHINK EVERYTHING.
+// @todo - REDO EVERYTHING.
 // @todo - multiple word query per single string
 // @todo - multiple responses possible for same given query
 class Quip {

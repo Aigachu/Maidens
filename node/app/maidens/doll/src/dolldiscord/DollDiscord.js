@@ -1,6 +1,5 @@
 /**
- * Sora's Discord class.
- * "Keep it tidy in here, okay!?" - Sora Akanegasaki
+ * Doll's Discord class. 
  */
 class DollDiscord extends MaidenDiscord {
 
@@ -12,9 +11,10 @@ class DollDiscord extends MaidenDiscord {
     // Call the constructor of the Discord Client parent Class.
     super(settings);
 
+    // Customize welcome message.
     this.welcome = `Hello good hunter...What is it you desire?`;
 
-    // Event: When Colette connects to Discord and is ready.
+    // Event: When the Plain Doll connects to Discord and is ready.
     this.on('ready', () => {
 
       // Logs connection event in console.

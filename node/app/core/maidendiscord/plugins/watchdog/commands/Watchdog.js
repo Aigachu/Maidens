@@ -1,3 +1,10 @@
+/**
+ * Watchdog command.
+ *
+ * Simply used to toggle the Watchdog functionality on or off, or to check the status of it.
+ *
+ * Returns confirmation messages.
+ */
 class Watchdog extends Command {
 
 	constructor(client) {
@@ -64,44 +71,44 @@ class Watchdog extends Command {
    * Options are handled by the developer of the command accordingly.
    * @param  {[type]} data Data that was obtained from the message, such as input and other things.
    * (Object) data {
-   *   options => Contains all of the options organized in an object by key, similar to above.
-   *   array => Contains the input seperated into an array. (Shoutouts to old params style)
-   *   full => Contains the full input in a text string.
+   *   (Object) options => Contains all of the options organized in an object by key, similar to above.
+   *   (Array)  input   => Contains the input seperated into an array. (Shoutouts to old params style)
+   *     (String) full    => Contains the full input in a text string.
+   *     (Array)  array   => Contains the input seperated in an array.
+   *     (String) raw     => Contains the input without any modifications made to it. Useful for some commands.
    * }
    */
   tasks(data) {
 
-    // If the "e" option is used
+    // If the "e" option is used, Enable the watchdog in this guild.
     if ("e" in data.input.options) {
       this.client.watchdog.enable(data.msg.guild);
       data.msg.channel.send('Enabled the watchdog in this server!');
       return;
     }
 
-    // If the "d" option is used
+    // If the "d" option is used, Disable the watchdog in this guild.
     if ("d" in data.input.options) {
       this.client.watchdog.disable(data.msg.guild);
       data.msg.channel.send('Disabled the watchdog in this server!');
       return;
     }
 
-    // If the "d" option is used
+    // If the "s" option is used, check the status of the watchdog in this guild.
     if ("s" in data.input.options) {
       var status = this.client.watchdog.status(data.msg.guild) ? `Enabled` : `Disabled`;
       data.msg.channel.send(`Watchdog status: **${status}**.`);
       return;
     }
 
-    // Toggle by default.
-    if(this.client.watchdog.status(data.msg.guild)) {
-      this.client.watchdog.disable(data.msg.guild);
-    } else {
-      this.client.watchdog.enable(data.msg.guild);
-    }
+    // Toggle the watchdog status.
+    var toggle = this.client.watchdog.status(data.msg.guild) ? this.client.watchdog.disable(data.msg.guild) : this.client.watchdog.enable(data.msg.guild);
 
+    // Get the new status.
     var status = this.client.watchdog.status(data.msg.guild) ? `Enabled` : `Disabled`
 
     data.msg.channel.send(`Watchdog is now **${status}**.`);
+
     return;
     
   }

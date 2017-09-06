@@ -1,3 +1,10 @@
+/**
+ * Ping command.
+ *
+ * Simply pings the bot, and expects a pong in return.
+ *
+ * This command is mostly used for testing purposes...Or to check if the bot is alive!
+ */
 class Ping extends Command {
 
   constructor(client) {
@@ -44,29 +51,32 @@ class Ping extends Command {
    * Tasks the command will execute.
    * Options are handled by the developer of the command accordingly.
    * @param  {[type]} data Data that was obtained from the message, such as input and other things.
+   * (Object) data {
+   *   (Object) options => Contains all of the options organized in an object by key, similar to above.
+   *   (Array)  input   => Contains the input seperated into an array. (Shoutouts to old params style)
+   *     (String) full    => Contains the full input in a text string.
+   *     (Array)  array   => Contains the input seperated in an array.
+   *     (String) raw     => Contains the input without any modifications made to it. Useful for some commands.
+   * }
    */
   tasks(data) {
 
     // Default reply for the ping command.
     var ping_message = `Pong! Maiden at your service. ;)`;
 
-    // If the "c" option is used, change the text Sora says.
+    // If the "c" option is used, change the text the maiden says.
     if ("c" in data.input.options) {
       ping_message = data.input.options.c;
     }
 
     // If the "d" option is used, send the message through DMs instead of in the channel.
     if ("d" in data.input.options) {
-      this.client.im(data.msg.author, ping_message);
+      data.msg.author.send(ping_message);
       return;
     }
 
     // Send message normally.
-    this.client.reply(data.msg, ping_message);
-
-    // msg.reply(`Sora, version 2.0, at your service. ;)`)
-    //   .then((msg) => console.log(`Sent a reply to ${msg.author.username}.`))
-    //   .catch(console.error);
+    data.msg.reply(ping_message);
 
   }
 

@@ -1,12 +1,19 @@
+/**
+ * IronMan command.
+ *
+ * This command gives the caller a list of characters to use in an ironman against another character.
+ *
+ * Another command for fun stuff.
+ */
 class IronMan extends Command {
 
-	constructor(client) {
+  constructor(client) {
 
-		super(client);
+    super(client);
 
     // Uncomment to enter different aliases that can be used to use the command.
     // e.g. the ping command can have pi or pg as aliases.
-		this.aliases = [ "iman", "ironman"];
+    this.aliases = [ "iman", "ironman"];
     
     // Uncomment to customize the text that will be shown when --help is used.
     // this.helpText = "";
@@ -60,46 +67,71 @@ class IronMan extends Command {
    * Options are handled by the developer of the command accordingly.
    * @param  {[type]} data Data that was obtained from the message, such as input and other things.
    * (Object) data {
-   *   options => Contains all of the options organized in an object by key, similar to above.
-   *   array => Contains the input seperated into an array. (Shoutouts to old params style)
-   *   full => Contains the full input in a text string.
+   *   (Object) options => Contains all of the options organized in an object by key, similar to above.
+   *   (Array)  input   => Contains the input seperated into an array. (Shoutouts to old params style)
+   *     (String) full    => Contains the full input in a text string.
+   *     (Array)  array   => Contains the input seperated in an array.
+   *     (String) raw     => Contains the input without any modifications made to it. Useful for some commands.
    * }
    */
   tasks(data) {
 
+    // Get all SSB4 character directories from the maiden's assets folder.
     var smash4_character_directories = fs.readdirSync(this.client.assets + "smash4-character-portraits");
 
+    // Why the fuck is this a - 2?
+    // Oh, right. There are two folders that aren't characters...
+    // Misc...And MEMES...LMAO!
+    // Anyways, this gets the roster size.
     var roster_size = smash4_character_directories.length - 2;
 
+    // The input data should be a number.
+    // @TODO - Check if the data is a number before even doing this check.
     if(data.input.full > roster_size) {
-      data.msg.channel.send("That number is too high! There are only **" + roster_size + "** characters in the Smash 4 roster you weenie! xD");
-    } else if(!_.isEmpty(data.input.full) && !isNaN(data.input.full)) {
-      // Get all images from Smash 4 resources folder.
 
+      // Send a message saying they fucked up.
+      data.msg.channel.send("That number is too high! There are only **" + roster_size + "** characters in the Smash 4 roster you weenie! xD");
+    
+    // If the Input isn't empty and is actually a number.
+    } else if(!_.isEmpty(data.input.full) && !isNaN(data.input.full)) {
+      
+      // Get the number of characters from the data.
       var number_of_characters = data.input.full;
 
+      // Array to store the list of characters.
       var charlist = [];
 
+      // Array to store the list of characters that are chosen for the caller.
       var chosen_characters = [];
 
+      // For as many times as the given number from the input...
       for( var i = 0; i < number_of_characters; i++ ) {
+
+        // Get a random character.
         var random_character = smash4_character_directories[Math.floor(Math.random() * smash4_character_directories.length)];
 
+        // If the random character chosen is 'Misc', 'Meme' or already chosen, we re-select
+        // @TODO - Load characters into an array, and when they are chosen, slice them.
+        // Also, slice Misc and Memes before even looping into the array.
         while(random_character in chosen_characters || random_character == "Misc" || random_character == "Memes") {
           random_character = smash4_character_directories[Math.floor(Math.random() * smash4_character_directories.length)];
         }
 
+        // Add character to the charlist.
         charlist[i] = random_character;
+
+        // Add character to the chosen characters.
         chosen_characters[random_character] = random_character;
       }
 
+      // Set message.
       var message = "Here's your list of iron man characters!\n\n";
 
-      for (var key in charlist) {
-        if(charlist.hasOwnProperty(key)) {
-          message += "-- **" + charlist[key] + "**\n";
-        }
-      }
+      // Append characters the the list.
+      charlist.every((char) => {
+        message += `-- **${char}**\n`;
+        return true;
+      });
 
       message += "\nThere we go! Good luck against your challenger. ;)";
 

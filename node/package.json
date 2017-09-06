@@ -1,8 +1,8 @@
 {
-  "name": "sorabot",
+  "name": "discord-maidens",
   "version": "1.0.0",
-  "description": "",
-  "main": "config.js",
+  "description": "Discord bots with a collection of cool commands!",
+  "main": "summon.js",
   "dependencies": {
     "discord.js": "11.1.0",
     "fs": "^0.0.1-security",
@@ -16,13 +16,16 @@
   },
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "dev_summon.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@bitbucket.org/Aigachu/sorabot.git"
+    "url": "git+https://github.com/Aigachu/discord-maidens.git"
   },
-  "author": "",
+  "author": "Aigachu",
   "license": "ISC",
-  "homepage": "https://bitbucket.org/Aigachu/sorabot#readme"
+  "bugs": {
+    "url": "https://github.com/Aigachu/discord-maidens/issues"
+  },
+  "homepage": "https://github.com/Aigachu/discord-maidens#readme"
 }

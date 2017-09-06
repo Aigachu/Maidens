@@ -1,3 +1,8 @@
+/**
+ * Timeout Command.
+ * 
+ * Command used to timeout a user manually or to clear all timeouts.
+ */
 class Timeout extends Command {
 
 	constructor(client) {
@@ -60,14 +65,16 @@ class Timeout extends Command {
    * Options are handled by the developer of the command accordingly.
    * @param  {[type]} data Data that was obtained from the message, such as input and other things.
    * (Object) data {
-   *   options => Contains all of the options organized in an object by key, similar to above.
-   *   array => Contains the input seperated into an array. (Shoutouts to old params style)
-   *   full => Contains the full input in a text string.
+   *   (Object) options => Contains all of the options organized in an object by key, similar to above.
+   *   (Array)  input   => Contains the input seperated into an array. (Shoutouts to old params style)
+   *     (String) full    => Contains the full input in a text string.
+   *     (Array)  array   => Contains the input seperated in an array.
+   *     (String) raw     => Contains the input without any modifications made to it. Useful for some commands.
    * }
    */
   tasks(data) {
 
-    // If the "c" option is used, overwrite the duration.
+    // If the "c" option is used, clear all timeouts.
     if ("c" in data.input.options) {
       data.msg.guild.members.every((member) => {
         this.client.watchdog.clear(member);
@@ -79,6 +86,7 @@ class Timeout extends Command {
       return;
     }
 
+    // Set default duration to 30.
     var duration = 30;
 
     // If the "d" option is used, overwrite the duration.
@@ -88,21 +96,28 @@ class Timeout extends Command {
       }
     }
 
+    // Trim input from the tag given.
     data.input.full = data.input.full.trim();
     data.input.full = data.input.full.replace('<@', '');
     data.input.full = data.input.full.replace('>', '');
     data.input.full = data.input.full.replace('!', '');
 
+    // Get the member from the given tag.
     var member = data.msg.guild.members.find('id', data.input.full);
 
+    // If a member could not be obtained, we can't do anything. Return.
     if (member === null) {
+      // @TODO - Error message or something.
       return false;
     }
     
+    // Timeout the given user if we have everything we need.
     this.client.watchdog.timeout(member, duration);
     
+    // Annnd a fun message!
     data.msg.channel.send(`Uh oohhh! Someone was being bad!\nTake a quick **${duration} second** break, ${member}!`);
 
+    // Delete the message of the user that issued the timeout. No traces left...
     data.msg.delete();
 
   }

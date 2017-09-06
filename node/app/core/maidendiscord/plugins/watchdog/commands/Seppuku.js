@@ -1,3 +1,10 @@
+/**
+ * Seppuku Command.
+ *
+ * For those that want to erase their words forever...
+ *
+ * Deletes the last few words you had.
+ */
 class Seppuku extends Command {
 
 	constructor(client) {
@@ -68,10 +75,16 @@ class Seppuku extends Command {
    */
   tasks(data) {
 
+    // Get the member that called the command.
     var member = data.msg.member;
 
+    // Timeout the member for 5 seconds.
     this.client.watchdog.timeout(member, 5);
+
+    // Purge the member's last 5 messages.
     this.client.watchdog.purge(member, 5);
+
+    // Send a joyful message to celebrate the death.
     data.msg.channel.send(`_${member} commited sudoku! Byebye. :yum:_`);
 
   }

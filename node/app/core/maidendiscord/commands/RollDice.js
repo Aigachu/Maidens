@@ -1,3 +1,11 @@
+/**
+ * Rolldice command.
+ *
+ * Used to emulate dice rolling.
+ *
+ * By default, it rolls one dice. It can, through options, roll multiple dice.
+ * You can customize how many faces the dice should have as well.
+ */
 class RollDice extends Command {
 
 	constructor(client) {
@@ -45,9 +53,11 @@ class RollDice extends Command {
    * Options are handled by the developer of the command accordingly.
    * @param  {[type]} data Data that was obtained from the message, such as input and other things.
    * (Object) data {
-   *   options => Contains all of the options organized in an object by key, similar to above.
-   *   array => Contains the input seperated into an array. (Shoutouts to old params style)
-   *   full => Contains the full input in a text string.
+   *   (Object) options => Contains all of the options organized in an object by key, similar to above.
+   *   (Array)  input   => Contains the input seperated into an array. (Shoutouts to old params style)
+   *     (String) full    => Contains the full input in a text string.
+   *     (Array)  array   => Contains the input seperated in an array.
+   *     (String) raw     => Contains the input without any modifications made to it. Useful for some commands.
    * }
    */
   tasks(data) {
@@ -68,7 +78,7 @@ class RollDice extends Command {
     if ("n" in data.input.options) {
 
       // @todo - Throw an error if the data is not a number.
-      // @todo - Throw an error if the number is too much.
+      // @todo - Throw an error (OR TRUNCATE) if the number is too much. The maidens only have 20 dice.
       dice_count = (data.input.options["n"] == "n") ? 1 : data.input.options["n"];
     }
 
@@ -76,7 +86,7 @@ class RollDice extends Command {
     if ("d" in data.input.options) {
 
       // @todo - Throw an error if the data is not a number.
-      // @todo - Throw an error if the number is too much.
+      // @todo - Throw an error (OR TRUNCATE) if the number is too much. Max dice faces should be 20.
       dice_faces = (data.input.options["d"] == "d") ? 6 : data.input.options["d"];
     }
 
@@ -87,16 +97,21 @@ class RollDice extends Command {
       total += roll;
     }
 
+    // Cut off the remaining ", " from the string.
     result = result.substr(0, result.length - 2);
 
+    // Store result message.
     var result_msg = " the result of your roll is: **" + result + "**!"
 
-    if(dice_count > 1) {
+    // If more than 1 dice is rolled, we should add this to the result message to show the total number.
+    if (dice_count > 1) {
       result_msg += "\nThis gives you a total of: **" + total + "**!";
     }
 
+    // Roll types are randomized and have different delays.
     var roll_types = [];
 
+    // Set role types.
     roll_types.push({
       message: "_rolls the dice normally_",
       timeout: 1000
@@ -114,8 +129,10 @@ class RollDice extends Command {
       timeout: 5000
     });
 
+    // Choose a roll type with a random key.
     var rand = roll_types[Math.floor(Math.random() * roll_types.length)];
 
+    // Send everything we just computed to the channel.
     data.msg.channel.send(rand.message)
       .then(() => {
         this.client.startTyping(data.msg.channel, rand.timeout)

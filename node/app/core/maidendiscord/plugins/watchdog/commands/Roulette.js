@@ -1,3 +1,12 @@
+/**
+ * Roulette command.
+ *
+ * Emulates a game of Russian Roulette, but with a nice twist!
+ *
+ * Users that die are timed out.
+ *
+ * @TODO - Major refactoring and documentation needed for this one...Oh god. LOL.
+ */
 class Roulette extends Command {
 
 	constructor(client) {

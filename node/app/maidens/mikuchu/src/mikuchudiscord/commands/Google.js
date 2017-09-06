@@ -1,3 +1,12 @@
+/**
+ * Google command.
+ *
+ * Send a query to google and return the last 5 search results.
+ *
+ * CURRENTLY UNSTABLE - Google seems to have very strict limits on API calls...So this command doesn't quite work.
+ *
+ * Still, the code is fine!
+ */
 class Google extends Command {
 
 	constructor(client) {
@@ -17,10 +26,10 @@ class Google extends Command {
     // Uncomment to declare that input is required for this command.
     // Follow the template here to assure functionality of the Synopsis.
     this.input = {
-      "query": {
-        "type": "text", // Either text or plain.
-        "name": "Query",
-        "description": "Text to send to google for results."
+      query: {
+        type: "text", // Either text or plain.
+        name: "Query",
+        description: "Text to send to google for results."
       }
     };
 
@@ -37,6 +46,10 @@ class Google extends Command {
     //     "needs_text"   : true,
     //   }
     // };
+    
+    // Uncomment to adjust the cooldown of the command.
+    // The default cooldown is 5 seconds.
+    this.cooldown = 10; // In seconds.
 
   }
 
@@ -45,13 +58,18 @@ class Google extends Command {
    * Options are handled by the developer of the command accordingly.
    * @param  {[type]} data Data that was obtained from the message, such as input and other things.
    * (Object) data {
-   *   options => Contains all of the options organized in an object by key, similar to above.
-   *   array => Contains the input seperated into an array. (Shoutouts to old params style)
-   *   full => Contains the full input in a text string.
+   *   (Object) options => Contains all of the options organized in an object by key, similar to above.
+   *   (Array)  input   => Contains the input seperated into an array. (Shoutouts to old params style)
+   *     (String) full    => Contains the full input in a text string.
+   *     (Array)  array   => Contains the input seperated in an array.
+   *     (String) raw     => Contains the input without any modifications made to it. Useful for some commands.
    * }
    */
   tasks(data) {
 
+    // I actually didn't take the time to understand this code and I copy pasted it from the module's page.
+    // @see : https://www.npmjs.com/package/google
+    // @TODO - Clean this the fuck up.
     google.resultsPerPage = 3;
     var nextCounter = 0;
     var result_msg = "";

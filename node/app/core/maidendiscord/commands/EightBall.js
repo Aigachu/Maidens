@@ -1,3 +1,10 @@
+/**
+ * 8ball command.
+ *
+ * This command emulates the 8ball we know and love, answering any given question.
+ *
+ * Returns an answer to a question.
+ */
 class EightBall extends Command {
 
   constructor(client) {
@@ -45,105 +52,114 @@ class EightBall extends Command {
    * Options are handled by the developer of the command accordingly.
    * @param  {[type]} data Data that was obtained from the message, such as input and other things.
    * (Object) data {
-   *   options => Contains all of the options organized in an object by key, similar to above.
-   *   array => Contains the input seperated into an array. (Shoutouts to old params style)
-   *   full => Contains the full input in a text string.
+   *   (Object) options => Contains all of the options organized in an object by key, similar to above.
+   *   (Array)  input   => Contains the input seperated into an array. (Shoutouts to old params style)
+   *     (String) full    => Contains the full input in a text string.
+   *     (Array)  array   => Contains the input seperated in an array.
+   *     (String) raw     => Contains the input without any modifications made to it. Useful for some commands.
    * }
    */
   tasks(data) {
 
+    // If some input was actually given, we can process the command.
+    // @TODO - Check if the input is actually a question.
     if(!_.isEmpty(data.input.full)) {
       
+      // We'll store all possible answers in an array.
       var answers = [];
 
       answers.push({
-        message: "8ball says: \"_It is certain._\"",
+        message: `8ball says: _**"It is certain."**_`,
         timeout: 2000
       });
       answers.push({
-        message: "8ball says: \"_It is decidedly so._\"",
+        message: `8ball says: _**"It is decidedly so."**_`,
         timeout: 2000
       });
       answers.push({
-        message: "8ball says: \"_Without a doubt._\"",
+        message: `8ball says: _**"Without a doubt."**_`,
         timeout: 3000
       });
       answers.push({
-        message: "8ball says: \"_Yes, definitely._\"",
+        message: `8ball says: _**"Yes, definitely."**_`,
         timeout: 4000
       });
       answers.push({
-        message: "8ball says: \"_You may rely on it._\"",
+        message: `8ball says: _**"You may rely on it."**_`,
         timeout: 2000
       });
       answers.push({
-        message: "8ball says: \"_As I see it, yes._\"",
+        message: `8ball says: _**"As I see it, yes."**_`,
         timeout: 3000
       });
       answers.push({
-        message: "8ball says: \"_Most likely._\"",
+        message: `8ball says: _**"Most likely."**_`,
         timeout: 4000
       });
       answers.push({
-        message: "8ball says: \"_Outlook good._\"",
+        message: `8ball says: _**"Outlook good."**_`,
         timeout: 2000
       });
       answers.push({
-        message: "8ball says: \"_Yes._\"",
+        message: `8ball says: _**"Yes."**_`,
         timeout: 4000
       });
       answers.push({
-        message: "8ball says: \"_Signs point to yes._\"",
+        message: `8ball says: _**"Signs point to yes."**_`,
         timeout: 2000
       });
       answers.push({
-        message: "8ball says: \"_Reply hazy try again._\"",
+        message: `8ball says: _**"Reply hazy try again."**_`,
         timeout: 2000
       });
       answers.push({
-        message: "8ball says: \"_Ask again later._\"",
+        message: `8ball says: _**"Ask again later."**_`,
         timeout: 2000
       });
       answers.push({
-        message: "8ball says: \"_Better not tell you now._\"",
+        message: `8ball says: _**"Better not tell you now."**_`,
         timeout: 3000
       });
       answers.push({
-        message: "8ball says: \"_Cannot predict now._\"",
+        message: `8ball says: _**"Cannot predict now."**_`,
         timeout: 4000
       });
       answers.push({
-        message: "8ball says: \"_Concentrate and ask again._\"",
+        message: `8ball says: _**"Concentrate and ask again."**_`,
         timeout: 2000
       });
       answers.push({
-        message: "8ball says: \"_Don't count on it._\"",
+        message: `8ball says: _**"Don't count on it."**_`,
         timeout: 3000
       });
       answers.push({
-        message: "8ball says: \"_My reply is no._\"",
+        message: `8ball says: _**"My reply is no."**_`,
         timeout: 4000
       });
       answers.push({
-        message: "8ball says: \"_My sources say no._\"",
+        message: `8ball says: _**"My sources say no."**_`,
         timeout: 2000
       });
       answers.push({
-        message: "8ball says: \"_Very doubtful._\"",
+        message: `8ball says: _**"Very doubtful."**_`,
         timeout: 4000
       });
       answers.push({
-        message: "8ball says: \"_Outlook not so good._\"",
+        message: `8ball says: _**"Outlook not so good."**_`,
         timeout: 2000
       });
 
+      // The 'rand' variable will contain the answer chosen.
+      // We'll use a random number for the array key.
       var rand = answers[Math.floor(Math.random() * answers.length)];
 
+      // Start typing with the chosen answer's timeout, then send the reply to the user.
       this.client.startTyping(data.msg.channel, rand.timeout)
         .then(() => {
           data.msg.reply(rand.message);
         });
         
+    // If no input is given, then no question was actually asked.
     } else {
       this.client.reply( data.msg, "8ball says: \"_Now now, ask me something. Don't be shy!_\"");
     }

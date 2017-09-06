@@ -1,6 +1,13 @@
 #!/bin/bash
 #
 # Build instructions for live environnement
+# This scripts runs automatically when code is committed and pushed on the 'live' branch.
+# 
+# All of this is configured on codeship.
+# 
+# @see: https://app.codeship.com/aigachu-sama-nameless-star-7
+# 
+# If you don't have access to codeship, then talk to Aiga!
 # 
 
 # Stop any bot processes that may currently be running.

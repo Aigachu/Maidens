@@ -12,7 +12,8 @@ class SoraDiscord extends MaidenDiscord {
     // Call the constructor of the Discord Client parent Class.
     super(settings);
 
-    this.welcome = `Can you see me, Aiga? I'm connected to this peculiar dimension.`;
+    // Customize welcome message.
+    this.welcome = `_"When you close your eyes, I disappear."_...Your eyes seem to be open now, though. :laughing:`;
 
     // Event: When Sora connects to Discord and is ready.
     this.on('ready', () => {

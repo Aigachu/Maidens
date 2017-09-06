@@ -1,6 +1,6 @@
 /**
- * Sora's Discord class.
- * "Keep it tidy in here, okay!?" - Sora Akanegasaki
+ * Mikuchu's Discord class.
+ * "I am the ULTIMATE DEVBOT!!! As in the most unstable one ever made. xP" - Hatsune Mikuchu
  */
 class MikuchuDiscord extends MaidenDiscord {
 
@@ -12,6 +12,7 @@ class MikuchuDiscord extends MaidenDiscord {
     // Call the constructor of the Discord Client parent Class.
     super(settings);
 
+    // Customize welcome message.
     this.welcome = `Hello! Development bot, at your service! :wink:`;
 
     // Event: When the bot connects to Discord and is ready.

@@ -1,3 +1,10 @@
+/**
+ * Smash Handicap Command
+ *
+ * Fun command to give a random handicap to players for Smash games.
+ *
+ * Makes Smash games a tad bit more interesting!
+ */
 class SmashHandicap extends Command {
 
 	constructor(client) {
@@ -67,8 +74,10 @@ class SmashHandicap extends Command {
    */
   tasks(data) {
 
+    // Array to store handicaps.
     var handicaps = [];
 
+    // Set handicap types.
     handicaps.push({
       title: "Air Mac",
       details: "You may not use aerials during this match!",
@@ -175,15 +184,16 @@ class SmashHandicap extends Command {
       timeout: 3
     });
 
-
+    // Randomly select a handicap from the array.
     var rand = handicaps[Math.floor(Math.random() * handicaps.length)];
 
-    var message = "**" + rand.title + "**";
+    // Generate the message.
+    var message = `**${rand.title}**`;
+    message += `\n${rand.details}`;
+    message += `\n\nGood luck! :P`;
 
-    message += "\n" + rand.details;
-
-    message += "\n\nGood luck! :P"
-
+    // Send the results to the caller.
+    // Add a bit of delay for flavor.
     data.msg.reply("your handicap will be...")
       .then(() => {
         this.client.startTyping(data.msg.channel, rand.timeout * 1000)

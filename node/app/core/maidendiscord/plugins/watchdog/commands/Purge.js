@@ -1,3 +1,8 @@
+/**
+ * Purge command.
+ *
+ * Purge messages from the given user.
+ */
 class Purge extends Command {
 
 	constructor(client) {
@@ -63,10 +68,13 @@ class Purge extends Command {
    */
   tasks(data) {
 
+    // Variable containing the number of messages to purge.
     var count = 5;
 
-    // If the "d" option is used, overwrite the duration.
+    // If the "n" option is used, overwrite the count.
     if ("n" in data.input.options) {
+      // Make sure the input is a number.
+      // @TODO - Throw an error if it's not.
       if (!isNaN(data.input.options.d)) {
         count = data.input.options.n;
         if (count > 10)
@@ -74,21 +82,28 @@ class Purge extends Command {
       }
     }
 
+    // Trim given input for the user.
     data.input.full = data.input.full.trim();
     data.input.full = data.input.full.replace('<@', '');
     data.input.full = data.input.full.replace('>', '');
     data.input.full = data.input.full.replace('!', '');
 
+    // Fetch the member object.
     var member = data.msg.guild.members.find('id', data.input.full);
 
+    // If he can't be found, we can't do anything.
+    // @TODO - Throw an error or something.
     if (member === null) {
       return false;
     }
 
+    // Purge the member.
     this.client.watchdog.purge(member, count);
     
+    // Send a nice message!
     data.msg.channel.send(`I could have sworn I just saw ${count} messages from ${member}...Now they're gone. :thinking:`);
 
+    // Delete the caller's command. Remove all traces of the act...
     data.msg.delete();
 
   }

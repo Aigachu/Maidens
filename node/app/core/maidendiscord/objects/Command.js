@@ -5,19 +5,30 @@
  * are orders that can be given to a bot. The bot interprets these
  * orders and executes tasks in consequence.
  *
- * @see  /commands/Example.js for a template on how to create a new command!
+ * @see  ../commands/Example.js for a template on how to create a new command!
  *       WARNING: Coding experience required to create complex commands. ;)
  *
  * === Properties ===
+ * - {client}     : The Discord Bot client.
  * - {key}				:	The command identifier, as well as the text that triggers it. By default, this will take the name of the class.
- * - {client}			:	The Discord Bot client.
  * - {aliases}    : Array of different aliases a command can be called by.
  * - {helpText}		:	Short text to help show how the command is used.
  * - {descText}		:	Short (or long if you want) description to explain the purpose of the command.
  * - {input}      : Object to configure whether or not the command needs raw input.
- *   e.g. $sora ping <raw_input>
+ *   e.g. @bot ping <raw_input>
  * - {options}    : Object to configure whether or not the command will have options to extend functionality.
- *   e.g. $sora ping [-d] [-c]
+ *   e.g. @bot ping [-d] [-c]
+ * - {config}     : Object to store configurations for the command.
+ *   + {auth}       : Stores authentification restrictions.
+ *     -- {guilds}    : Allowed guilds. If empty, allowed in all guilds.
+ *     -- {channel}   : Allowed channels. If empty, allowed in all channels.
+ *     -- {pms}       : Boolean. If true, allowed in private messages. If false, restricted.
+ *     -- {users}     : Allowed users. If empty, allowed by all users.
+ *     -- {oplevel}   : Operation level.
+ *                       0 - Allowed by everyone.
+ *                       1 - Only allowed by "admins" & above. Admins are configured in each maidens' settings.js.
+ *                       2 - Only Allowed by "gods". Gods are configured in each maidens' settings.js.
+ * - {cooldown}   : Integer to determine the amount of seconds of cooldown the command should have.
  */
 class Command {
 
@@ -27,8 +38,9 @@ class Command {
 		// Instantiate class properties. These are default values that will be assigned to any child command
     // that doesn't have these values set.
 		// Descriptions of each up above!
-    
     this.client     = client; 
+
+    // The command "key" takes the constructor name by default.
 		this.key 				= this.constructor.name.toLowerCase();
 
     // The upcoming properties are customizable per command.
@@ -37,10 +49,14 @@ class Command {
 		this.helpText 	= "This is the default help text for commands...Which means that Aiga was too lazy to write one for this command. :/ Bug him about it!";
 		this.descText   = "This is the default description for commands...Which means that Mr. Aiga was being too much of a lazy fart to write one for this command. :/ Bug him about it!";
     
+    // Input is optional.
     this.input      = {};
     
+    // Options are optional.
     this.options    = {};
 
+    // By default, commands will be allowed everywhere.
+    // Be sure to change the values in this object for commands that should be restricted!
     this.config     = {
       auth: {
         guilds: [],
@@ -51,6 +67,7 @@ class Command {
       }, 
     };
 
+    // The default cooldown is 5 seconds for all commands.
     this.cooldown = 5;
 
   }
@@ -63,22 +80,39 @@ class Command {
    */
   execute(msg, input) {
 
+    // Using the cooldown manager, we check if the command is on cooldown first.
+    // Cooldowns are individual per user. So if a user uses a command, it's not on cooldown for everyone.
+    // @TODO - Code in GLOBAL cooldowns.
     if (this.client.cooldownManager.check('command', this.key, msg.author.id, this.cooldown)) {
       this.client.im(msg.author, `That command is on cooldown. :) Please wait!`);
       return false;
     }
 
-  	this.tasks({
-  		msg: msg,
-  		input: input
-  	});
+    // Run the tasks for the command.
+    // This passes the necessary data for a command to run.
+    // msg    : The Discord {Message} object. Contains a lot of useful information.
+    // input  : The parsed input from the command manager.
+    var data = {
+      msg: msg,
+      input: input
+    }
+  	this.tasks(data);
 
-    this.client.cool('command', this.key, msg.author.id, this.cooldown * 1000);
+    // Cools the command after usage.
+    if (this.cooldown !== 0) this.client.cooldownManager.set('command', this.key, msg.author.id, this.cooldown * 1000);
   }
 
   /**
-   * Tasks method.
-   * Code to run for the given command when executed.
+   * Tasks the command will execute.
+   * Options are handled by the developer of the command accordingly.
+   * @param  {[type]} data Data that was obtained from the message, such as input and other things.
+   * (Object) data {
+   *   (Object) options => Contains all of the options organized in an object by key, similar to above.
+   *   (Array)  input   => Contains the input seperated into an array. (Shoutouts to old params style)
+   *     (String) full    => Contains the full input in a text string.
+   *     (Array)  array   => Contains the input seperated in an array.
+   *     (String) raw     => Contains the input without any modifications made to it. Useful for some commands.
+   * }
    */
   tasks(data) {
   	// General tasks for all commands?
@@ -148,6 +182,12 @@ class Command {
     // this.client.im(msg.author,`Please use the \`--help\` option of the command through the following method.\n\n\`${this.key} --help\`\n\nThis will give you more information on how to use the command!`);
   }
 
+  /**
+   * Generates a sypnopsis for a given command.
+   * @TODO
+   * @param  {[type]} msg [description]
+   * @return {[type]}     [description]
+   */
   synopsis(msg) {
     var txt = `This is the synopsis for the **${this.key}** command.`;
   }

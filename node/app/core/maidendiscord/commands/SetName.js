@@ -1,3 +1,10 @@
+/**
+ * SetName command.
+ *
+ * Command to change the bot's username.
+ *
+ * This is another command for admin purposes. Makes it easier for me to change their usernames.
+ */
 class SetName extends Command {
 
   constructor(client) {
@@ -17,21 +24,38 @@ class SetName extends Command {
     // Uncomment to declare that input is required for this command.
     // Follow the template here to assure functionality of the Synopsis.
     this.input = {
-      "new_name": {
-        "type": "text", // Either text or plain.
-        "name": "New Name",
-        "description": "The new name that Sora should have after the command is executed."
+      new_name: {
+        type: "text", // Either text or plain.
+        name: "New Name",
+        description: "The new name that Sora should have after the command is executed."
       }
     };
 
     // Uncomment to permit different options in the command
-    // // Follow the template here to assure functionality of the Synopsis.
+    // Follow the template here to assure functionality of the Synopsis.
     // this.options = {
-    //   "d": {
-    //     "readable_name" : "Default",
-    //     "description"   : "Set Sora's name to the default name: \"Sora Akanegasaki\"",
+    //   d: {
+    //     readable_name : "Direct Message",
+    //     description   : "Send the ping via direct message instead of sending it in the chat.",
+    //   },
+    //   c: {
+    //     readable_name : "Custom Message",
+    //     description   : "Send a message defined on the fly instead of the default ping response.",
+    //     needs_text   : true,
     //   }
     // };
+
+    // Uncomment to configure the command.
+    // You can adjust which channels the command can be used in, as well as who can use the command.
+    this.config = {
+      auth: {
+        guilds: [],
+        channels: [],
+        pms: false,
+        users: [],
+        oplevel: 2,
+      },
+    };
 
   }
 
@@ -40,19 +64,17 @@ class SetName extends Command {
    * Options are handled by the developer of the command accordingly.
    * @param  {[type]} data Data that was obtained from the message, such as input and other things.
    * (Object) data {
-   *   options => Contains all of the options organized in an object by key, similar to above.
-   *   array => Contains the input seperated into an array. (Shoutouts to old params style)
-   *   full => Contains the full input in a text string.
+   *   (Object) options => Contains all of the options organized in an object by key, similar to above.
+   *   (Array)  input   => Contains the input seperated into an array. (Shoutouts to old params style)
+   *     (String) full    => Contains the full input in a text string.
+   *     (Array)  array   => Contains the input seperated in an array.
+   *     (String) raw     => Contains the input without any modifications made to it. Useful for some commands.
    * }
    */
   tasks(data) {
 
+    // Get the new name from the input.
     var new_name = data.input.full;
-
-    // Set her name back to default.
-    if ("d" in data.input.options) {
-      new_name = "Sora Akanegasaki";
-    }
 
     // Set username
     this.client.user.setUsername(new_name)
