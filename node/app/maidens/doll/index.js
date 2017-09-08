@@ -1,5 +1,5 @@
-var DollDiscordClass = require('./src/dolldiscord/DollDiscord');
-var DollDiscordClient = new DollDiscordClass(require('./settings'));
+let DollDiscordClass = require('./src/dolldiscord/DollDiscord');
+let DollDiscordClient = new DollDiscordClass(require('./settings'));
 
 /**
 * === Exports ===

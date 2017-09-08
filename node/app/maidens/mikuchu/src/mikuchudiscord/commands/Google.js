@@ -56,12 +56,12 @@ class Google extends Command {
   /**
    * Tasks the command will execute.
    * Options are handled by the developer of the command accordingly.
-   * @param  {[type]} data Data that was obtained from the message, such as input and other things.
+   * @param  {Object} data Data that was obtained from the message, such as input and other things.
    * (Object) data {
    *   (Object) options => Contains all of the options organized in an object by key, similar to above.
-   *   (Array)  input   => Contains the input seperated into an array. (Shoutouts to old params style)
+   *   (Array)  input   => Contains the input separated into an array. (Shoutouts to old params style)
    *     (String) full    => Contains the full input in a text string.
-   *     (Array)  array   => Contains the input seperated in an array.
+   *     (Array)  array   => Contains the input separated in an array.
    *     (String) raw     => Contains the input without any modifications made to it. Useful for some commands.
    * }
    */
@@ -71,20 +71,20 @@ class Google extends Command {
     // @see : https://www.npmjs.com/package/google
     // @TODO - Clean this the fuck up.
     google.resultsPerPage = 3;
-    var nextCounter = 0;
-    var result_msg = "";
+    let nextCounter = 0;
+		let result_msg = "";
      
     google(data.input.full, function (err, res){
-      if (err) console.error(err)
+      if (err) console.error(err);
      
-      for (var i = 0; i < res.links.length; ++i) {
-        var link = res.links[i];
+      for (let i = 0; i < res.links.length; ++i) {
+				let link = res.links[i];
         result_msg = link.title + ' - ' + link.href;
         result_msg += link.descText + "\n";
       }
 
       if (nextCounter < 2) {
-        nextCounter += 1
+        nextCounter += 1;
         if (res.next) res.next()
       }
 

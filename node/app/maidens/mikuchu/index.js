@@ -1,5 +1,5 @@
-var MikuchuDiscordClass = require('./src/Mikuchudiscord/MikuchuDiscord');
-var MikuchuDiscordClient = new MikuchuDiscordClass(require('./settings'));
+let MikuchuDiscordClass = require('./src/Mikuchudiscord/MikuchuDiscord');
+let MikuchuDiscordClient = new MikuchuDiscordClass(require('./settings'));
 
 /**
 * === Exports ===

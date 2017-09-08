@@ -63,35 +63,35 @@ class LifeRead extends Command {
   /**
    * Tasks the command will execute.
    * Options are handled by the developer of the command accordingly.
-   * @param  {[type]} data Data that was obtained from the message, such as input and other things.
+   * @param  {Object} data Data that was obtained from the message, such as input and other things.
    * (Object) data {
    *   (Object) options => Contains all of the options organized in an object by key, similar to above.
-   *   (Array)  input   => Contains the input seperated into an array. (Shoutouts to old params style)
+   *   (Array)  input   => Contains the input separated into an array. (Shoutouts to old params style)
    *     (String) full    => Contains the full input in a text string.
-   *     (Array)  array   => Contains the input seperated in an array.
+   *     (Array)  array   => Contains the input separated in an array.
    *     (String) raw     => Contains the input without any modifications made to it. Useful for some commands.
    * }
    */
   tasks(data) {
 
     // Variable to store the life readings.
-    var lifereadings = 0;
+    let lifereadings = 0;
 
     // Variable to store offline users.
     // Not sure if it's used right now.
-    var offline = 0;
+		let offline = 0;
 
     // Loop through all members in the guild where the command was called.
     data.msg.guild.members.every((member) => {
 
       // If the member is a bot, we don't want to count them.
-      if (member.user.bot == true) {
+      if (member.user.bot === true) {
         // do nothing and return.
         return true;
       }
 
       // If the member is not offline, we'll count them.
-      if (member.user.presence.status != 'offline') {
+      if (member.user.presence.status !== 'offline') {
         lifereadings++;
 
       // If they ARE offline, add them to the offline array.
@@ -109,7 +109,7 @@ class LifeRead extends Command {
         this.client.startTyping(data.msg.channel, 3000)
           .then(() => {
             data.msg.channel.send(`Life reading: **${lifereadings}**`);
-            if(offline != 0) {
+            if(offline !== 0) {
               data.msg.channel.send(`However...There seem to be **${offline}**...paranormal presences lurking about...`);
             }
           });

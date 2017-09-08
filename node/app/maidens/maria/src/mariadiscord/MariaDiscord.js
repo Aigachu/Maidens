@@ -21,7 +21,10 @@ class MariaDiscord extends MaidenDiscord {
       console.log("\nA corpse... should be left well alone...");
 
       // Set status to DND!
-      this.user.setStatus('dnd');
+      this.user.setStatus('dnd')
+				.then((status) => {
+					// Do nothing.
+				}).catch(console.error);
 
     });
 

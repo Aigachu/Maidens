@@ -65,25 +65,25 @@ class IronMan extends Command {
   /**
    * Tasks the command will execute.
    * Options are handled by the developer of the command accordingly.
-   * @param  {[type]} data Data that was obtained from the message, such as input and other things.
+   * @param  {Object} data Data that was obtained from the message, such as input and other things.
    * (Object) data {
    *   (Object) options => Contains all of the options organized in an object by key, similar to above.
-   *   (Array)  input   => Contains the input seperated into an array. (Shoutouts to old params style)
+   *   (Array)  input   => Contains the input separated into an array. (Shoutouts to old params style)
    *     (String) full    => Contains the full input in a text string.
-   *     (Array)  array   => Contains the input seperated in an array.
+   *     (Array)  array   => Contains the input separated in an array.
    *     (String) raw     => Contains the input without any modifications made to it. Useful for some commands.
    * }
    */
   tasks(data) {
 
     // Get all SSB4 character directories from the maiden's assets folder.
-    var smash4_character_directories = fs.readdirSync(this.client.assets + "smash4-character-portraits");
+    let smash4_character_directories = fs.readdirSync(this.client.assets + "smash4-character-portraits");
 
     // Why the fuck is this a - 2?
     // Oh, right. There are two folders that aren't characters...
     // Misc...And MEMES...LMAO!
     // Anyways, this gets the roster size.
-    var roster_size = smash4_character_directories.length - 2;
+		let roster_size = smash4_character_directories.length - 2;
 
     // The input data should be a number.
     // @TODO - Check if the data is a number before even doing this check.
@@ -96,24 +96,24 @@ class IronMan extends Command {
     } else if(!_.isEmpty(data.input.full) && !isNaN(data.input.full)) {
       
       // Get the number of characters from the data.
-      var number_of_characters = data.input.full;
+			let number_of_characters = data.input.full;
 
       // Array to store the list of characters.
-      var charlist = [];
+			let charlist = [];
 
       // Array to store the list of characters that are chosen for the caller.
-      var chosen_characters = [];
+			let chosen_characters = [];
 
       // For as many times as the given number from the input...
-      for( var i = 0; i < number_of_characters; i++ ) {
+      for( let i = 0; i < number_of_characters; i++ ) {
 
         // Get a random character.
-        var random_character = smash4_character_directories[Math.floor(Math.random() * smash4_character_directories.length)];
+				let random_character = smash4_character_directories[Math.floor(Math.random() * smash4_character_directories.length)];
 
         // If the random character chosen is 'Misc', 'Meme' or already chosen, we re-select
         // @TODO - Load characters into an array, and when they are chosen, slice them.
         // Also, slice Misc and Memes before even looping into the array.
-        while(random_character in chosen_characters || random_character == "Misc" || random_character == "Memes") {
+        while(random_character in chosen_characters || random_character === "Misc" || random_character === "Memes") {
           random_character = smash4_character_directories[Math.floor(Math.random() * smash4_character_directories.length)];
         }
 
@@ -125,7 +125,7 @@ class IronMan extends Command {
       }
 
       // Set message.
-      var message = "Here's your list of iron man characters!\n\n";
+			let message = "Here's your list of iron man characters!\n\n";
 
       // Append characters the the list.
       charlist.every((char) => {

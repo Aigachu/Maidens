@@ -100,12 +100,12 @@ class PaintJob extends Command {
   /**
    * Tasks the command will execute.
    * Options are handled by the developer of the command accordingly.
-   * @param  {[type]} data Data that was obtained from the message, such as input and other things.
+   * @param  {Object} data Data that was obtained from the message, such as input and other things.
    * (Object) data {
    *   (Object) options => Contains all of the options organized in an object by key, similar to above.
-   *   (Array)  input   => Contains the input seperated into an array. (Shoutouts to old params style)
+   *   (Array)  input   => Contains the input separated into an array. (Shoutouts to old params style)
    *     (String) full    => Contains the full input in a text string.
-   *     (Array)  array   => Contains the input seperated in an array.
+   *     (Array)  array   => Contains the input separated in an array.
    *     (String) raw     => Contains the input without any modifications made to it. Useful for some commands.
    * }
    */
@@ -143,14 +143,14 @@ class PaintJob extends Command {
 
   /**
    * Create a color with the given input.
-   * @param  {Object} input Input given for the color to create.
+   * @param  {String} input Input given for the color to create.
    * @param  {Object} data  Command data retrieved through parsing.
    * @return {Boolean}      True upon success. False upon failure.
    */
   createColor(input, data) {
 
     // Get the Color data.
-    var color = this.getColorData(input, data);
+    let color = this.getColorData(input, data);
 
     // If the color data wasn't properly fetched.
     if(!color) {
@@ -158,14 +158,14 @@ class PaintJob extends Command {
     }
 
     // Get the color role in the current guild if it exists already.
-    var found_color = this.findColorInCurrentGuild(color, data);
+		let found_color = this.findColorInCurrentGuild(color, data);
 
     // Check if the color already exists.
     if( found_color !== false) {
-      data.msg.channel.send(`Seems like that color already exists! - <@&` + found_color.id + `>`);
-      return false;
-    }
-
+			data.msg.channel.send(`Seems like that color already exists! - <@&` + found_color.id + `>`);
+			return false;
+		}
+		
     // Create the color role with the proper values.
     data.msg.guild.createRole({
       name: color.name,
@@ -178,14 +178,14 @@ class PaintJob extends Command {
           .then(() => {
             data.msg.channel.send(`I've successfully created a new color in this server: ` + role);
           })
-          .catch(() => {
+          .catch((error) => {
             data.msg.author.send(`An error may have occured with the creation of the color.\nThis is most likely caused by the fact that my bot role may not be at the top of the role list in your server. I can't deal well with roles that are above mine. :( You're going to have to move me to the top of your server role list!`);
-            console.error;
+            console.error(error);
           });
       })
-      .catch(() => {
+      .catch((error) => {
         data.msg.author.send(`An error may have occured with the creation of the color.\nI may not have permissions to create roles in this server. You will have to give me the **Manage Roles** permission!`);
-        console.error;
+        console.error(error);
       });
 
     return true;
@@ -193,13 +193,14 @@ class PaintJob extends Command {
 
   /**
    * Set Color to a member.
-   * @param {[type]} input [description]
-   * @param {[type]} data  [description]
+   * @param 	{String} input 	Input from the user issuing the command.
+   * @param 	{Object} data  	Data obtained from parsing the command.
+	 * @return 	{Boolean}				True upon success. False upon failure.
    */
   setColor(input, data) {
 
     // Get the color data.
-    var color = this.getColorData(input, data);
+    let color = this.getColorData(input, data);
 
     // If a color wasn't obtained, we do nothing.
     if (!color) {
@@ -207,21 +208,27 @@ class PaintJob extends Command {
     }
 
     // Get the color role that will be set.
-    var color_role_to_set = this.findColorInCurrentGuild(color, data);
+		let color_role_to_set = this.findColorInCurrentGuild(color, data);
 
     // Check if the color exists.
     // If it doesn't, we can't set it. We'll tell the user that they must create it.
     if (color_role_to_set === false) {
-      data.msg.reply(`Seems like that color doesn't exist! You have to create it first. :O`);
+      data.msg.reply(`Seems like that color doesn't exist! You have to create it first. :O`)
+        .then((reply) => {
+      		// Do nothing with reply.
+				}).catch(console.error);
       return false;
     }
 
     // Check if the member currently has a color.
-    var member_current_color_role = this.getMemberColorInCurrentGuild(data.msg.member);
+		let member_current_color_role = this.getMemberColorInCurrentGuild(data.msg.member);
     
     // If someone tries to set the same color more than once...
     if (member_current_color_role !== false && member_current_color_role.id === color_role_to_set.id) {
-      data.msg.reply(`hey, you already have that color! I can't paint you with the same color twice. xD`);
+      data.msg.reply(`hey, you already have that color! I can't paint you with the same color twice. xD`)
+				.then((reply) => {
+					// Do nothing with reply.
+				}).catch(console.error);
       return false;
     }
 
@@ -234,11 +241,14 @@ class PaintJob extends Command {
     // Add the color to the member.
     data.msg.member.addRole(color_role_to_set)
       .then(() => {
-        data.msg.reply(`all done! You look great in ${color_role_to_set.name.replace('.color', '')}! ;) :sparkles:`);
+        data.msg.reply(`all done! You look great in ${color_role_to_set.name.replace('.color', '')}! ;) :sparkles:`)
+					.then((reply) => {
+						// Do nothing with reply.
+					}).catch(console.error);
       })
-      .catch(() => {
+      .catch((error) => {
         data.msg.author.send(`An error may have occured with the setting of the color.\nThis is most likely caused by the fact that my bot role may not be at the top of the role list in your server. I can't set roles that are above mine. :( You're going to have to move me to the top of your server role list!`);
-        console.error;
+        console.error(error);
       });
 
     return true;
@@ -249,12 +259,12 @@ class PaintJob extends Command {
    * Remove color from a member.
    * Color doesn't need to be specified because users can only have 1 color at once.
    * @param  {Object}               data    Data from the parsed command.
-   * @param  {Discord Guild Member} member  Guild member to clean color from.
+   * @param  {GuildMember} member  Guild member to clean color from.
    */
   removeColorFromMember(data, member) {
 
     // Fetch color role from the member.
-    var member_current_color_role = this.getMemberColorInCurrentGuild(member);
+    let member_current_color_role = this.getMemberColorInCurrentGuild(member);
 
     // If there's no color to remove, then we can just return. Nothing to do.
     if (member_current_color_role === false) {
@@ -268,12 +278,11 @@ class PaintJob extends Command {
       .then(() => {
         data.msg.channel.send(`You're all cleaned up! :sparkles:`);
       })
-      .catch(() => {
+      .catch((error) => {
         data.msg.author.send(`An error may have occured with the removing of the color.\nThis is most likely caused by the fact that my bot role may not be at the top of the role list in your server. I can't set roles to users that have a role above mine. :( You're going to have to move me to the top of your server role list!`);
-        console.error;
+        console.error(error);
       });
-
-    return;
+    
   }
 
   /**
@@ -286,35 +295,38 @@ class PaintJob extends Command {
 
     // Try to get a color by name first if the input is a name.
     // If it's found, we'll return the values and mark it as existing.
-    var color = data.msg.guild.roles.find('name', input + '.color');
+    let color = data.msg.guild.roles.find('name', input + '.color');
     if (color !== null) {
       return {hex: color.hexColor, name: color.name, exists: true};
     }
 
     // Try to get a color by role name if they enter the complete role name.
     // If it's found, we'll return the values and mark it as existing.
-    var color = data.msg.guild.roles.find('name', input);
+		color = data.msg.guild.roles.find('name', input);
     if (color !== null) {
       return {hex: color.hexColor, name: input, exists: true};
     }
 
     // At this point, we know the input is possibly a hex value.
-    var colorHex = input;
+		let colorHex = input;
 
     // Make sure the # is prepended.
     // Convenience. Users will be able to enter the rgb in hex without the # if they want.
-    if (colorHex.indexOf("#") != 0) {
+    if (colorHex.indexOf("#") !== 0) {
       colorHex = "#" + colorHex;
     }
 
     // Check if the hex color is valid.
     if(!this.isHexColor(colorHex)) {
       data.msg.reply(`That seems to be an invalid HEX value or color name!`)
+				.then((reply) => {
+					// Do nothing with reply.
+				}).catch(console.error);
       return false;
     }
 
     // Get a name for the color using the NTC library.
-    var colorName = ntc.name(colorHex)[1] + ".color";
+		let colorName = ntc.name(colorHex)[1] + ".color";
 
     // Return the color data.
     return {hex: colorHex, name: colorName};
@@ -322,20 +334,20 @@ class PaintJob extends Command {
 
   /**
    * Attempt to find a color in the current guild.
-   * @param  {Object}         color   Object containing color hex and color name.
-   * @param  {Object}         data    Command data obtained from parsing.
-   * @return {Discord Role|Boolean}         Return the role object if found, else return FALSE.
+   * @param  {Object} colorData	Object containing color hex and color name.
+   * @param  {Object} data 			Command data obtained from parsing.
+   * @return {Role|Boolean}			Return the role object if found, else return FALSE.
    */
-  findColorInCurrentGuild(colorData, data) {
+  static findColorInCurrentGuild(colorData, data) {
 
     // Try to find the color through Hex Value.
-    var color = data.msg.guild.roles.find('hexColor', colorData.hex);
+    let color = data.msg.guild.roles.find('hexColor', colorData.hex);
     if (color !== null) {
       return color;
     }
 
     // Try to find the color through name.
-    var color = data.msg.guild.roles.find('name', colorData.name);
+		color = data.msg.guild.roles.find('name', colorData.name);
     if (color !== null) {
       return color;
     }
@@ -347,13 +359,13 @@ class PaintJob extends Command {
 
   /**
    * Get color assigned to a member in the current guild.
-   * @param  {Discord Member} member  Member discord object.
-   * @return {Discord Role}           Role Discord Object of the color found.
+   * @param  {GuildMember} member	Member discord object.
+   * @return {Role/Boolean}           		Role Discord Object of the color found.
    */
   getMemberColorInCurrentGuild(member) {
 
     // Variable to store the color role. The False by default.
-    var color = false;
+    let color = false;
 
     // Loop into all roles of the given member and attempt to find a color role.
     // Color roles all have the '.color' suffix.
@@ -362,7 +374,7 @@ class PaintJob extends Command {
         color = role;
         return false; // This ends execution of the .every() function.
       }
-
+      
       return true;
     });
 
@@ -379,7 +391,7 @@ class PaintJob extends Command {
   listColorRolesInGuild(data) {
 
     // Variable that will store the message to be sent, listing all color roles in the guild.
-    var list_msg = `Here is the list of all colors in this server:\n\n`;
+    let list_msg = `Here is the list of all colors in this server:\n\n`;
 
     // Loop in the guild's roles and check for all color roles.
     data.msg.guild.roles.every((role) => {
@@ -399,15 +411,13 @@ class PaintJob extends Command {
       .then(() => {
         this.client.startTyping(data.msg.channel, 2500)
           .then(() => {
-            if (list_msg == `Here is the list of all colors in this server:\n\n`) {
+            if (list_msg === `Here is the list of all colors in this server:\n\n`) {
               data.msg.channel.send(`There are no colors in this server! Better start creating some. :)`);
             } else {
               data.msg.channel.send(list_msg);
             }
          });
       });
-
-    return;
     
   }
 
@@ -427,9 +437,10 @@ class PaintJob extends Command {
       return true;
     });
 
-    data.msg.reply(`I have cleared all color roles from the server. :)`);
-
-    return;
+    data.msg.reply(`I have cleared all color roles from the server. :)`)
+			.then((reply) => {
+				// Do nothing with reply.
+			}).catch(console.error);
   }
 
   /**
@@ -437,7 +448,7 @@ class PaintJob extends Command {
    * @param  {String}  string Supposed Hex Value.
    * @return {Boolean}        True if it's a valid Hex Value. False if it's not.
    */
-  isHexColor(string) {
+  static isHexColor(string) {
     return /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(string);
   }
 

@@ -186,7 +186,7 @@ class MaidenCommandManager {
     // command key, and it'll handle the rest.
     // If any input is given, an error should be thrown.
     if (_.isEmpty(command.input) && _.isEmpty(command.options) && message.content.trim().replace(/\s{2,}/g, ' ').split(" ").length > 2) {
-      command.error(message.content, "InputGivenWhenSimpleCommand", message);
+      // @TODO - Create error handler and throw an error.
     }
 
     // Regex to get regular options in the message.
@@ -195,7 +195,7 @@ class MaidenCommandManager {
 
     // Now we check if the command is optionless. If it is, then no options should be given.
     if (_.isEmpty(command.options) && message.content.match(get_options_regex) !== null) {
-      command.error(message.content, "OptionsGivenWhenOptionlessCommand", message);
+      // @TODO - Create error handler and throw an error.
     }
 
     // To do any following checks, we need the input of the command.
@@ -241,14 +241,14 @@ class MaidenCommandManager {
       
       // If there's an error, we fire it.
       if (error) {
-        command.error(key, error, message);
+        // @TODO - Create error handler and throw an error.
       }
       
     }
 
     // If the command takes input, check to see if the command's input was entered.
     if (!_.isEmpty(command.input) && _.isEmpty(input.array)) {
-      command.error(message.content, "InputRequiredButNotEntered", message);
+      // @TODO - Create error handler and throw an error.
     }
 
     // Run Command if it passed through the parsing.

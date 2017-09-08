@@ -68,10 +68,10 @@ class Roulette extends Command {
   /**
    * Tasks the command will execute.
    * Options are handled by the developer of the command accordingly.
-   * @param  {[type]} data Data that was obtained from the message, such as input and other things.
+   * @param  {Object} data Data that was obtained from the message, such as input and other things.
    * (Object) data {
    *   options => Contains all of the options organized in an object by key, similar to above.
-   *   array => Contains the input seperated into an array. (Shoutouts to old params style)
+   *   array => Contains the input separated into an array. (Shoutouts to old params style)
    *   full => Contains the full input in a text string.
    * }
    */
@@ -83,9 +83,9 @@ class Roulette extends Command {
 
         data.msg.channel.send(`_spins the cylinder..._`);
 
-        var survival = false;
-
-        var rng = Math.random();
+        let survival = false;
+	
+				let rng = Math.random();
 
         this.client.startTyping(data.msg.channel, 2000)
           .then(() => {
@@ -177,8 +177,6 @@ class Roulette extends Command {
                       }
                     });
                 });
-
-              return;
 
             }
 

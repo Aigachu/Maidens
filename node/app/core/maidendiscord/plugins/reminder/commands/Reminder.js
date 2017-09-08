@@ -67,12 +67,12 @@ class Reminder extends Command {
   /**
    * Tasks the command will execute.
    * Options are handled by the developer of the command accordingly.
-   * @param  {[type]} data Data that was obtained from the message, such as input and other things.
+   * @param  {Object} data Data that was obtained from the message, such as input and other things.
    * (Object) data {
    *   (Object) options => Contains all of the options organized in an object by key, similar to above.
-   *   (Array)  input   => Contains the input seperated into an array. (Shoutouts to old params style)
+   *   (Array)  input   => Contains the input separated into an array. (Shoutouts to old params style)
    *     (String) full    => Contains the full input in a text string.
-   *     (Array)  array   => Contains the input seperated in an array.
+   *     (Array)  array   => Contains the input separated in an array.
    *     (String) raw     => Contains the input without any modifications made to it. Useful for some commands.
    * }
    */
@@ -90,10 +90,7 @@ class Reminder extends Command {
       // Delete all reminders for the user that called the command, and send a confirmation.
       this.client.reminder.clear(data.msg.author.id);
       data.msg.channel.send(`I've successfully cleared all of your stored reminders, ${data.msg.author}!`);
-      return;
     }
-
-    return;
 
   }
 

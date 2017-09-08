@@ -34,7 +34,7 @@ class Watchdog {
 		// Initialize object to store timeouts.
 		this.timeouts = {};
 
-		// Initialze object to store message logs.
+		// Initialize object to store message logs.
 		this.logs = {};
 
 		// The max amount of the same messages that can be sent.
@@ -62,7 +62,7 @@ class Watchdog {
 				listen: (client, message) => {
 
 					// Don't watch the message if it's in a PMChannel.
-					if (message.channel.type == 'dm') {
+					if (message.channel.type === 'dm') {
 						return false;
 					}
 
@@ -78,8 +78,7 @@ class Watchdog {
 
 					// If everything goes through, let's watch.
 					this.watch(message);
-
-					return;
+					
 				},
 
 			});
@@ -91,12 +90,12 @@ class Watchdog {
 	/**
 	 * Watchdog's 'watch' functionality.
 	 * When a message is 'watched', the watchdog does some actions.
-	 * @param  {Discord Message} message Message that is being watched.
+	 * @param  {Message} message Message that is being watched.
 	 */
 	watch(message) {
 
 		// Fetch the message log for the current guild.
-		var guildlog = this.logs[message.guild.id];
+		let guildlog = this.logs[message.guild.id];
 
 		// Initialize a member log for the member in the guildlog.
 		// Member logs have three properties:
@@ -112,7 +111,7 @@ class Watchdog {
 		}
 
 		// Fetch the message log for the current member in the current guild.
-		var memberlog = guildlog[message.author.id];
+		let member_log = guildlog[message.author.id];
 
 		// This is Wat
 		if(message.author.id === '84100810870358016') {
@@ -120,69 +119,69 @@ class Watchdog {
 		}
 
 		// Push the message, regardless of content or spitfire, into the spitfire log.
-		memberlog.spitfire.push(message);
+		member_log.spitfire.push(message);
 
 		// Timeout users that have sent more than 4 messages in less than a second.
-		if (memberlog.spitfire.length >= 4) {
+		if (member_log.spitfire.length >= 4) {
 			this.timeout(message.member, 10);
 			message.channel.send(`${message.member} Take your face off your keyboard bud~ :yum:\nNo but SERIOUSLY! Relax. :)`);
-			memberlog.spitfire.every((msg) => {
+			member_log.spitfire.every((msg) => {
 				msg.delete();
 				return true;
 			});
 			
 			// Reset the user's log.
-			this.resetlog(memberlog);
+			this.resetMemberLog(member_log);
 
 			return;
 		}
 
-		// Set a timepout to clear the spitfire cache in 0.75 seconds
+		// Set a timeout to clear the spitfire cache in 0.75 seconds
 		// See? It clears very fast.
-		memberlog.spitclear = setTimeout(() => {
-			memberlog.spitfire = [];
+		member_log.spitclear = setTimeout(() => {
+			member_log.spitfire = [];
 		}, 750);
 
 		// Add message to regular cache.
-		memberlog.cache.push(message);
+		member_log.cache.push(message);
 
 		// Increment spree only if the content is the same as the last message.
-		if (memberlog.cache.length > 1 && message.content === memberlog.cache[memberlog.cache.length - 2].content) {
-			memberlog.spree++;
+		if (member_log.cache.length > 1 && message.content === member_log.cache[member_log.cache.length - 2].content) {
+			member_log.spree++;
 		}
 
 		// If the spree hits the max, the user will get timed out.
-		if (memberlog.spree === this.maxSpree) {
+		if (member_log.spree === this.maxSpree) {
 			this.timeout(message.member, 10);
 			message.channel.send(`Oops! Dropped my banhammer on ${message.member}...ACCIDENTALLY of course! :yum:\nNO SPAM BUDDY! Watch yourself! :angry:`);
 			// message.channel.send(`?`, {files: [this.client.assets + 'watchdog/banhammer.png']});
-			memberlog.cache.slice(Math.max(memberlog.cache.length - this.maxSpree)).every((msg) => {
+			member_log.cache.slice(Math.max(member_log.cache.length - this.maxSpree)).every((msg) => {
 				msg.delete();
 				return true;
 			});
 
 			// Reset the user's log.
-			this.resetlog(memberlog);
+			this.resetMemberLog(member_log);
 
 			return;
 		}
 
 		// The spree is cleared after 2 seconds.
-		memberlog.spreeclear = setTimeout(() => {
-			memberlog.spree = 1;
+		member_log.spreeclear = setTimeout(() => {
+			member_log.spree = 1;
 		}, 2000);
 		
 	}
  
  	/**
  	 * Timeout a user.
- 	 * @param  {Discord Guild Member} member   Member to be timed out.
- 	 * @param  {Integer} 							duration Duration to be timed out for in SECONDS.
+ 	 * @param  {GuildMember} member  	Member to be timed out.
+ 	 * @param  {Number} duration 	Duration to be timed out for in SECONDS.
  	 */
 	timeout(member, duration) {
 
 		// Fetch the timeout role.
-		var timeout_role = member.guild.roles.find('name', timeout_role_name);
+		let timeout_role = member.guild.roles.find('name', timeout_role_name);
 
 		// If the timeout role is not found in the guild, we can't do anything.
 		if (timeout_role === null) {
@@ -192,24 +191,29 @@ class Watchdog {
 
 		// Add the timeout role to the member.
 		// The timeout role has no permissions to write anywhere.
-		member.addRole(timeout_role);
+		member.addRole(timeout_role)
+			.then((member) => {
+				// Do nothing with member.
+			}).catch(console.error);
 
 		// Set a timeout to free them after the duration.
     setTimeout(() => {
-      member.removeRole(timeout_role);
+      member.removeRole(timeout_role)
+				.then((member) => {
+					// Do nothing with member.
+				}).catch(console.error);
     }, duration * 1000);
-
-		return;
+		
 	}
 
 	/**
 	 * Free a member.
-	 * @param  {Discord Guild Member} member Member to be set free.
+	 * @param  {GuildMember} member Member to be set free.
 	 */
-	clear(member) {
+	static clear(member) {
 
 		// Fetch timeout role from guild.
-		var timeout_role = member.guild.roles.find('name', timeout_role_name);
+		let timeout_role = member.guild.roles.find('name', timeout_role_name);
 
 		// If the timeout role is not found in the guild, we can't do anything.
 		if (timeout_role === null) {
@@ -218,46 +222,45 @@ class Watchdog {
 		}
 
 		// Free the member.
-		member.removeRole(timeout_role);
+		member.removeRole(timeout_role)
+			.then((member) => {
+				// Do nothing with member.
+			}).catch(console.error);
 
 		return true;
 	}
 
 	/**
 	 * Purge a member.
-	 * @param  {Discord Guild Member} member The member to purge.
-	 * @param  {Integer} 							count  The number of messages to purge from the member.
+	 * @param  {GuildMember} member The member to purge.
+	 * @param  {Number} 							count  The number of messages to purge from the member.
 	 */
 	purge(member, count) {
-		var memberlog = this.logs[member.guild.id][member.id];
-
-		memberlog.cache.slice(Math.max(memberlog.cache.length - count - 1)).every((msg) => {
+		let member_log = this.logs[member.guild.id][member.id];
+		
+		member_log.cache.slice(Math.max(member_log.cache.length - count - 1)).every((msg) => {
 			msg.delete();
 			return true;
 		});
 
 		// Reset member's logs after purge.
-		this.resetlog(memberlog);
-
-		return;
+		this.resetMemberLog(member_log);
 
 	}
 
 	/**
-	 * Reste a member's log.
-	 * @param  {Object} memberlog Member log object.
+	 * Reset a member's log.
+	 * @param  {Object} member_log Member log object.
 	 */
-	resetlog(memberlog) {
-		memberlog.cache = [];
-		memberlog.spitfire = [];
-		memberlog.spree = 1;
-
-		return;
+	static resetMemberLog(member_log) {
+		member_log.cache = [];
+		member_log.spitfire = [];
+		member_log.spree = 1;
 	}
 
 	/**
 	 * Enable the Watchdog in a given guild.
-	 * @param  {Discord Guild (Server)} guild Guild to enable the Watchdog in.
+	 * @param  {Guild} guild Guild to enable the Watchdog in.
 	 */
 	enable(guild) {
 		this.guilds[guild.id] = true;
@@ -268,7 +271,7 @@ class Watchdog {
 
 	/**
 	 * Disable the Watchdog in a given guild.
-	 * @param  {Discord Guild (Server)} guild Guild to disable the Watchdog in.
+	 * @param  {Guild} guild Guild to disable the Watchdog in.
 	 */
 	disable(guild) {
 		this.guilds[guild.id] = false;
@@ -279,7 +282,7 @@ class Watchdog {
 
 	/**
 	 * Get the status of the Watchdog in a given guild.
-	 * @param  {Discord Guild (Server)} guild Guild to get the Watchdog status from.
+	 * @param  {Guild} guild Guild to get the Watchdog status from.
 	 */
 	status(guild) {
 		return this.guilds[guild.id];
@@ -308,7 +311,7 @@ class Watchdog {
 				this.logs[guild.id] = {};
 
 				// Get the Timeout role in the guild.
-				var role = guild.roles.find('name', timeout_role_name);
+				let role = guild.roles.find('name', timeout_role_name);
 
 				// Create the maiden timeout role if it doesn't exist.
 				// @TODO - For disabled guilds, remove the role as it is not needed.
@@ -322,14 +325,20 @@ class Watchdog {
 			    }).then((new_role) => {
 			    	// In every channel of the guild, set SEND_MESSAGES permissions for this new role to DENY.
 				    guild.channels.every((channel) => {
-				    	channel.overwritePermissions(new_role, {'SEND_MESSAGES': false, 'ATTACH_FILES': false, });
+				    	channel.overwritePermissions(new_role, {'SEND_MESSAGES': false, 'ATTACH_FILES': false, })
+								.then(() => {
+				    			// Do nothing.
+								}).catch(console.error);
 				    	return true;
 				    });
 			    });
 				} else {
 					// In every channel of the guild, set SEND_MESSAGES permissions for this new role to DENY.
 					guild.channels.every((channel) => {
-			    	channel.overwritePermissions(role, {'SEND_MESSAGES': false, 'ATTACH_FILES': false, });
+			    	channel.overwritePermissions(role, {'SEND_MESSAGES': false, 'ATTACH_FILES': false, })
+							.then(() => {
+								// Do nothing.
+							}).catch(console.error);
 			    	return true;
 			    });
 
@@ -346,14 +355,14 @@ class Watchdog {
 			});
 
 			// Make configuration directory if it doesn't exist.
-			var config_dir = this.client.coreroot + 'plugins/watchdog/config';
+			let config_dir = this.client.coreroot + 'plugins/watchdog/config';
 			if (!fs.existsSync(config_dir)) {
 				fs.mkdirSync(config_dir);
 			}
 
 			// Get path to the appropriate configuration directory or make it if it
 			// doesn't exist.
-			var desired_config_dir = this.client.coreroot + 'plugins/watchdog/config/' + this.client.maiden_name;
+			let desired_config_dir = this.client.coreroot + 'plugins/watchdog/config/' + this.client.maiden_name;
 			if (!fs.existsSync(desired_config_dir)) {
 				fs.mkdirSync(desired_config_dir);
 			}
@@ -389,8 +398,7 @@ class Watchdog {
 
 			// Save guild configurations.
 			this.save();
-
-			return;
+			
 		});
 	}
 }

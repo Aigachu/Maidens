@@ -1,5 +1,5 @@
-var MariaDiscordClass = require('./src/mariadiscord/MariaDiscord');
-var MariaDiscordClient = new MariaDiscordClass(require('./settings'));
+let MariaDiscordClass = require('./src/mariadiscord/MariaDiscord');
+let MariaDiscordClient = new MariaDiscordClass(require('./settings'));
 
 /**
 * === Exports ===

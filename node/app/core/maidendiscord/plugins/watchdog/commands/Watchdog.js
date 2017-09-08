@@ -6,7 +6,11 @@
  * Returns confirmation messages.
  */
 class Watchdog extends Command {
-
+	
+	/**
+   * Command Constructor.
+	 * @param {MaidenDiscordClient} client Discord Client for the maiden.
+	 */
 	constructor(client) {
 
 		super(client);
@@ -69,12 +73,12 @@ class Watchdog extends Command {
   /**
    * Tasks the command will execute.
    * Options are handled by the developer of the command accordingly.
-   * @param  {[type]} data Data that was obtained from the message, such as input and other things.
+   * @param  {Object} data Data that was obtained from the message, such as input and other things.
    * (Object) data {
    *   (Object) options => Contains all of the options organized in an object by key, similar to above.
-   *   (Array)  input   => Contains the input seperated into an array. (Shoutouts to old params style)
+   *   (Array)  input   => Contains the input separated into an array. (Shoutouts to old params style)
    *     (String) full    => Contains the full input in a text string.
-   *     (Array)  array   => Contains the input seperated in an array.
+   *     (Array)  array   => Contains the input separated in an array.
    *     (String) raw     => Contains the input without any modifications made to it. Useful for some commands.
    * }
    */
@@ -96,20 +100,18 @@ class Watchdog extends Command {
 
     // If the "s" option is used, check the status of the watchdog in this guild.
     if ("s" in data.input.options) {
-      var status = this.client.watchdog.status(data.msg.guild) ? `Enabled` : `Disabled`;
+      let status = this.client.watchdog.status(data.msg.guild) ? `Enabled` : `Disabled`;
       data.msg.channel.send(`Watchdog status: **${status}**.`);
       return;
     }
 
     // Toggle the watchdog status.
-    var toggle = this.client.watchdog.status(data.msg.guild) ? this.client.watchdog.disable(data.msg.guild) : this.client.watchdog.enable(data.msg.guild);
+    let toggle = this.client.watchdog.status(data.msg.guild) ? this.client.watchdog.disable(data.msg.guild) : this.client.watchdog.enable(data.msg.guild);
 
     // Get the new status.
-    var status = this.client.watchdog.status(data.msg.guild) ? `Enabled` : `Disabled`
+		let status = toggle ? `Enabled` : `Disabled`;
 
     data.msg.channel.send(`Watchdog is now **${status}**.`);
-
-    return;
     
   }
 

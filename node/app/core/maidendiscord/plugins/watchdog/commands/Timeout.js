@@ -63,12 +63,12 @@ class Timeout extends Command {
   /**
    * Tasks the command will execute.
    * Options are handled by the developer of the command accordingly.
-   * @param  {[type]} data Data that was obtained from the message, such as input and other things.
+   * @param  {Object} data Data that was obtained from the message, such as input and other things.
    * (Object) data {
    *   (Object) options => Contains all of the options organized in an object by key, similar to above.
-   *   (Array)  input   => Contains the input seperated into an array. (Shoutouts to old params style)
+   *   (Array)  input   => Contains the input separated into an array. (Shoutouts to old params style)
    *     (String) full    => Contains the full input in a text string.
-   *     (Array)  array   => Contains the input seperated in an array.
+   *     (Array)  array   => Contains the input separated in an array.
    *     (String) raw     => Contains the input without any modifications made to it. Useful for some commands.
    * }
    */
@@ -87,7 +87,7 @@ class Timeout extends Command {
     }
 
     // Set default duration to 30.
-    var duration = 30;
+    let duration = 30;
 
     // If the "d" option is used, overwrite the duration.
     if ("d" in data.input.options) {
@@ -103,7 +103,7 @@ class Timeout extends Command {
     data.input.full = data.input.full.replace('!', '');
 
     // Get the member from the given tag.
-    var member = data.msg.guild.members.find('id', data.input.full);
+    let member = data.msg.guild.members.find('id', data.input.full);
 
     // If a member could not be obtained, we can't do anything. Return.
     if (member === null) {
@@ -118,7 +118,10 @@ class Timeout extends Command {
     data.msg.channel.send(`Uh oohhh! Someone was being bad!\nTake a quick **${duration} second** break, ${member}!`);
 
     // Delete the message of the user that issued the timeout. No traces left...
-    data.msg.delete();
+    data.msg.delete()
+      .then((message) => {
+    		// Do nothing with deleted message.
+			}).catch(console.error);
 
   }
 
