@@ -80,12 +80,14 @@ class Reminder extends Command {
 
     // If the "l" option is used
     if ("l" in data.input.options) {
+      // Send list of reminders to the user that called the command.
       this.client.reminder.sendList(data.msg, data.msg.author);
       return;
     }
 
     // If the "l" option is used
     if ("x" in data.input.options) {
+      // Delete all reminders for the user that called the command, and send a confirmation.
       this.client.reminder.clear(data.msg.author.id);
       data.msg.channel.send(`I've successfully cleared all of your stored reminders, ${data.msg.author}!`);
       return;

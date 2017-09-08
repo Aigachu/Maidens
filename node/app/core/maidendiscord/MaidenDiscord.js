@@ -137,14 +137,17 @@ class MaidenDiscord extends DiscordClient {
       this.home = {
         guild: this.guilds.find('id', '314130398173069312'),
         channel: this.channels.find('id', '327535083164663808'),
-      }
+      };
 
       // Message me to let me know the deployment is done.
       this.home.channel.send(this.welcome);
 
       // Set game text.
       // @TODO - I set the URL to google because without it, it mysteriously doesn't work...
-      this.user.setGame(this.game, 'http://google.com');
+      this.user.setGame(this.game, 'http://google.com')
+          .then((client_user) => {
+            // Do nothing.
+          }).catch(console.error);
 
     });
 
@@ -158,7 +161,7 @@ class MaidenDiscord extends DiscordClient {
       this.listeners.every((listener) => {
         listener.listen(this, message);
         return true;
-      })
+      });
 
       // The Command Manager interprets the message and decides what to do with it.
       this.commandManager.interpret(message);
@@ -188,7 +191,7 @@ class MaidenDiscord extends DiscordClient {
    * @param  {[string]} text        Text to send.
    * @param  {[Message/User/Channel]} destination Destination to send the text to.
    */
-  im(destination, text) {
+  static im(destination, text) {
 
     // @see: https://discord.js.org/#/docs/main/stable/general/welcome
     destination.send(text);
@@ -198,10 +201,10 @@ class MaidenDiscord extends DiscordClient {
   /**
    * Reply method
    * This is used for easy replying to messages received.
-   * @param  {[string]} text        Text to send.
-   * @param  {[Message]} destination Destination to send the text to.
+   * @param  {[string]}   text    Text to send.
+   * @param  {[Message]}  message Message to send the text to.
    */
-  reply(message, text) {
+  static reply(message, text) {
 
     // @see: https://discord.js.org/#/docs/main/stable/general/welcome
     message.reply(text);
@@ -210,8 +213,8 @@ class MaidenDiscord extends DiscordClient {
 
   /**
    * Function to start typing.
-   * @param  {[Discord Channel]}  channel Discord channel the typing indicator should appear in.
-   * @param  {[Integer]}          delay   How much time the typing indication should last.
+   * @param  {[Object]}  channel Discord channel the typing indicator should appear in.
+   * @param  {[int]}          delay   How much time the typing indication should last.
    * @return {[Promise]}                  Return promise so I can do some sick '.then()' chains.
    */
   startTyping(channel, delay) {
@@ -226,7 +229,7 @@ class MaidenDiscord extends DiscordClient {
 
   /**
    * Load all plugins into the client.
-   * @param  {String} plugins Array of plugin folder names that should be loaded.
+   * @param  {Array} plugins Array of plugin folder names that should be loaded.
    * @return {Array}          Array of all plugins with their name and their absolute path.
    */
   loadPlugins(plugins) {

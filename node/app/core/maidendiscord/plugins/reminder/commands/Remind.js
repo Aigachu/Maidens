@@ -84,6 +84,7 @@ class Remind extends Command {
     // Uses the dissest function to parse the input and find out what to do.
     var parsed_data = this.parse(data.msg, data.input.raw);
 
+    // The parse function returns null if an error occurs.
     if (parsed_data === null) {
       // Do nothing. An error definitely occured.
       return;
@@ -91,14 +92,17 @@ class Remind extends Command {
 
     // Initialize reminder object.
     var reminder = {
-      caller_id: data.msg.author.id,
+      creator_id: data.msg.author.id,
       receiver: parsed_data.receiver,
       guild_id: data.msg.guild.id,
       channel_id: data.msg.channel.id,
       action: parsed_data.action,
     };
 
-    // Send TUF if it's set and return immediatly..
+    // Attempt to find a TUF (Time Until Fire)
+    // This means that the input includes something like 'in 5 minutes, 3 seconds'.
+    // Send TUF if it's set and return immediatly, since we don't need any more info.
+    // A user can't say 'in 5 minutes on January 3rd, 2018' for example.
     if (!_.isEmpty(parsed_data.tuf)) {
       reminder.timestamp = parsed_data.tuf;
       this.client.reminder.create(data.msg, reminder);
@@ -109,8 +113,11 @@ class Remind extends Command {
     var time = !_.isEmpty(parsed_data.time) ? parsed_data.time : '00:00:00';
     var date = !_.isEmpty(parsed_data.date) ? parsed_data.date : moment().format('YYYY-MM-DD');
 
+    // Generate the UNIX timestamp.
     var timestamp = moment(`${date} ${time}`).format('x');
 
+    // Moment will return 'Invalid date' if the date is not valid. We check for this.
+    // Send an error if it's invalid.
     if (timestamp == 'Invalid date') {
       data.msg.channel.send(`An invalid date somehow got through. Can't process it. :(`)
         .then((msg) => {
@@ -119,8 +126,10 @@ class Remind extends Command {
       return;
     }
 
+    // Get the UNIX timestamp of the current moment.
     var current_moment = moment().format('x');
 
+    // If they try to set a reminder in the past, send an error.
     if (current_moment > timestamp) {
       data.msg.channel.send(`Mmm...Sorry ${data.msg.member}...Aiga didn't code time travel into me yet, so I can't really remind past you yet! Maybe in the future? :thinking: But if he does code it in the future...Then wouldn't I be able to?...:thinking:...My core hurts. :laughing:`)
         .then((msg) => {
@@ -129,9 +138,10 @@ class Remind extends Command {
       return;
     }
 
+    // If not, we're good to go. We'll set the timestamp we got earlier to the reminder object.
     reminder.timestamp = timestamp;
 
-    // If everything's good, let's continue.
+    // If everything's good, let's create the reminder.
     this.client.reminder.create(data.msg, reminder);
 
     return;
@@ -146,11 +156,12 @@ class Remind extends Command {
    */
   parse(message, input) {
 
-    // Our data will be an object.
+    // Our data will be stored in an object.
     var data = {};
 
     // === Getting the Receiver ===
-    // The receiver is the object that will get the data.
+    // The receiver is the entity that will receive the reminder.
+    // This could be a Discord Channel, a Discord User or a Discord Role.
     // ********************************************
 
     // Get the receiver object.
@@ -166,6 +177,7 @@ class Remind extends Command {
     }
 
     // Remove receiver from the input.
+    // This allows us to have less things to deal with when getting the timestamp.
     input = input.replace(input.split(' ')[0] + ' ', '');
 
     // === Getting the timestamp ===
@@ -176,17 +188,17 @@ class Remind extends Command {
     // "to eat at 3pm on January 5th, 2016"
     // ********************************************
     
-    // Get any TUFs from the input.
-    var time_until_fire = this.getTUF(input);
+    // Get TUFs from the input if we can.
+    var time_until_fire_input = this.getTUFInput(input);
 
-    // Get any target time from input.
-    var target_time = this.getTargetTime(input);
+    // Get target date from input if we can.
+    var target_date = this.getTargetDateInput(input);
 
-    // Get any target time from input.
-    var target_date = this.getTargetDate(input);
+    // Get target time from input if we can.
+    var target_time_input = this.getTargetTimeInput(input);
 
-    // Throw error if nothing is found concerning the timestamp.
-    if (!time_until_fire && !target_time && !target_date) {
+    // Throw error if nothing is found concerning the time where the bot must send the reminder.
+    if (!time_until_fire_input && !target_time_input && !target_date) {
       message.reply(`I couldn't figure out _when_ you want me to remind you! Check if you made a mistake or ask Aiga for help!`)
         .then((msg) => {
           msg.delete(20000);
@@ -195,7 +207,8 @@ class Remind extends Command {
     }
 
     // Throw error if a TUF is set with any other timestamp specifications.
-    if (time_until_fire !== false && (target_time !== false || target_date !== false)) {
+    // Again, we can't say 'in 5 minutes at 12 pm'. That makes no sense.
+    if (time_until_fire_input !== false && (target_time_input !== false || target_date !== false)) {
       message.reply(`your request is kind of confusing...Are you sure it makes sense? :thinking:`)
         .then((msg) => {
           msg.delete(20000);
@@ -203,27 +216,31 @@ class Remind extends Command {
       return null;
     }
 
-    // If a time until fire exists, we'll set it now and return the reminder.
-    if (time_until_fire !== false) {
-      data.tuf = this.parseTUF(time_until_fire);
-      input = input.replace(time_until_fire, '').trim();
+    // If a time until fire exists, we'll set it to the data.
+    // The TUF will then be removed from the input.
+    if (time_until_fire_input !== false) {
+      data.tuf = this.parseTUFInput(time_until_fire_input);
+      input = input.replace(time_until_fire_input, '').trim();
     }
 
-    // If a desired date is set in the reminder, get it.
+    // If a desired date is set in the reminder, we'll set it to the data.
+    // The date will then get removed from the input.
     if (target_date !== false) {
-      data.date = this.parseTargetDate(target_date);
+      data.date = this.parseTargetDateInput(target_date);
       input = input.replace(target_date, '').trim();
     }
 
-    // If a desired time is set in the reminder, get it.
-    if (target_time !== false) {
-      data.time = this.parseTargetTime(target_time);
-      input = input.replace(target_time, '').trim();
+    // If a desired time is set in the reminder, we'll set it to the data.
+    // The time will then get removed from the input.
+    if (target_time_input !== false) {
+      data.time = this.parseTargetTimeInput(target_time_input);
+      input = input.replace(target_time_input, '').trim();
     }
 
-    // The action is whatever is left.
+    // The action is whatever is left in the input...
     data.action = input;
 
+    // If the action is empty, we throw an error.
     if (_.isEmpty(data.action)) {
       message.reply(`umm...What am I supposed to remind you of? :joy:`)
         .then((msg) => {
@@ -234,53 +251,64 @@ class Remind extends Command {
 
     return data;
 
+    // @TODO - This whole function can probably be refactored. Let's revision this at some point in life.
+
   }
 
   /**
-   * From an input, get Time Until Fire
-   * @param  {[type]} input [description]
-   * @return {[type]}       [description]
+   * Get the 'Time Until Fire' from the user input.
+   * The 'Time Until Fire' is the time between the reminder being set and when it'll be "fired".
+   * @param  {String} input The input of the user when they say 'remind me'.
+   * @return {String}       The raw input of the 'Time Until Fire'.
+   *                        i.e. "in 5 minutes and 3 seconds"
+   *                        @todo  - add more possibilities to cover all possibilities the regex can return.
    */
-  getTUF(input) {
-    var get_tuf_regex = /(in)\s+(\d+((m(inute)?(onth)?(on)?|s(econd)?|h(our)?(r)?|d(ay)?|w(eek)?(k)?|y(ear)?(r)?)(s)?|\s+(sec(ond)?|min(ute)?|hr|hour|d(ay)?|wk|week|mth|month|yr|year)(s)?)(\s+|,(?:\s+)?)?(?:and\s+)?)+/i;
-    var tuf = input.match(get_tuf_regex) !== null ? input.match(get_tuf_regex)[0] : false;
+  getTUFInput(input) {
 
-    return tuf;
+    // Define a 
+    var get_tuf_input_regex = /(in)\s+(\d+((m(inute)?(onth)?(on)?|s(econd)?|h(our)?(r)?|d(ay)?|w(eek)?(k)?|y(ear)?(r)?)(s)?|\s+(sec(ond)?|min(ute)?|hr|hour|d(ay)?|wk|week|mth|month|yr|year)(s)?)(\s+|,(?:\s+)?)?(?:and\s+)?)+/i;
+    var tuf_input = input.match(get_tuf_input_regex) !== null ? input.match(get_tuf_input_regex)[0] : false;
+
+    return tuf_input;
   }
 
   /**
-   * [getTargetDate description]
-   * @param  {[type]} input [description]
-   * @return {[type]}       [description]
+   * Get the Target Date from the user input.
+   * @param  {String} input The input of the user when they say 'remind me'.
+   * @return {String}       The raw input of the Target Date.
+   *                        i.e. "On January 5th, 2017".
+   *                        @todo  - add more possibilities to cover all possibilities the regex can return.
    */
-  getTargetDate(input) {
-    var get_target_date_regex = /(on)\s+(((the\s+\d{1,2}(st|nd|rd|th)?\s+of\s+)?(Jan(uary)?|Feb(ruary)?|Mar(ch)?|Apr(il)?|May|Jun(e)?|Jul(y)?|Aug(ust)?|Sep(tember)?|Oct(ober)?|Nov(ember)?|Dec(ember)?)(\s+\d{1,2}(st|nd|rd|th)?)?(,)?\s+\d{4})|\d{4}(-|\/)\d{2}(-|\/)\d{2})/i;
-    var target_date = input.match(get_target_date_regex) !== null ? input.match(get_target_date_regex)[0] : false;
+  getTargetDateInput(input) {
+    var get_target_date_input_regex = /(on)\s+(((the\s+\d{1,2}(st|nd|rd|th)?\s+of\s+)?(Jan(uary)?|Feb(ruary)?|Mar(ch)?|Apr(il)?|May|Jun(e)?|Jul(y)?|Aug(ust)?|Sep(tember)?|Oct(ober)?|Nov(ember)?|Dec(ember)?)(\s+\d{1,2}(st|nd|rd|th)?)?(,)?\s+\d{4})|\d{4}(-|\/)\d{2}(-|\/)\d{2})/i;
+    var target_date_input = input.match(get_target_date_input_regex) !== null ? input.match(get_target_date_input_regex)[0] : false;
 
-    return target_date;
+    return target_date_input;
   }
 
   /**
-   * [getTargetTime description]
-   * @param  {[type]} input [description]
-   * @return {[type]}       [description]
+   * Get the Target Time from the user input.
+   * @param  {String} input The input of the user when they say 'remind me'.
+   * @return {String}       The raw input of the Target Time.
+   *                        i.e. "at 12 pm".
+   *                        @todo  - add more possibilities to cover all possibilities the regex can return.
    */
-  getTargetTime(input) {
-    var get_target_time_regex = /(at)\s+((\d{1,2})([:.]\d{2})?([:.]\d{2})?(\s?[apAP][mM])|(\d{2}|\d{2})([:.]\d{2}))/i;
-    var target_time = input.match(get_target_time_regex) !== null ? input.match(get_target_time_regex)[0] : false;
+  getTargetTimeInput(input) {
+    var get_target_time_input_regex = /(at)\s+((\d{1,2})([:.]\d{2})?([:.]\d{2})?(\s?[apAP][mM])|(\d{2}|\d{2})([:.]\d{2}))/i;
+    var target_time_input = input.match(get_target_time_input_regex) !== null ? input.match(get_target_time_input_regex)[0] : false;
 
-    return target_time;
+    return target_time_input;
   }
 
   /**
-   * [parseTUF description]
-   * @param  {[type]} tuf [description]
+   * Parse 
+   * @param  {[type]} tuf_input [description]
    * @return {[type]}     [description]
    */
-  parseTUF(tuf) {
+  parseTUFInput(tuf_input) {
 
     // Clean user input.
-    tuf = tuf.replace('in', '').trim();
+    tuf_input = tuf_input.replace('in', '').trim();
 
     // Get current time.
     var timestamp = moment().startOf('second');
@@ -291,7 +319,7 @@ class Remind extends Command {
     // get 'in' part with regex
     // then get the rest of ands or commas
     var get_mutators_regex = /(\d+((m(inute)?(onth)?(on)?|s(econd)?|h(our)?(r)?|d(ay)?|w(eek)?(k)?|y(ear)?(r)?)(s)?|\s+(sec(ond)?|min(ute)?|hr|hour|d(ay)?|wk|week|mth|month|yr|year)(s)?))/gmi;
-    mutators = tuf.match(get_mutators_regex);
+    mutators = tuf_input.match(get_mutators_regex);
 
     mutators.every((mutator) => {
       mutator = mutator.replace(/\d+(?=[a-z])/i, "$& ");
@@ -305,23 +333,24 @@ class Remind extends Command {
   }
 
   /**
-   * [parseTargetDate description]
-   * @param  {[type]} target_date [description]
+   * [parseTargetDateInput description]
+   * @param  {[type]} target_date_input [description]
    * @return {[type]}             [description]
    */
-  parseTargetDate(target_date) {
+  parseTargetDateInput(target_date_input) {
+
     // Clean user input.
-    target_date = target_date.replace('on', '').trim();
-    target_date = target_date.replace('the', '').trim();
-    target_date = target_date.replace('of', '').trim();
-    target_date = target_date.replace(',', '').trim();
+    target_date_input = target_date_input.replace('on', '').trim();
+    target_date_input = target_date_input.replace('the', '').trim();
+    target_date_input = target_date_input.replace('of', '').trim();
+    target_date_input = target_date_input.replace(',', '').trim();
 
     // Check if the date is already in ISO format
     var iso_format_regex = /\d{4}(-|\/)\d{2}(-|\/)\d{2}/i;
 
     // If the user entered it in ISO format, we don't need to parse anything. Return as is.
-    if (target_date.match(iso_format_regex) !== null) {
-      return target_date.replace('/', '-');
+    if (target_date_input.match(iso_format_regex) !== null) {
+      return target_date_input.replace('/', '-');
     }
 
     // The goal now is to have an ISO format.
@@ -329,11 +358,11 @@ class Remind extends Command {
 
     // Use a regex to get the year from the string.
     // This code assumes that the only collection of 4 numbers is the year. Technically this is true, since the string that's being treated has gone through a regex prior to this.
-    var year = target_date.match(/\d{4}/); 
-    target_date = target_date.replace(year, '').trim();
+    var year = target_date_input.match(/\d{4}/); 
+    target_date_input = target_date_input.replace(year, '').trim();
 
     // Use a regex to get and remove the month from the string.
-    var d = Date.parse(target_date.match(/(Jan(uary)?|Feb(ruary)?|Mar(ch)?|Apr(il)?|May|Jun(e)?|Jul(y)?|Aug(ust)?|Sep(tember)?|Oct(ober)?|Nov(ember)?|Dec(ember)?)/i) + "1, 2012");
+    var d = Date.parse(target_date_input.match(/(Jan(uary)?|Feb(ruary)?|Mar(ch)?|Apr(il)?|May|Jun(e)?|Jul(y)?|Aug(ust)?|Sep(tember)?|Oct(ober)?|Nov(ember)?|Dec(ember)?)/i) + "1, 2012");
     if(!isNaN(d)){
       var month = new Date(d).getMonth() + 1;
       month = month.toString().length == 1 ? '0' + month : month;
@@ -341,9 +370,9 @@ class Remind extends Command {
       // Error parsing the month. Return null.
       return null;
     }
-    target_date = target_date.replace(/(Jan(uary)?|Feb(ruary)?|Mar(ch)?|Apr(il)?|May|Jun(e)?|Jul(y)?|Aug(ust)?|Sep(tember)?|Oct(ober)?|Nov(ember)?|Dec(ember)?)/i, '').trim();
+    target_date_input = target_date_input.replace(/(Jan(uary)?|Feb(ruary)?|Mar(ch)?|Apr(il)?|May|Jun(e)?|Jul(y)?|Aug(ust)?|Sep(tember)?|Oct(ober)?|Nov(ember)?|Dec(ember)?)/i, '').trim();
 
-    var day = target_date.replace('st', '').replace('nd', '').replace('rd', '').replace('th', '');
+    var day = target_date_input.replace('st', '').replace('nd', '').replace('rd', '').replace('th', '');
     day = day.length == 1 ? '0' + day : day;
 
     var parsed_target_date = year + '-' + month + '-' + day
@@ -353,17 +382,17 @@ class Remind extends Command {
   }
 
   /**
-   * [parseTargetTime description]
+   * [parseTargetTimeInput description]
    * @param  {[type]} target_time [description]
    * @return {[type]}             [description]
    */
-  parseTargetTime(target_time) {
+  parseTargetTimeInput(target_time_input) {
     // Clean user input.
-    target_time = target_time.replace('at', '').trim();
+    target_time_input = target_time_input.replace('at', '').trim();
 
     // Check if there is a AM/PM in the text.
     // If the meridiem indicator is glued to the time indicator, we need to seperate them.
-    var target_time_array = target_time.split(' ').length == 1 ? target_time.replace(/\B([ap][m])/i, ' $1').split(' ') : target_time.split(' ');
+    var target_time_array = target_time_input.split(' ').length == 1 ? target_time_input.replace(/\B([ap][m])/i, ' $1').split(' ') : target_time_input.split(' ');
 
     var split_target_time = target_time_array[0].split(':');
     var input_hour = split_target_time[0];
@@ -394,7 +423,7 @@ class Remind extends Command {
       return null;
     }
 
-    // If the receiver is 'me', we get the id of the caller.
+    // If the receiver is 'me', we get the id of the creator.
     if (receiver == 'me') {
       return {object_type: 'user', object_id: message.author.id};
     }

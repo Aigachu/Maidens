@@ -82,8 +82,8 @@ class Reminder {
 	 */
 	sendReminder(reminder) {
 
-		// Get the caller (creator) of the reminder.
-		var caller = this.getCaller(reminder);
+		// Get the creator of the reminder.
+		var creator = this.getCreator(reminder);
 
 		// Get the receiver of the reminder.
 		var receiver = this.getReceiver(reminder);
@@ -94,9 +94,9 @@ class Reminder {
 		// Initiate variable to store the message that will be sent.
 		var message = '';
 
-		// If the caller (creator) is the receiver, we'll change the caller to you for more seamless text.
-		if (caller.id === receiver.id) {
-			caller = 'You';
+		// If the creator is the receiver, we'll change the creator to you for more seamless text.
+		if (creator.id === receiver.id) {
+			creator = 'You';
 		}
 
 		// Depending on the type of Object the receiver is, the message will change.
@@ -104,19 +104,19 @@ class Reminder {
 
 			// If the receiver is a Discord User, we send it to the user via private messaging..
 			case 'user':
-				message = `${caller} asked me to remind you **"${action}"** at this moment!`;
+				message = `${creator} asked me to remind you **"${action}"** at this moment!`;
 				receiver.send(message);
 				break;
 
 			// If the receiver is a Discord Channel, we send it to the channel using @here.
 			case 'channel':
-				message = `Hey @here! ${caller} asked me to remind you guys **"${action}"**!`;
+				message = `Hey @here! ${creator} asked me to remind you guys **"${action}"**!`;
 				receiver.send(message);
 				break;
 
 			// If the receiver is a Discord Role, we send it to the channel where the reminder was created.
 			case 'role':
-				message = `${caller} asked me to remind ${receiver} **"${action}"** at this moment!`;
+				message = `${creator} asked me to remind ${receiver} **"${action}"** at this moment!`;
 				this.client.guilds.find('id', reminder.guild_id).channels.find('id', reminder.channel_id).send(message);
 				break;
 
@@ -136,12 +136,12 @@ class Reminder {
 		// Error checks have been done through the command already. :)
 		
 		// Check if user has a reminder array set. If not, we set it now.
-		if (_.isEmpty(this.reminders[reminder.caller_id])) {
-			this.reminders[reminder.caller_id] = [];
+		if (_.isEmpty(this.reminders[reminder.creator_id])) {
+			this.reminders[reminder.creator_id] = [];
 		}
 
 		// Set the reminder.
-		this.reminders[reminder.caller_id].push(reminder);
+		this.reminders[reminder.creator_id].push(reminder);
 
 		// Get the receiver
 		var receiver = this.getReceiver(reminder);
@@ -221,13 +221,13 @@ class Reminder {
 	}
 
 	/**
-	 * Get the Caller (creator) of the Reminder.
+	 * Get the Creator of the Reminder.
 	 * This will return null if it fails...But if SHOULDN'T.
-	 * @TODO - It CAN fail if the caller leaves a guild, or something similar. So this must be handled eventually.
-	 * @param  {Object} reminder The reminder to get the caller (creator) from.
+	 * @TODO - It CAN fail if the creator leaves a guild, or something similar. So this must be handled eventually.
+	 * @param  {Object} reminder The reminder to get the creator from.
 	 */
-	getCaller(reminder) {
-		return this.client.guilds.find('id', reminder.guild_id).members.find('id', reminder.caller_id);
+	getCreator(reminder) {
+		return this.client.guilds.find('id', reminder.guild_id).members.find('id', reminder.creator_id);
 	}
 
 	/**
