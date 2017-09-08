@@ -197,7 +197,7 @@ class MaidenDiscordClient extends DiscordClient {
    * @param  {String}               text        Text to send.
    * @param  {Message/User/Channel} destination Destination to send the text to.
    */
-  static im(destination, text) {
+  im(destination, text) {
 
     // @see: https://discord.js.org/#/docs/main/stable/general/welcome
     destination.send(text);
@@ -210,7 +210,7 @@ class MaidenDiscordClient extends DiscordClient {
    * @param  {[string]} text    Text to send.
    * @param  {Message}  message Message to send the text to.
    */
-  static reply(message, text) {
+  reply(message, text) {
 
     // @see: https://discord.js.org/#/docs/main/stable/general/welcome
     message.reply(text)

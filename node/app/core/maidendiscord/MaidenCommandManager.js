@@ -61,7 +61,7 @@ class MaidenCommandManager {
     let split = msg.content.split(" ");
   
     // Checks if there are even two words separated by a space in the given text.
-    if(split[1] === null || split[1].length === 0) {
+    if(split[1] === null || split[1] === undefined || split[1].length === 0) {
       return false;
     }
 

@@ -31,9 +31,6 @@ class Watchdog {
 		// The Maiden client.
 		this.client = client;
 
-		// Initialize object to store timeouts.
-		this.timeouts = {};
-
 		// Initialize object to store message logs.
 		this.logs = {};
 
@@ -210,7 +207,7 @@ class Watchdog {
 	 * Free a member.
 	 * @param  {GuildMember} member Member to be set free.
 	 */
-	static clear(member) {
+	clear(member) {
 
 		// Fetch timeout role from guild.
 		let timeout_role = member.guild.roles.find('name', timeout_role_name);
@@ -252,7 +249,7 @@ class Watchdog {
 	 * Reset a member's log.
 	 * @param  {Object} member_log Member log object.
 	 */
-	static resetMemberLog(member_log) {
+	resetMemberLog(member_log) {
 		member_log.cache = [];
 		member_log.spitfire = [];
 		member_log.spree = 1;
@@ -277,7 +274,7 @@ class Watchdog {
 		this.guilds[guild.id] = false;
 		// @TODO - Rebuild.
 		this.save();
-		return true;
+		return false;
 	}
 
 	/**

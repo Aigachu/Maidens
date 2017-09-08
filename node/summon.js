@@ -1,5 +1,5 @@
 /**
- * Run File for Maiden main functionalities.
+ * Run File for Maiden main features.
  *
  * Use these links to get others to add the maidens to their servers:
  *

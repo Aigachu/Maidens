@@ -110,7 +110,8 @@ class LifeRead extends Command {
 					.then(() => {
 						data.msg.channel.send(`Life reading: **${lifereadings}**`);
 						if(offline !== 0) {
-							data.msg.channel.send(`However...There seem to be **${offline}**...paranormal presences lurking about...`);
+							let s = offline !== 1 ? 's' : '';
+							data.msg.channel.send(`However...There seem to be **${offline}**...paranormal presence${s} lurking about...`);
 						}
 					});
 			});

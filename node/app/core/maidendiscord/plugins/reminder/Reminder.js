@@ -9,6 +9,9 @@
  *
  * This was one of the hardest features to code, but it was fun to integrate. Lots of bugfixes to come.
  */
+
+const moment = require("moment");
+
 class Reminder {
 	constructor(client) {
 

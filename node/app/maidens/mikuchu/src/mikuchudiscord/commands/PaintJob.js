@@ -338,7 +338,7 @@ class PaintJob extends Command {
 	 * @param  {Object} data 			Command data obtained from parsing.
 	 * @return {Role|Boolean}			Return the role object if found, else return FALSE.
 	 */
-	static findColorInCurrentGuild(colorData, data) {
+	findColorInCurrentGuild(colorData, data) {
 		
 		// Try to find the color through Hex Value.
 		let color = data.msg.guild.roles.find('hexColor', colorData.hex);
@@ -448,7 +448,7 @@ class PaintJob extends Command {
 	 * @param  {String}  string Supposed Hex Value.
 	 * @return {Boolean}        True if it's a valid Hex Value. False if it's not.
 	 */
-	static isHexColor(string) {
+	isHexColor(string) {
 		return /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(string);
 	}
 	

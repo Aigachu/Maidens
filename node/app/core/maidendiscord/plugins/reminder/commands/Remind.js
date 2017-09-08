@@ -8,7 +8,7 @@
  *
  * Test Cases
  */
-import moment from "moment";
+const moment = require("moment");
 
 class Remind extends Command {
 
@@ -275,7 +275,7 @@ class Remind extends Command {
    *                        	i.e. "in 5 minutes and 3 seconds"
    *                        	@todo  - add more possibilities to cover all possibilities the regex can return.
    */
-  static getTUFInput(input) {
+  getTUFInput(input) {
 
     // Define a regex to get the input needed.
     let get_tuf_input_regex = /(in)\s+(\d+((m(inute)?(onth)?(on)?|s(econd)?|h(our)?(r)?|d(ay)?|w(eek)?(k)?|y(ear)?(r)?)(s)?|\s+(sec(ond)?|min(ute)?|hr|hour|d(ay)?|wk|week|mth|month|yr|year)(s)?)(\s+|,(?:\s+)?)?(?:and\s+)?)+/i;
@@ -292,7 +292,7 @@ class Remind extends Command {
    *                        	i.e. "On January 5th, 2017".
    *                        	@todo  - add more possibilities to cover all possibilities the regex can return.
    */
-	static getTargetDateInput(input) {
+	getTargetDateInput(input) {
 	
 		// Define a regex to get the input needed.
 		let get_target_date_input_regex = /(on)\s+(((the\s+\d{1,2}(st|nd|rd|th)?\s+of\s+)?(Jan(uary)?|Feb(ruary)?|Mar(ch)?|Apr(il)?|May|Jun(e)?|Jul(y)?|Aug(ust)?|Sep(tember)?|Oct(ober)?|Nov(ember)?|Dec(ember)?)(\s+\d{1,2}(st|nd|rd|th)?)?(,)?\s+\d{4})|\d{4}([-\/])\d{2}([-\/])\d{2})/i;
@@ -309,7 +309,7 @@ class Remind extends Command {
    *                        	i.e. "at 12 pm".
    *                        	@todo  - add more possibilities to cover all possibilities the regex can return.
    */
-	static getTargetTimeInput(input) {
+	getTargetTimeInput(input) {
 	
 		// Define a regex to get the input needed.
     let get_target_time_input_regex = /(at)\s+((\d{1,2})([:.]\d{2})?([:.]\d{2})?(\s?[apAP][mM])|(\d{2})([:.]\d{2}))/i;
@@ -324,7 +324,7 @@ class Remind extends Command {
    * @param  {String} tuf_input Input obtained from the getter function.
    * @return {String}     			Timestamp when the reminder must be fired.
    */
-  static parseTUFInput(tuf_input) {
+	parseTUFInput(tuf_input) {
 
     // Clean user input.
     tuf_input = tuf_input.replace('in', '').trim();
@@ -354,7 +354,7 @@ class Remind extends Command {
    * @param  {String} target_date_input Target date input acquired from the getter function.
    * @return {String}             			Date in ISO format. (2017-05-22)
    */
-  static parseTargetDateInput(target_date_input) {
+	parseTargetDateInput(target_date_input) {
 
     // Clean user input.
     target_date_input = target_date_input.replace('on', '').trim();
@@ -398,7 +398,7 @@ class Remind extends Command {
 	 * @param  {String} target_time_input 	Target date input acquired from the getter function.
 	 * @return {String}             			Time in ISO format. (12:00:00)
 	 */
-  static parseTargetTimeInput(target_time_input) {
+	parseTargetTimeInput(target_time_input) {
     // Clean user input.
     target_time_input = target_time_input.replace('at', '').trim();
 
@@ -424,7 +424,7 @@ class Remind extends Command {
    * @param  {String} 	input   							Input from the command.
    * @return {Object} 	Object containing the type of object returned as well as the ID.
    */
-  static getReceiver(message, input) {
+	getReceiver(message, input) {
     // The first word after 'remind' is the receiver, always.
     // This receiver is either 'me', a Member/User tag or a TextChannel tag.
     let receiver = input.split(' ')[0];
@@ -504,7 +504,7 @@ class Remind extends Command {
    * @param  {String} mutator_input The mutator input.
    * @return {String/Number}       The key of the mutator. False if not determined.
    */
-  static getMutatorKey(mutator_input) {
+	getMutatorKey(mutator_input) {
 
     // If the key is in plural, remove the last s.
     // This will make the array below cleaner.
