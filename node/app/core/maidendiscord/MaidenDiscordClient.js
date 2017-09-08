@@ -48,7 +48,7 @@ const QuipManager = require('./MaidenQuipManager');
  *
  * Let's get started.
  */
-class MaidenDiscord extends DiscordClient {
+class MaidenDiscordClient extends DiscordClient {
   
   /**
    * === Class constructor ===
@@ -273,4 +273,4 @@ class MaidenDiscord extends DiscordClient {
 
 }
 
-module.exports = MaidenDiscord;
+module.exports = MaidenDiscordClient;

@@ -35,7 +35,7 @@ global.DiscordClient = require('./node_modules/discord.js/src/client/Client');
  * Sora's mainframe depends on Discord.js, created by hydrabolt.
  * Documentation: https://discord.js.org/#/
  */
-global.MaidenDiscord = require('./app/core/maidendiscord/MaidenDiscord');
+global.MaidenDiscord = require('./app/core/maidendiscord/MaidenDiscordClient');
 
 /**
  * === Modules ===

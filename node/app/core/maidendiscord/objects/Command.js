@@ -19,7 +19,7 @@
  * - {options}    : Object to configure whether or not the command will have options to extend functionality.
  *   e.g. @bot ping [-d] [-c]
  * - {config}     : Object to store configurations for the command.
- *   + {auth}       : Stores authentification restrictions.
+ *   + {auth}       : Stores authentication restrictions.
  *     -- {guilds}    : Allowed guilds. If empty, allowed in all guilds.
  *     -- {channel}   : Allowed channels. If empty, allowed in all channels.
  *     -- {pms}       : Boolean. If true, allowed in private messages. If false, restricted.
@@ -122,7 +122,7 @@ class Command {
   /**
    * Help method.
    * Replies to a message requesting help for the given command.
-   * @param  {[Message]} msg The message that requested the help text.
+   * @param  {Message} msg The message that requested the help text.
    */
   help(msg) {
   	// Reply to the message with the Command's help text.
@@ -132,7 +132,7 @@ class Command {
   /**
    * Description method.
    * Replies to a message requesting a description for the given command.
-   * @param  {[Message]} msg The message that requested the description text.
+   * @param  {Message} msg The message that requested the description text.
    */
   desc(msg) {
   	// Reply to the message with the Command's description text.

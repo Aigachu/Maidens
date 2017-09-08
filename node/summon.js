@@ -41,7 +41,7 @@ global.DiscordClient = require('./node_modules/discord.js/src/client/Client');
 /**
  * === Maiden Discord Client Class ===
  */
-global.MaidenDiscord = require('./app/core/maidendiscord/MaidenDiscord');
+global.MaidenDiscord = require('./app/core/maidendiscord/MaidenDiscordClient');
 
 /**
  * === Modules ===
