@@ -83,7 +83,7 @@ global.moment = require('moment');
 global.ntc = require('./custom_modules/ntc');
 
 /**
- * === Instanciation ===
+ * === Instantiation ===
  */
 
 // Core JS file with all of Sora's Components.

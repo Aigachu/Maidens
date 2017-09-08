@@ -10,7 +10,7 @@ global.Quip = require('./objects/Quip');
  * Managers that deal with core concepts in discord bot programming.
  */
 
-// Used to manage the interpretation, discernation and processing of Commands.
+// Used to manage the interpretation and processing of Commands.
 const CommandManager = require('./MaidenCommandManager');
 
 // Used to manage text communication.
@@ -49,13 +49,14 @@ const QuipManager = require('./MaidenQuipManager');
  * Let's get started.
  */
 class MaidenDiscord extends DiscordClient {
-
+  
   /**
    * === Class constructor ===
    * Settings are added in the constructor, and the object is retrieved from
    * the 'settings.js' in the given bot files.
    *
    * Check an individual maiden's code to see an example settings.js file.
+   * @param {Object} settings Settings read from the bot's 'settings.js' file.
    */
   constructor(settings) {
 
@@ -71,7 +72,7 @@ class MaidenDiscord extends DiscordClient {
     this.root = settings.root;
 
     // The Maiden Name is also set in their settings. This is to know the name of their
-    // folder, and will be used to set foldernames for their databases.
+    // folder, and will be used to set folder names for their databases.
     this.maiden_name = settings.maiden_name;
 
     // The namespace for their DISCORD code.
@@ -153,7 +154,7 @@ class MaidenDiscord extends DiscordClient {
 
     /**
      * Event that fires when Maidens receive messages.
-     * @param  {Object} message :: https://discord.js.org/#/docs/main/stable/class/Message
+     * @param  {Message} message The message that was read.
      */
     this.on("message", (message) => {
 
@@ -180,7 +181,7 @@ class MaidenDiscord extends DiscordClient {
 
     });
 
-    // Maiden will automatically login when instanciated.
+    // Maiden will automatically login when instantiated.
     super.login(this.apptoken);
 
   }
@@ -188,8 +189,8 @@ class MaidenDiscord extends DiscordClient {
   /**
    * Instant Messaging method
    * This is used for messages that must be instantly sent to a given destination.
-   * @param  {[string]} text        Text to send.
-   * @param  {[Message/User/Channel]} destination Destination to send the text to.
+   * @param  {String}               text        Text to send.
+   * @param  {Message/User/Channel} destination Destination to send the text to.
    */
   static im(destination, text) {
 
@@ -201,27 +202,31 @@ class MaidenDiscord extends DiscordClient {
   /**
    * Reply method
    * This is used for easy replying to messages received.
-   * @param  {[string]}   text    Text to send.
-   * @param  {[Message]}  message Message to send the text to.
+   * @param  {[string]} text    Text to send.
+   * @param  {Message}  message Message to send the text to.
    */
   static reply(message, text) {
 
     // @see: https://discord.js.org/#/docs/main/stable/general/welcome
-    message.reply(text);
+    message.reply(text)
+      .then((message) => {
+        // Do nothing.
+      }).catch(console.error);
     
   }
 
   /**
    * Function to start typing.
-   * @param  {[Object]}  channel Discord channel the typing indicator should appear in.
-   * @param  {[int]}          delay   How much time the typing indication should last.
-   * @return {[Promise]}                  Return promise so I can do some sick '.then()' chains.
+   * @param  {TextChannel}  channel Discord channel the typing indicator should appear in.
+   * @param  {Number}   delay   How much time the typing indication should last.
+   * @return {Promise}          Return promise so I can do some sick '.then()' chains.
    */
   startTyping(channel, delay) {
     return new Promise((resolve, reject) => {
       channel.startTyping(1);
       setTimeout(function(){
         resolve("Success!"); // Yay! Everything went well!
+        reject("Failure!"); // Fuck!!
         channel.stopTyping();
       }, delay);
     });
@@ -229,23 +234,23 @@ class MaidenDiscord extends DiscordClient {
 
   /**
    * Load all plugins into the client.
-   * @param  {Array} plugins Array of plugin folder names that should be loaded.
+   * @param  {Array} plugins  Array of plugin folder names that should be loaded.
    * @return {Array}          Array of all plugins with their name and their absolute path.
    */
   loadPlugins(plugins) {
 
     // Initialize array for plugins.
-    var plugins_array = [];
-
+    let plugins_array = [];
+  
     // For every plugin name...
     plugins.every((plugin) => {
 
       // Get the path to the plugin.
-      var plugin_path = __dirname + '/plugins/' + plugin;
-
+      let plugin_path = __dirname + '/plugins/' + plugin;
+  
       // Require the plugin Class.
-      var PluginClass = require(plugin_path);
-
+      let PluginClass = require(plugin_path);
+  
       // Push the plugin to the plugins array that will be returned.
       plugins_array.push({
         name: plugin,
