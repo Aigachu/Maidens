@@ -90,8 +90,6 @@ class SmashMain extends Command {
       	// Do nothing.
     	}).catch(console.error);
 
-    data.msg.channel.send('This command is temporarily disabled. :( Pester Aiga to fix it!');
-
   }
 
 }
