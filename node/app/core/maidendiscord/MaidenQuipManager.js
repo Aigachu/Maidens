@@ -23,7 +23,7 @@ class MaidenQuipManager {
   /**
    * Quip function.
    * Interprets a message a sends a quip in response if needed.
-   * @param  {[Message]} message Discord.js Message object.
+   * @param  {Message} message Discord.js Message object.
    */
   quip(message) {
 
@@ -37,29 +37,28 @@ class MaidenQuipManager {
   			this.quips[key].execute(message);
   		} 
   	});
-
-    return;
+   
   }
 
   /**
    * [__getQuips description]
-   * @param  {[type]} client [description]
-   * @return {[type]}        [description]
+   * @param  {MaidenDiscordClient} client Maiden client.
+   * @return {Object}        							Quips.
    */
   __getQuips(client) {
 
-    var quips = {};
+    let quips = {};
 
     glob.sync( client.namespace + 'quips**/*.js' ).forEach( function( file ) {
 
       // Remove a huge part of the path that we don't need. We only want the name of the File at the end.
-      var filename = file.replace(/^.*[\\\/]/, '');
+			let filename = file.replace(/^.*[\\\/]/, '');
 
       // Get the key of the command by interpreting the filename.
-      var quip_key = filename.replace(/\.[^/.]+$/, "").toLowerCase();
+			let quip_key = filename.replace(/\.[^/.]+$/, "").toLowerCase();
 
       // Require the Command's Class.
-      var QuipClass = require( client.namespace + 'quips/' + filename);
+			let QuipClass = require( client.namespace + 'quips/' + filename);
 
       // Instantiate the [Command] and store it in the {quips} array.
       quips[quip_key] = new QuipClass(client);
@@ -72,11 +71,11 @@ class MaidenQuipManager {
 
   /**
    * [__getTriggers description]
-   * @param  {[type]} quips [description]
-   * @return {[type]}       [description]
+   * @param  {Object} quips Quips.
+   * @return {Object}       Triggers.
    */
   __getTriggers(quips) {
-  	var triggers = {};
+		let triggers = {};
   	Object.keys(quips).forEach((key) => {
   		quips[key].triggers.forEach((trigger) => {
   			triggers[key] = trigger;

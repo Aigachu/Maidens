@@ -50,12 +50,12 @@ class EightBall extends Command {
   /**
    * Tasks the command will execute.
    * Options are handled by the developer of the command accordingly.
-   * @param  {[type]} data Data that was obtained from the message, such as input and other things.
+   * @param  {Object} data Data that was obtained from the message, such as input and other things.
    * (Object) data {
    *   (Object) options => Contains all of the options organized in an object by key, similar to above.
-   *   (Array)  input   => Contains the input seperated into an array. (Shoutouts to old params style)
+   *   (Array)  input   => Contains the input separated into an array. (Shoutouts to old params style)
    *     (String) full    => Contains the full input in a text string.
-   *     (Array)  array   => Contains the input seperated in an array.
+   *     (Array)  array   => Contains the input separated in an array.
    *     (String) raw     => Contains the input without any modifications made to it. Useful for some commands.
    * }
    */
@@ -66,7 +66,7 @@ class EightBall extends Command {
     if(!_.isEmpty(data.input.full)) {
       
       // We'll store all possible answers in an array.
-      var answers = [];
+      let answers = [];
 
       answers.push({
         message: `8ball says: _**"It is certain."**_`,
@@ -151,12 +151,15 @@ class EightBall extends Command {
 
       // The 'rand' variable will contain the answer chosen.
       // We'll use a random number for the array key.
-      var rand = answers[Math.floor(Math.random() * answers.length)];
+      let rand = answers[Math.floor(Math.random() * answers.length)];
 
       // Start typing with the chosen answer's timeout, then send the reply to the user.
       this.client.startTyping(data.msg.channel, rand.timeout)
         .then(() => {
-          data.msg.reply(rand.message);
+          data.msg.reply(rand.message)
+            .then((reply) => {
+              // Do nothing.
+            }).catch(console.error);
         });
         
     // If no input is given, then no question was actually asked.

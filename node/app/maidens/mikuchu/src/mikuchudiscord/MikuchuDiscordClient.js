@@ -2,7 +2,7 @@
  * Mikuchu's Discord class.
  * "I am the ULTIMATE DEVBOT!!! As in the most unstable one ever made. xP" - Hatsune Mikuchu
  */
-class MikuchuDiscord extends MaidenDiscord {
+class MikuchuDiscordClient extends MaidenDiscordClient {
 
   /**
    * === Class constructor ===
@@ -22,7 +22,10 @@ class MikuchuDiscord extends MaidenDiscord {
       console.log("\nMiku here. I'm ready to start the show. ;)");
 
       // Set status to DND!
-      this.user.setStatus('dnd');
+      this.user.setStatus('dnd')
+				.then((status) => {
+					// Do nothing.
+				}).catch(console.error);
 
     });
 
@@ -30,4 +33,4 @@ class MikuchuDiscord extends MaidenDiscord {
 
 }
 
-module.exports = MikuchuDiscord;
+module.exports = MikuchuDiscordClient;

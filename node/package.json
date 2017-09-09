@@ -1,6 +1,6 @@
 {
   "name": "discord-maidens",
-  "version": "1.0.0",
+  "version": "3.0.1",
   "description": "Discord bots with a collection of cool commands!",
   "main": "summon.js",
   "dependencies": {
@@ -16,7 +16,8 @@
   },
   "devDependencies": {},
   "scripts": {
-    "test": "dev_summon.js"
+    "test": "dev_summon.js",
+    "install": "../scripts/symlink_commands_to_miku.sh"
   },
   "repository": {
     "type": "git",

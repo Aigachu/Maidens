@@ -1,13 +1,9 @@
 /**
- * Google command.
+ * Example Command
  *
- * Send a query to google and return the last 5 search results.
- *
- * CURRENTLY UNSTABLE - Google seems to have very strict limits on API calls...So this command doesn't quite work.
- *
- * Still, the code is fine!
+ * Use this as a basis to create commands for plugins or for maidens.
  */
-class Google extends Command {
+class Example extends Command {
 	
 	constructor(client) {
 		
@@ -15,7 +11,7 @@ class Google extends Command {
 		
 		// Uncomment to enter different aliases that can be used to use the command.
 		// e.g. the ping command can have pi or pg as aliases.
-		this.aliases = [ "goog"];
+		// this.aliases = [ "alias1", "alias2"];
 		
 		// Uncomment to customize the text that will be shown when --help is used.
 		// this.helpText = "";
@@ -25,31 +21,43 @@ class Google extends Command {
 		
 		// Uncomment to declare that input is required for this command.
 		// Follow the template here to assure functionality of the Synopsis.
-		this.input = {
-			query: {
-				type: "text", // Either text or plain.
-				name: "Query",
-				description: "Text to send to google for results."
-			}
-		};
+		// this.input = {
+		//   input_name: {
+		//     type: "plain", // Either text or plain.
+		//     name: "An example of plain input.",
+		//     description: "Example of plain input needed for the command to function."
+		//   }
+		// };
 		
 		// Uncomment to permit different options in the command
 		// Follow the template here to assure functionality of the Synopsis.
 		// this.options = {
-		//   "d": {
-		//     "readable_name" : "Direct Message",
-		//     "description"   : "Send the ping via direct message instead of sending it in the chat.",
+		//   d: {
+		//     readable_name : "Direct Message",
+		//     description   : "Send the ping via direct message instead of sending it in the chat.",
 		//   },
-		//   "c": {
-		//     "readable_name" : "Custom Message",
-		//     "description"   : "Send a message defined on the fly instead of the default ping response.",
-		//     "needs_text"   : true,
+		//   c: {
+		//     readable_name : "Custom Message",
+		//     description   : "Send a message defined on the fly instead of the default ping response.",
+		//     needs_text   : true,
 		//   }
+		// };
+		
+		// Uncomment to configure the command.
+		// You can adjust which channels the command can be used in, as well as who can use the command.
+		// this.config = {
+		//   auth: {
+		//     guilds: [],
+		//     channels: [],
+		//     pms: false,
+		//     users: [],
+		//     oplevel: 0,
+		//   },
 		// };
 		
 		// Uncomment to adjust the cooldown of the command.
 		// The default cooldown is 5 seconds.
-		this.cooldown = 10; // In seconds.
+		// this.cooldown = 5;
 		
 	}
 	
@@ -67,33 +75,10 @@ class Google extends Command {
 	 */
 	tasks(data) {
 		
-		// I actually didn't take the time to understand this code and I copy pasted it from the module's page.
-		// @see : https://www.npmjs.com/package/google
-		// @TODO - Clean this the fuck up.
-		google.resultsPerPage = 3;
-		let nextCounter = 0;
-		let result_msg = "";
-		
-		google(data.input.full, function (err, res){
-			if (err) console.error(err);
-			
-			for (let i = 0; i < res.links.length; ++i) {
-				let link = res.links[i];
-				result_msg = link.title + ' - ' + link.href;
-				result_msg += link.descText + "\n";
-			}
-			
-			if (nextCounter < 2) {
-				nextCounter += 1;
-				if (res.next) res.next()
-			}
-			
-			data.msg.channel.send(result_msg);
-			
-		});
+		this.client.reply(data.msg, 'This is an example command. :O Did you even know this existed?');
 		
 	}
 	
 }
 
-module.exports = Google;
+module.exports = Example;

@@ -1,7 +1,7 @@
 /**
  * Maria's Discord class.
  */
-class MariaDiscord extends MaidenDiscord {
+class MariaDiscordClient extends MaidenDiscordClient {
 
   /**
    * === Class constructor ===
@@ -21,7 +21,10 @@ class MariaDiscord extends MaidenDiscord {
       console.log("\nA corpse... should be left well alone...");
 
       // Set status to DND!
-      this.user.setStatus('dnd');
+      this.user.setStatus('dnd')
+				.then((status) => {
+					// Do nothing.
+				}).catch(console.error);
 
     });
 
@@ -29,4 +32,4 @@ class MariaDiscord extends MaidenDiscord {
 
 }
 
-module.exports = MariaDiscord;
+module.exports = MariaDiscordClient;

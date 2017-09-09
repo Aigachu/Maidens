@@ -50,29 +50,29 @@ class CoinFlip extends Command {
   /**
    * Tasks the command will execute.
    * Options are handled by the developer of the command accordingly.
-   * @param  {[type]} data Data that was obtained from the message, such as input and other things.
+   * @param  {Object} data Data that was obtained from the message, such as input and other things.
    * (Object) data {
    *   (Object) options => Contains all of the options organized in an object by key, similar to above.
-   *   (Array)  input   => Contains the input seperated into an array. (Shoutouts to old params style)
+   *   (Array)  input   => Contains the input separated into an array. (Shoutouts to old params style)
    *     (String) full    => Contains the full input in a text string.
-   *     (Array)  array   => Contains the input seperated in an array.
+   *     (Array)  array   => Contains the input separated in an array.
    *     (String) raw     => Contains the input without any modifications made to it. Useful for some commands.
    * }
    */
   tasks(data) {
 
     // Get the value of the flip. Returns either 0 or 1.
-    var flip = Math.floor(Math.random() * 2);
+    let flip = Math.floor(Math.random() * 2);
 
     // The flip result is determined by the returned value.
     // 0 is Tails.
     // 1 is Heads.
-    var result = ((flip == 0) ? 'Tails' : 'Heads');
+    let result = ((flip === 0) ? 'Tails' : 'Heads');
 
     // This command will have different types of flips. It will be selected by random.
     // Each 'flip type' will take different amounts of time and print different messages.
     // We'll store these in an array.
-    var flip_types = [];
+    let flip_types = [];
 
     // Setting the flip types.
     flip_types.push({
@@ -92,7 +92,7 @@ class CoinFlip extends Command {
 
     // The 'rand' variable will store the flip type.
     // We get it by generating a random number when choosing which key to get from the array.
-    var rand = flip_types[Math.floor(Math.random() * flip_types.length)];
+    let rand = flip_types[Math.floor(Math.random() * flip_types.length)];
 
     // Send the flip to the channel.
     data.msg.channel.send(rand.message)

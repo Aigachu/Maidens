@@ -1,7 +1,7 @@
 /**
  * Doll's Discord class. 
  */
-class DollDiscord extends MaidenDiscord {
+class DollDiscordClient extends MaidenDiscordClient {
 
   /**
    * === Class constructor ===
@@ -21,7 +21,10 @@ class DollDiscord extends MaidenDiscord {
       console.log("\nDawn will soon break... This night, and this dream, will end.");
 
       // Set status to DND!
-      this.user.setStatus('dnd');
+      this.user.setStatus('dnd')
+        .then((status) => {
+          // Do nothing.
+        }).catch(console.error);
 
     });
 
@@ -29,4 +32,4 @@ class DollDiscord extends MaidenDiscord {
 
 }
 
-module.exports = DollDiscord;
+module.exports = DollDiscordClient;

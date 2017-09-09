@@ -59,10 +59,10 @@ class Purge extends Command {
   /**
    * Tasks the command will execute.
    * Options are handled by the developer of the command accordingly.
-   * @param  {[type]} data Data that was obtained from the message, such as input and other things.
+   * @param  {Object} data Data that was obtained from the message, such as input and other things.
    * (Object) data {
    *   options => Contains all of the options organized in an object by key, similar to above.
-   *   array => Contains the input seperated into an array. (Shoutouts to old params style)
+   *   array => Contains the input separated into an array. (Shoutouts to old params style)
    *   full => Contains the full input in a text string.
    * }
    */
@@ -70,12 +70,15 @@ class Purge extends Command {
 
     // Can't purge if the watchdog is not enabled in the server.
     if (!this.client.watchdog.status(data.msg.guild)) {
-      data.msg.reply(`the watchdog is disabled in this server...So I can't purge anyone. :/`);
+      data.msg.reply(`the watchdog is disabled in this server...So I can't purge anyone. :/`)
+				.then((reply) => {
+    			// Do nothing with reply.
+				}).catch(console.error);
       return;
     }
 
     // Variable containing the number of messages to purge.
-    var count = 5;
+    let count = 5;
 
     // If the "n" option is used, overwrite the count.
     if ("n" in data.input.options) {
@@ -95,7 +98,7 @@ class Purge extends Command {
     data.input.full = data.input.full.replace('!', '');
 
     // Fetch the member object.
-    var member = data.msg.guild.members.find('id', data.input.full);
+		let member = data.msg.guild.members.find('id', data.input.full);
 
     // If he can't be found, we can't do anything.
     // @TODO - Throw an error or something.
@@ -110,9 +113,10 @@ class Purge extends Command {
     data.msg.channel.send(`I could have sworn I just saw ${count} messages from ${member}...Now they're gone. :thinking:`);
 
     // Delete the caller's command. Remove all traces of the act...
-    data.msg.delete();
-
-    return;
+    data.msg.delete()
+      .then((message) => {
+        // Do nothing with deleted message.
+      }).catch(console.error);
 
   }
 

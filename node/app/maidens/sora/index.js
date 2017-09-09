@@ -1,5 +1,5 @@
-var SoraDiscordClass = require('./src/soradiscord/SoraDiscord');
-var SoraDiscordClient = new SoraDiscordClass(require('./settings'));
+let SoraDiscordClass = require('./src/soradiscord/SoraDiscordClient');
+let SoraDiscordClient = new SoraDiscordClass(require('./settings'));
 
 /**
 * === Exports ===

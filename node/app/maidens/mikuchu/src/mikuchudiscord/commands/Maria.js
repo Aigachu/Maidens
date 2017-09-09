@@ -1,0 +1,1 @@
+../../../../maria/src/mariadiscord/commands/Maria.js

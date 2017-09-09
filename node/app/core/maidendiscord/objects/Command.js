@@ -19,7 +19,7 @@
  * - {options}    : Object to configure whether or not the command will have options to extend functionality.
  *   e.g. @bot ping [-d] [-c]
  * - {config}     : Object to store configurations for the command.
- *   + {auth}       : Stores authentification restrictions.
+ *   + {auth}       : Stores authentication restrictions.
  *     -- {guilds}    : Allowed guilds. If empty, allowed in all guilds.
  *     -- {channel}   : Allowed channels. If empty, allowed in all channels.
  *     -- {pms}       : Boolean. If true, allowed in private messages. If false, restricted.
@@ -75,15 +75,15 @@ class Command {
   /**
    * Execute method.
    * This method will execute all tasks described in the tasks() method.
-   * @param  {[string]} msg    	Message that triggered the command.
-   * @param  {[array]} 	params 	Parameters array extracted from the message.
+   * @param  {Message}  msg    	Message that triggered the command.
+   * @param  {Object} 	input   Input object extracted from the parsed command.
    */
   execute(msg, input) {
 
     // Using the cooldown manager, we check if the command is on cooldown first.
     // Cooldowns are individual per user. So if a user uses a command, it's not on cooldown for everyone.
     // @TODO - Code in GLOBAL cooldowns.
-    if (this.client.cooldownManager.check('command', this.key, msg.author.id, this.cooldown)) {
+    if (this.client.cooldownManager.check('command', this.key, msg.author.id)) {
       this.client.im(msg.author, `That command is on cooldown. :) Please wait!`);
       return false;
     }
@@ -92,10 +92,10 @@ class Command {
     // This passes the necessary data for a command to run.
     // msg    : The Discord {Message} object. Contains a lot of useful information.
     // input  : The parsed input from the command manager.
-    var data = {
+    let data = {
       msg: msg,
       input: input
-    }
+    };
   	this.tasks(data);
 
     // Cools the command after usage.
@@ -105,12 +105,12 @@ class Command {
   /**
    * Tasks the command will execute.
    * Options are handled by the developer of the command accordingly.
-   * @param  {[type]} data Data that was obtained from the message, such as input and other things.
+   * @param  {Object} data Data that was obtained from the message, such as input and other things.
    * (Object) data {
    *   (Object) options => Contains all of the options organized in an object by key, similar to above.
-   *   (Array)  input   => Contains the input seperated into an array. (Shoutouts to old params style)
+   *   (Array)  input   => Contains the input separated into an array. (Shoutouts to old params style)
    *     (String) full    => Contains the full input in a text string.
-   *     (Array)  array   => Contains the input seperated in an array.
+   *     (Array)  array   => Contains the input separated in an array.
    *     (String) raw     => Contains the input without any modifications made to it. Useful for some commands.
    * }
    */
@@ -122,7 +122,7 @@ class Command {
   /**
    * Help method.
    * Replies to a message requesting help for the given command.
-   * @param  {[Message]} msg The message that requested the help text.
+   * @param  {Message} msg The message that requested the help text.
    */
   help(msg) {
   	// Reply to the message with the Command's help text.
@@ -132,7 +132,7 @@ class Command {
   /**
    * Description method.
    * Replies to a message requesting a description for the given command.
-   * @param  {[Message]} msg The message that requested the description text.
+   * @param  {Message} msg The message that requested the description text.
    */
   desc(msg) {
   	// Reply to the message with the Command's description text.
@@ -140,56 +140,12 @@ class Command {
   }
 
   /**
-   * Error method.
-   * Error handler for multiple errors that can occur when trying to execute a command.
-   * @param  {[string/array]} data Pertinent data for the error.
-   * @param  {[string]}       type Type of error. This determines which text is said by Sora.
-   * @param  {[type]}         msg  The message containing the command that triggered the error.
-   */
-  error(data, type, msg) {
-
-    var error_msg = "";
-
-    switch (type) {
-      
-      case 'InputGivenWhenSimpleCommand':
-          error_msg = `_**Woops!**_ - Seems like some input was given for the \`${this.key}\` command, but this command doesn't accept input.\n`;
-          break;
-      
-      case 'OptionsGivenWhenOptionlessCommand':
-          error_msg = `_**Woops!**_ - Seems like some options were given for the \`${this.key}\` command, but this command doesn't accept options.\n`;
-          break;
-      
-      case 'InvalidOption':
-          error_msg = `_**Woops!**_ - Seems like there was one or more invalid option(s) for the \`${this.key}\` command.\n`;
-          break;
-      
-      case 'OptionGivenWithoutInput':
-          error_msg = `_**Woops!**_ - Seems like an option was given, but without input to specify, for the \`${this.key}\` command.\n`;
-          break;
-      
-      case 'InputRequiredButNotEntered':
-          error_msg = `_**Woops!**_ - Seems like some raw input was forgotten for the \`${this.key}\` command.\n`;
-          break;
-      
-      default:
-          // Do nothing
-          break;
-    }
-
-    // this.client.im(msg.author, error_msg);
-
-    // this.client.im(msg.author,`Please use the \`--help\` option of the command through the following method.\n\n\`${this.key} --help\`\n\nThis will give you more information on how to use the command!`);
-  }
-
-  /**
-   * Generates a sypnopsis for a given command.
+   * Generates a synopsis for a given command.
    * @TODO
-   * @param  {[type]} msg [description]
-   * @return {[type]}     [description]
+   * @return {String}     [description]
    */
-  synopsis(msg) {
-    var txt = `This is the synopsis for the **${this.key}** command.`;
+  synopsis() {
+     return `This is the synopsis for the **${this.key}** command.`;
   }
 
 }

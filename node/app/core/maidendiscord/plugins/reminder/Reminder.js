@@ -7,8 +7,11 @@
  *
  * i.e. @Miku remind me to eat my steak at 5:35 pm on January 7th, 2018.
  *
- * This was one of the hardest functionalities to code, but it was fun to integrate. Lots of bugfixes to come.
+ * This was one of the hardest features to code, but it was fun to integrate. Lots of bugfixes to come.
  */
+
+const moment = require("moment");
+
 class Reminder {
 	constructor(client) {
 
@@ -21,7 +24,7 @@ class Reminder {
 		// Set the pinger.
 		// The pinger is basically a function that will run every *second* to check if a reminder must be
 		// fired. This is intensive, I know, but it's the best (first) way I thought of doing this.
-		var pinger = setInterval(() => {
+		setInterval(() => {
 			this.ping();
 		}, 1000);
 
@@ -34,14 +37,14 @@ class Reminder {
 	ping() {
 
 		// Get the current UNIX Timestamp.
-		var now = moment().format('x');
+		let now = moment().format('x');
 
 		// Loops through all reminders and checks if they need to be sent.
 		// @TODO - This isn't really efficient. Explore a way to make this NOT have to loop through
 		// ALL reminders.
-		for (var key in this.reminders) {
+		for (let key in this.reminders) {
 	    
-	    // Skip loop if the property is from the Javscript Object prototype.
+	    // Skip loop if the property is from the Javascript Object prototype.
 	    if (!this.reminders.hasOwnProperty(key)) continue;
 
 	    // The 'this.reminders' object contains many 'reminder_arrays'.
@@ -49,7 +52,7 @@ class Reminder {
 	    // The 'key' associating each reminder array is the ID of the person that created the reminders.
 	    // This is how reminders are stored.
 	    // Here, we get the current reminder array.
-	    var reminder_array = this.reminders[key];
+			let reminder_array = this.reminders[key];
 
 	    // Loop through every 'reminder' object in the reminder_array.
 			reminder_array.every((reminder) => {
@@ -72,8 +75,7 @@ class Reminder {
 			this.save();
 
 		}
-
-		return;
+		
 	}
 
 	/**
@@ -82,21 +84,21 @@ class Reminder {
 	 */
 	sendReminder(reminder) {
 
-		// Get the caller (creator) of the reminder.
-		var caller = this.getCaller(reminder);
+		// Get the creator of the reminder.
+		let creator = this.getCreator(reminder);
 
 		// Get the receiver of the reminder.
-		var receiver = this.getReceiver(reminder);
+		let receiver = this.getReceiver(reminder);
 
 		// Store action in an easy to read variable.
-		var action = reminder.action;
+		let action = reminder.action;
 
 		// Initiate variable to store the message that will be sent.
-		var message = '';
+		let message = '';
 
-		// If the caller (creator) is the receiver, we'll change the caller to you for more seamless text.
-		if (caller.id === receiver.id) {
-			caller = 'You';
+		// If the creator is the receiver, we'll change the creator to you for more seamless text.
+		if (creator.id === receiver.id) {
+			creator = 'You';
 		}
 
 		// Depending on the type of Object the receiver is, the message will change.
@@ -104,30 +106,29 @@ class Reminder {
 
 			// If the receiver is a Discord User, we send it to the user via private messaging..
 			case 'user':
-				message = `${caller} asked me to remind you **"${action}"** at this moment!`;
+				message = `${creator} asked me to remind you **"${action}"** at this moment!`;
 				receiver.send(message);
 				break;
 
 			// If the receiver is a Discord Channel, we send it to the channel using @here.
 			case 'channel':
-				message = `Hey @here! ${caller} asked me to remind you guys **"${action}"**!`;
+				message = `Hey @here! ${creator} asked me to remind you guys **"${action}"**!`;
 				receiver.send(message);
 				break;
 
 			// If the receiver is a Discord Role, we send it to the channel where the reminder was created.
 			case 'role':
-				message = `${caller} asked me to remind ${receiver} **"${action}"** at this moment!`;
+				message = `${creator} asked me to remind ${receiver} **"${action}"** at this moment!`;
 				this.client.guilds.find('id', reminder.guild_id).channels.find('id', reminder.channel_id).send(message);
 				break;
 
 		}
-
-		return;
+		
 	}
 
 	/**
 	 * Create reminder.
-	 * @param  {Discord Message} 	message  Message that was used to create the reminder.
+	 * @param  {Message} 	message  Message that was used to create the reminder.
 	 * @param  {Object} 					reminder Reminder object parsed from the command.
 	 */
 	create(message, reminder) {
@@ -136,20 +137,20 @@ class Reminder {
 		// Error checks have been done through the command already. :)
 		
 		// Check if user has a reminder array set. If not, we set it now.
-		if (_.isEmpty(this.reminders[reminder.caller_id])) {
-			this.reminders[reminder.caller_id] = [];
+		if (_.isEmpty(this.reminders[reminder.creator_id])) {
+			this.reminders[reminder.creator_id] = [];
 		}
 
 		// Set the reminder.
-		this.reminders[reminder.caller_id].push(reminder);
+		this.reminders[reminder.creator_id].push(reminder);
 
 		// Get the receiver
-		var receiver = this.getReceiver(reminder);
+		let receiver = this.getReceiver(reminder);
 
 		// Get the exact time when the reminder will be sent.
 		// @TODO - Timezone management...No fucking idea how I'm gonna do this yet.
 		// You might want to tell them in how much time it'll happen instead, as a last resort.
-		var time = moment(parseInt(reminder.timestamp)).format("MMMM Do YYYY, h:mm:ss a");
+		let time = moment(parseInt(reminder.timestamp)).format("MMMM Do YYYY, h:mm:ss a");
 
 		// If the receiver is the same person that created the reminder...
 		// In other words, if the creator is reminding himself of something...
@@ -158,7 +159,7 @@ class Reminder {
 		}
 
 		// Variable to store the confirmation message.
-		var confirmation = `Got it, ${message.author}! I'll remind ${receiver} **${reminder.action}** at the following date and time: **${time}**!`;
+		let confirmation = `Got it, ${message.author}! I'll remind ${receiver} **${reminder.action}** at the following date and time: **${time}**!`;
 		
 		// Send the confirmation message.
 		message.channel.send(confirmation)
@@ -168,8 +169,7 @@ class Reminder {
 
 		// Save reminders to database.
 		this.save();
-
-		return;
+		
 	}
 
 	/**
@@ -178,14 +178,14 @@ class Reminder {
 	build() {
 
 		// Make database directory if it doesn't exist.
-		var desired_db_dir = this.client.coreroot + 'plugins/reminder/db';
+		let desired_db_dir = this.client.coreroot + 'plugins/reminder/db';
 		if (!fs.existsSync(desired_db_dir)) {
 			fs.mkdirSync(desired_db_dir);
 		}
 
 		// Get path to the appropriate configuration directory or make it if it
 		// doesn't exist.
-		var db_dir = this.client.coreroot + 'plugins/reminder/db/' + this.client.maiden_name;
+		let db_dir = this.client.coreroot + 'plugins/reminder/db/' + this.client.maiden_name;
 		if (!fs.existsSync(db_dir)) {
 			fs.mkdirSync(db_dir);
 		}
@@ -207,8 +207,6 @@ class Reminder {
 			this.client.on('ready', () => {
 				console.log('Reminder Plugin: Loaded reminders from database.');
 			});
-
-			return;
 		}
 	}
 
@@ -217,17 +215,16 @@ class Reminder {
 	 */
 	save() {
 		fs.writeFileSync(this.db_path, JSON.stringify(this.reminders, null, 2));
-		return;
 	}
 
 	/**
-	 * Get the Caller (creator) of the Reminder.
+	 * Get the Creator of the Reminder.
 	 * This will return null if it fails...But if SHOULDN'T.
-	 * @TODO - It CAN fail if the caller leaves a guild, or something similar. So this must be handled eventually.
-	 * @param  {Object} reminder The reminder to get the caller (creator) from.
+	 * @TODO - It CAN fail if the creator leaves a guild, or something similar. So this must be handled eventually.
+	 * @param  {Object} reminder The reminder to get the creator from.
 	 */
-	getCaller(reminder) {
-		return this.client.guilds.find('id', reminder.guild_id).members.find('id', reminder.caller_id);
+	getCreator(reminder) {
+		return this.client.guilds.find('id', reminder.guild_id).members.find('id', reminder.creator_id);
 	}
 
 	/**
@@ -268,8 +265,8 @@ class Reminder {
 
 	/**
 	 * Get and send a list of reminders defined for a given user.
-	 * @param  {Discord Message} 	message Message of the person requesting a list.
-	 * @param  {Discord User} 		user    User that's requesting the list.
+	 * @param  {Message} 	message Message of the person requesting a list.
+	 * @param  {User} 		user    User that's requesting the list.
 	 */
 	sendList(message, user) {
 
@@ -277,14 +274,17 @@ class Reminder {
 		if (_.isEmpty(this.reminders[user.id])) {
 			message.reply(`you don't seem to have any reminders in my database. :o`)
 				.then((msg) => {
-					msg.delete(30000);
+					msg.delete(30000)
+						.then((msg) => {
+							// Do nothing with deleted message.
+						}).catch(console.error);
 				});
 
 			return;
 		}
 
 		// Initiate the list text.
-		var list = `Here is the list of your reminders:\n\n`;
+		let list = `Here is the list of your reminders:\n\n`;
 
 		// For every reminder found, add some markup.
 		this.reminders[user.id].every((reminder) => {
@@ -301,8 +301,7 @@ class Reminder {
 
 		// Send the list to the user.
 		user.send(list);
-
-		return;
+		
 	}
 
 	/**
@@ -311,7 +310,6 @@ class Reminder {
 	 */
 	clear(user_id) {
 		delete this.reminders[user_id];
-		return;
 	}
 }
 

@@ -29,8 +29,8 @@ class MaidenCooldownManager {
    * Set a cooldown for a given command, scope and duration.
    * @param {String}          type     Type of cooldown.
    * @param {String}          key      Key of the cooldown being set. i.e. For a command, we'll set the command key.
-   * @param {String|Integer}  scope    Who does this cooldown restrict? i.e. For a user, it's their ID.
-   * @param {Integer}         duration Lifetime of the cooldown.
+   * @param {String/Number}   scope    Who does this cooldown restrict? i.e. For a user, it's their ID.
+   * @param {Number}          duration Lifetime of the cooldown.
    */
   set(type, key, scope, duration) {
 
@@ -50,10 +50,11 @@ class MaidenCooldownManager {
     // Start the countdown for the duration.
     // Note: Not sure why I use a promise here. I think I wanted to be cool. ¯\_(ツ)_/¯
     return new Promise((resolve, reject) => {
-      var cm = this; // Set cooldown manager to a variable, or it won't be accessible in the setTimeout.
+      let cm = this; // Set cooldown manager to a variable, or it won't be accessible in the setTimeout.
       setTimeout(() => {
         cm.unset(type, key, scope);
         resolve("Remove cooldown now!"); // Yay! Everything went well!
+        reject("Something went wrong!"); // Ugh...
       }, duration);
     });
   }
@@ -62,7 +63,7 @@ class MaidenCooldownManager {
    * Unset a cooldown for a given command, user and scope.
    * @param {String}          type     Type of cooldown.
    * @param {String}          key      Key of the cooldown being set. i.e. For a command, we'll set the command key.
-   * @param {String|Integer}  scope    Who does this cooldown restrict? i.e. For a user, it's their ID.
+   * @param {String/Number}  scope    Who does this cooldown restrict? i.e. For a user, it's their ID.
    */
   unset(type, key, scope) {
 
@@ -75,7 +76,7 @@ class MaidenCooldownManager {
    * Check if a cooldown exists with the given parameters.
    * @param {String}          type     Type of cooldown.
    * @param {String}          key      Key of the cooldown being set. i.e. For a command, we'll set the command key.
-   * @param {String|Integer}  scope    Who does this cooldown restrict? i.e. For a user, it's their ID.
+   * @param {String/Number}  scope    Who does this cooldown restrict? i.e. For a user, it's their ID.
    */
   check(type, key, scope) {
 
