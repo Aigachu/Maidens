@@ -1,7 +1,7 @@
 /**
  * Colette's Discord class.
  */
-class ColetteDiscord extends MaidenDiscord {
+class ColetteDiscordClient extends MaidenDiscordClient {
 
   /**
    * === Class constructor ===
@@ -26,4 +26,4 @@ class ColetteDiscord extends MaidenDiscord {
 
 }
 
-module.exports = ColetteDiscord;
+module.exports = ColetteDiscordClient;

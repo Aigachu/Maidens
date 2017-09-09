@@ -1,7 +1,7 @@
 /**
  * Maria's Discord class.
  */
-class MariaDiscord extends MaidenDiscord {
+class MariaDiscordClient extends MaidenDiscordClient {
 
   /**
    * === Class constructor ===
@@ -32,4 +32,4 @@ class MariaDiscord extends MaidenDiscord {
 
 }
 
-module.exports = MariaDiscord;
+module.exports = MariaDiscordClient;

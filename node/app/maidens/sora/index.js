@@ -1,4 +1,4 @@
-let SoraDiscordClass = require('./src/soradiscord/SoraDiscord');
+let SoraDiscordClass = require('./src/soradiscord/SoraDiscordClient');
 let SoraDiscordClient = new SoraDiscordClass(require('./settings'));
 
 /**

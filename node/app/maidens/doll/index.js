@@ -1,4 +1,4 @@
-let DollDiscordClass = require('./src/dolldiscord/DollDiscord');
+let DollDiscordClass = require('./src/dolldiscord/DollDiscordClient');
 let DollDiscordClient = new DollDiscordClass(require('./settings'));
 
 /**

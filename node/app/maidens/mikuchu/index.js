@@ -1,4 +1,4 @@
-let MikuchuDiscordClass = require('./src/Mikuchudiscord/MikuchuDiscord');
+let MikuchuDiscordClass = require('./src/mikuchudiscord/MikuchuDiscordClient');
 let MikuchuDiscordClient = new MikuchuDiscordClass(require('./settings'));
 
 /**

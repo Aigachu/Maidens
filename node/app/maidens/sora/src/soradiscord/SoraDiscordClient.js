@@ -2,7 +2,7 @@
  * Sora's Discord class.
  * "Keep it tidy in here, okay!?" - Sora Akanegasaki
  */
-class SoraDiscord extends MaidenDiscord {
+class SoraDiscordClient extends MaidenDiscordClient {
 
   /**
    * === Class constructor ===
@@ -27,4 +27,4 @@ class SoraDiscord extends MaidenDiscord {
 
 }
 
-module.exports = SoraDiscord;
+module.exports = SoraDiscordClient;

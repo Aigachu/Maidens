@@ -2,7 +2,7 @@
  * Mikuchu's Discord class.
  * "I am the ULTIMATE DEVBOT!!! As in the most unstable one ever made. xP" - Hatsune Mikuchu
  */
-class MikuchuDiscord extends MaidenDiscord {
+class MikuchuDiscordClient extends MaidenDiscordClient {
 
   /**
    * === Class constructor ===
@@ -33,4 +33,4 @@ class MikuchuDiscord extends MaidenDiscord {
 
 }
 
-module.exports = MikuchuDiscord;
+module.exports = MikuchuDiscordClient;

@@ -1,4 +1,4 @@
-let ColetteDiscordClass = require('./src/colettediscord/ColetteDiscord');
+let ColetteDiscordClass = require('./src/colettediscord/ColetteDiscordClient');
 let ColetteDiscordClient = new ColetteDiscordClass(require('./settings'));
 
 /**

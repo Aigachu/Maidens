@@ -1,4 +1,4 @@
-let MariaDiscordClass = require('./src/mariadiscord/MariaDiscord');
+let MariaDiscordClass = require('./src/mariadiscord/MariaDiscordClient');
 let MariaDiscordClient = new MariaDiscordClass(require('./settings'));
 
 /**

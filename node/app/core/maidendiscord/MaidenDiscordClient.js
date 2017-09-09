@@ -99,7 +99,6 @@ class MaidenDiscordClient extends DiscordClient {
 		// Initialize the plugins to make PHPStorm happy.
 		this.watchdog = null;
 		this.reminder = null;
-		this.thirdeye = null;
 		
     // All plugins can be found in the folder called 'plugins' in the same directory as this file.
     // Plugins are 'plugged'to the Maidens in their 'settings.js' files.
