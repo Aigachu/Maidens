@@ -83,13 +83,12 @@ class SmashMain extends Command {
 
     console.log(this.client.assets + 'smash4-character-portraits/' + character_name + "/" + random_image);
     
-    data.msg.channel.send('Test file.', {
-      files: [
-        this.client.assets + 'smash4-character-portraits/' + character_name + "/" + random_image
-      ],
-    });
-
-    data.msg.channel.send('This command is temporarily disabled. :( Pester Aiga to fix it!');
+    let attachment = new Discord.Attachment(this.client.assets + 'smash4-character-portraits/' + character_name + "/" + random_image, random_image);
+    
+    data.msg.channel.send(attachment)
+			.then((message) => {
+      	// Do nothing.
+    	}).catch(console.error);
 
   }
 
