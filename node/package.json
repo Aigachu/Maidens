@@ -4,7 +4,7 @@
   "description": "Discord bots with a collection of cool commands!",
   "main": "summon.js",
   "dependencies": {
-    "discord.js": "11.1.0",
+    "discord.js": "^11.2.1",
     "fs": "^0.0.1-security",
     "glob": "^7.1.1",
     "google": "^2.1.0",
