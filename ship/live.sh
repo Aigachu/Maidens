@@ -46,9 +46,11 @@ echo "cd nodejs/apps/discord-maidens/node; git pull;"
 ssh aigachu@138.197.174.254 'cd nodejs/apps/discord-maidens/node; git pull;'
 echo "--------------------------------------"
 
-# Make sure dependencies are installed.
-echo "Make sure dependencies are installed."
+# Re-install node libraries.
+echo "Re-install node libraries."
 echo "--------------------------------------"
+echo "cd nodejs/apps/discord-maidens/node; rm -rf node_modules;"
+ssh aigachu@138.197.174.254 'cd nodejs/apps/discord-maidens/node; rm -rf node_modules;'
 echo "cd nodejs/apps/discord-maidens/node; npm install;"
 ssh aigachu@138.197.174.254 'cd nodejs/apps/discord-maidens/node; npm install;'
 echo "--------------------------------------"
