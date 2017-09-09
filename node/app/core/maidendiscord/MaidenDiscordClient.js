@@ -77,7 +77,7 @@ class MaidenDiscordClient extends DiscordClient {
 
     // The namespace for their DISCORD code.
     // We'll get this path using the path to their root, followed by src and then the name of the constructor.
-    this.namespace = this.root + 'src/' + this.constructor.name.toLowerCase() + '/';
+    this.namespace = this.root + `src/${settings.maiden_name}discord/`;
 
     // The path to the assets folder for the Maiden.
     this.assets = this.root + 'assets/';
