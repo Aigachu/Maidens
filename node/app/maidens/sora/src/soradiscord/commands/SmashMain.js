@@ -71,23 +71,23 @@ class SmashMain extends Command {
   tasks(data) {
 
     // Get all images from Smash 4 resources folder.
-    // var smash4_character_directories = fs.readdirSync(this.client.assets + "smash4-character-portraits");
+    let smash4_character_directories = fs.readdirSync(this.client.assets + "smash4-character-portraits");
+	
+		let character_name = smash4_character_directories[Math.floor(Math.random() * smash4_character_directories.length)];
+	
+		let character_images = fs.readdirSync(this.client.assets + "smash4-character-portraits/" + character_name);
+	
+		let random_image = character_images[Math.floor(Math.random() * character_images.length)];
 
-    // var character_name = smash4_character_directories[Math.floor(Math.random() * smash4_character_directories.length)];
+    this.client.reply(data.msg, "! Your new main is..._drumroll_");
 
-    // var character_images = fs.readdirSync(this.client.assets + "smash4-character-portraits/" + character_name);
-
-    // var random_image = character_images[Math.floor(Math.random() * character_images.length)];
-
-    // this.client.reply(data.msg, "! Your new main is..._drumroll_");
-
-    // console.log(this.client.assets + 'smash4-character-portraits/' + character_name + "/" + random_image);
+    console.log(this.client.assets + 'smash4-character-portraits/' + character_name + "/" + random_image);
     
-    // data.msg.channel.send('Test file.', { 
-    //   files: [
-    //     this.client.assets + 'smash4-character-portraits/' + character_name + "/" + random_image
-    //   ],
-    // });
+    data.msg.channel.send('Test file.', {
+      files: [
+        this.client.assets + 'smash4-character-portraits/' + character_name + "/" + random_image
+      ],
+    });
 
     data.msg.channel.send('This command is temporarily disabled. :( Pester Aiga to fix it!');
 
