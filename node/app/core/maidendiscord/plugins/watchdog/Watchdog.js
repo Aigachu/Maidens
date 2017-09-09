@@ -277,6 +277,7 @@ class Watchdog {
 		return false;
 	}
 
+	// noinspection JSUnusedGlobalSymbols
 	/**
 	 * Get the status of the Watchdog in a given guild.
 	 * @param  {Guild} guild Guild to get the Watchdog status from.

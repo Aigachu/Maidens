@@ -167,6 +167,7 @@ class PaintJob extends Command {
 		}
 		
 		// Create the color role with the proper values.
+		// noinspection JSCheckFunctionSignatures
 		data.msg.guild.createRole({
 			name: color.name,
 			color: data.input.options.c,

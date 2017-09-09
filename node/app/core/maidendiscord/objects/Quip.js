@@ -20,12 +20,11 @@ class Quip {
   /**
    * Execute method.
    * This method will execute all tasks described in the tasks() method.
-   * @param  {[string]} msg    	Message that triggered the Quip.
-   * @param  {[array]} 	params 	Parameters array extracted from the message.
+   * @param  {Message} msg    	Message that triggered the Quip.
    */
   execute(msg) {
-
-    var rng = Math.random();
+	
+		let rng = Math.random();
 
     if(rng <= (this.frq / 100)) {
       msg.channel.send(this.responses[Math.floor(Math.random() * this.responses.length)]);
