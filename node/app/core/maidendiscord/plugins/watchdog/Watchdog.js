@@ -58,14 +58,14 @@ class Watchdog {
 				// Push the listener's listen function.
 				listen: (client, message) => {
 					
-					// If the member is a bot, we don't want to watch their message.
-					if (message.member.user.bot === true) {
-						// Do nothing and return.
+					// Don't watch the message if it's in a PMChannel.
+					if (message.channel.type === 'dm') {
 						return false;
 					}
 					
-					// Don't watch the message if it's in a PMChannel.
-					if (message.channel.type === 'dm') {
+					// If the member is a bot, we don't want to watch their message.
+					if (message.member.user.bot === true) {
+						// Do nothing and return.
 						return false;
 					}
 
@@ -157,7 +157,9 @@ class Watchdog {
 		if (member_log.spree === this.maxSpree) {
 			this.timeout(message.member, 10);
 			message.channel.send(`Oops! Dropped my banhammer on ${message.member}...ACCIDENTALLY of course! :yum:\nNO SPAM BUDDY! Watch yourself! :angry:`);
-			// message.channel.send(`?`, {files: [this.client.assets + 'watchdog/banhammer.png']});
+			
+			let attachment = new Discord.Attachment(this.client.assets + 'watchdog/banhammer.png', 'banhammer.png');
+			message.channel.send(attachment);
 			member_log.cache.slice(Math.max(member_log.cache.length - this.maxSpree)).every((msg) => {
 				msg.delete();
 				return true;
