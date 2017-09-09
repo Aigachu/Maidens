@@ -57,7 +57,13 @@ class Watchdog {
 			this.client.listeners.push({
 				// Push the listener's listen function.
 				listen: (client, message) => {
-
+					
+					// If the member is a bot, we don't want to watch their message.
+					if (message.member.user.bot === true) {
+						// Do nothing and return.
+						return false;
+					}
+					
 					// Don't watch the message if it's in a PMChannel.
 					if (message.channel.type === 'dm') {
 						return false;

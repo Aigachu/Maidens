@@ -51,11 +51,12 @@ class MaidenCommandManager {
    * @return {Boolean/String} Returns the key of the command if found. False if no command is found.
    */
   detectCommand(msg) {
-
-    // If this message comes from the bot, it's not a command!
-    if (msg.author.id === this.client.user.id) {
-      return false;
-    }
+	
+		// If the member is any bot, we don't want to fire a command.
+		if (msg.member.user.bot === true) {
+			// Do nothing and return.
+			return false;
+		}
 
     // Divide text into distinct parameters.
     let split = msg.content.split(" ");
