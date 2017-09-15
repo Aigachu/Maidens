@@ -46,6 +46,8 @@ class MaidenCooldownManager {
 
     // Set the cooldown into the array.
     this.cooldowns[type][key].push(scope);
+    
+    console.log(this.cooldowns);
 
     // Start the countdown for the duration.
     // Note: Not sure why I use a promise here. I think I wanted to be cool. ¯\_(ツ)_/¯
@@ -93,9 +95,11 @@ class MaidenCooldownManager {
     if(!(key in this.cooldowns[type])) {
       return false;
     }
+		
+    console.log(this.cooldowns[type][key]);
 
     // Returns whether or not the cooldown exists.
-    return this.cooldowns[type][key].indexOf(scope) >= 0;
+    return (scope in this.cooldowns[type][key]);
 
   }
 

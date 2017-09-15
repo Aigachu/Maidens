@@ -44,6 +44,11 @@ class Ping extends Command {
         users: ["77517077325287424", "82530619355037696", "83017457488363520"]
       }, 
     };
+		
+		this.cooldown = {
+			global: 5,
+			user: 0,
+		};
 
   }
 
