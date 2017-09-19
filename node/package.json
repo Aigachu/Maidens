@@ -18,7 +18,7 @@
   "devDependencies": {},
   "scripts": {
     "test": "dev_summon.js",
-    "install": "../scripts/symlink_commands_to_miku.sh"
+    "install": "sh ../scripts/symlink_commands_to_miku.sh"
   },
   "repository": {
     "type": "git",
