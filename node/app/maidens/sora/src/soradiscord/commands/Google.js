@@ -48,8 +48,12 @@ class Google extends Command {
 		// };
 		
 		// Uncomment to adjust the cooldown of the command.
-		// The default cooldown is 5 seconds.
-		this.cooldown = 10; // In seconds.
+		// The default cooldown for users is 5 seconds.
+		// By default, commands do not have a global cooldown.
+		this.cooldown = {
+			global: 0,
+			user: 10,
+		};
 		
 	}
 	

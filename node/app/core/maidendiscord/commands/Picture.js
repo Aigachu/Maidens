@@ -55,10 +55,14 @@ class Picture extends Command {
     //     users: [],
     //   },
     // };
-    
-    // Uncomment to adjust the cooldown of the command.
-    // The default cooldown is 5 seconds.
-    // this.cooldown = 5;
+		
+		// Uncomment to adjust the cooldown of the command.
+		// The default cooldown for users is 5 seconds.
+		// By default, commands do not have a global cooldown.
+		// this.cooldown = {
+		// 	global: 0,
+		// 	user: 5,
+		// };
 
   }
 

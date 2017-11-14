@@ -68,7 +68,10 @@ class Command {
     };
 
     // The default cooldown is 5 seconds for all commands.
-    this.cooldown = 5;
+    this.cooldown = {
+      global: 0,
+      user: 5,
+    };
 
   }
 
@@ -82,7 +85,11 @@ class Command {
 
     // Using the cooldown manager, we check if the command is on cooldown first.
     // Cooldowns are individual per user. So if a user uses a command, it's not on cooldown for everyone.
-    // @TODO - Code in GLOBAL cooldowns.
+		if (this.client.cooldownManager.check('command', this.key, 'global')) {
+			this.client.im(msg.author, `That command is on global cooldown. :) Please wait!`);
+			return false;
+		}
+		
     if (this.client.cooldownManager.check('command', this.key, msg.author.id)) {
       this.client.im(msg.author, `That command is on cooldown. :) Please wait!`);
       return false;
@@ -97,9 +104,12 @@ class Command {
       input: input
     };
   	this.tasks(data);
-
-    // Cools the command after usage.
-    if (this.cooldown !== 0) this.client.cooldownManager.set('command', this.key, msg.author.id, this.cooldown * 1000);
+	
+		// Cools the command globally after usage.
+		if (this.cooldown.global !== 0) this.client.cooldownManager.set('command', this.key, 'global', this.cooldown * 1000);
+  	
+    // Cools the command after usage for the user.
+    if (this.cooldown.user !== 0) this.client.cooldownManager.set('command', this.key, msg.author.id, this.cooldown * 1000);
   }
 
   /**

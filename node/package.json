@@ -9,7 +9,7 @@
     "glob": "^7.1.1",
     "google": "^2.1.0",
     "jsonfile": "^2.4.0",
-    "moment": "^2.18.1",
+    "moment": "^2.19.2",
     "path": "^0.12.7",
     "prism-media": "0.0.1",
     "tmi.js": "^1.2.1",
@@ -18,7 +18,7 @@
   "devDependencies": {},
   "scripts": {
     "test": "dev_summon.js",
-    "install": "../scripts/symlink_commands_to_miku.sh"
+    "install": "sh ../scripts/symlink_commands_to_miku.sh"
   },
   "repository": {
     "type": "git",
