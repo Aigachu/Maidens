@@ -222,7 +222,6 @@ class Watchdog {
 
 		// If the timeout role is not found in the guild, we can't do anything.
 		if (timeout_role === null) {
-			console.log('Timeout role not found in guild.');
 			return false;
 		}
 
@@ -269,7 +268,7 @@ class Watchdog {
 	 */
 	enable(guild) {
 		this.guilds[guild.id] = true;
-		// @TODO - Rebuild.
+		this.createTimeoutRole(guild);
 		this.save();
 		return true;
 	}
@@ -280,7 +279,7 @@ class Watchdog {
 	 */
 	disable(guild) {
 		this.guilds[guild.id] = false;
-		// @TODO - Rebuild.
+		this.removeTimeoutRole(guild);
 		this.save();
 		return false;
 	}
@@ -310,56 +309,6 @@ class Watchdog {
 		// We can only manipulate guilds after the client is ready.
 		this.client.on('ready', () => {
 
-			// Build roles in all servers and do necessary cleanup.
-			this.client.guilds.every((guild) => {
-
-				// Initiate the guild log.
-				this.logs[guild.id] = {};
-
-				// Get the Timeout role in the guild.
-				let role = guild.roles.find('name', timeout_role_name);
-
-				// Create the maiden timeout role if it doesn't exist.
-				// @TODO - For disabled guilds, remove the role as it is not needed.
-				// @TODO - This can be refactored and cleaned a little bit.
-				if (role === null) {
-					guild.createRole({
-			      name: timeout_role_name,
-			      color: '#36393F',
-			      mentionable: true,
-			      permissions: 1049600,
-			    }).then((new_role) => {
-			    	// In every channel of the guild, set SEND_MESSAGES permissions for this new role to DENY.
-				    guild.channels.every((channel) => {
-				    	channel.overwritePermissions(new_role, {'SEND_MESSAGES': false, 'ATTACH_FILES': false, })
-								.then(() => {
-				    			// Do nothing.
-								}).catch(console.error);
-				    	return true;
-				    });
-			    });
-				} else {
-					// In every channel of the guild, set SEND_MESSAGES permissions for this new role to DENY.
-					guild.channels.every((channel) => {
-			    	channel.overwritePermissions(role, {'SEND_MESSAGES': false, 'ATTACH_FILES': false, })
-							.then(() => {
-								// Do nothing.
-							}).catch(console.error);
-			    	return true;
-			    });
-
-					// Free all members on reboot.
-					// This is to prevent eternally timed out members.
-			    guild.members.every((member) => {
-			    	this.clear(member);
-			    	return true;
-			    });
-				}
-
-				return true;
-
-			});
-
 			// Make configuration directory if it doesn't exist.
 			let config_dir = this.client.coreroot + 'plugins/watchdog/config';
 			if (!fs.existsSync(config_dir)) {
@@ -380,31 +329,99 @@ class Watchdog {
 			this.guilds = {};
 
 			// If the configurations already exist, load them.
-			if(fs.existsSync(this.config_path)) {
+			if (fs.existsSync(this.config_path)) {
 				this.guilds = JSON.parse(fs.readFileSync(this.config_path));
 			}
 
 			// If the configurations were loaded, we'll stop here.
 			if (!_.isEmpty(this.guilds)) {
-				this.client.on('ready', () => {
-					console.log('Maiden Watchdog: Loaded guild config from files.');
-					// this.client.home.channel.send(`**Watchdog**: Enabled guilds configuration successfully loaded. @TODO - Show where watchdog is enabled.`);
+				console.log('Maiden Watchdog: Loaded guild config from files.');
+			} else {
+				// If the configurations couldn't be loaded, we'll initialize them here and save them to the config path.
+				console.log('Maiden Watchdog: Guild config not found. Created default guild config.');
+				this.client.guilds.every((guild) => {
+					this.guilds[guild.id] = false;
+					return true;
 				});
-
-				return;
 			}
-
-			// If the configurations couldn't be loaded, we'll initialize them here and save them to the config path.
-			this.client.guilds.every((guild) => {
-				this.guilds[guild.id] = false;
-				return true;
-			});
-
-			console.log('Maiden Watchdog: Guild config not found. Created default guild config.');
 
 			// Save guild configurations.
 			this.save();
-			
+
+			// Build roles in all servers and do necessary cleanup.
+			this.client.guilds.every((guild) => {
+
+				// Initiate the guild log.
+				this.logs[guild.id] = {};
+
+				// Variable checking if the watchdog is enabled in this Guild.
+				let guild_watchdog_status = this.status(guild);
+
+				// Create the maiden timeout role if it doesn't exist.
+				// @TODO - For disabled guilds, remove the role as it is not needed.
+				// @TODO - This can be refactored and cleaned a little bit.
+
+				if (guild_watchdog_status) {
+					this.createTimeoutRole(guild);
+				} else {
+					this.removeTimeoutRole(guild);
+				}
+
+				// Free all members on reboot.
+				// This is to prevent eternally timed out members.
+				guild.members.every((member) => {
+					this.clear(member);
+					return true;
+				});
+
+				return true;
+
+			});
+
+		});
+	}
+
+	createTimeoutRole(guild) {
+		// Get the Timeout role in the guild.
+		let role = guild.roles.find('name', timeout_role_name);
+
+		if (role === null) {
+			// Create the Timeout role.
+			guild.createRole({
+				name: timeout_role_name,
+				color: '#36393F',
+				mentionable: true,
+				permissions: 1049600,
+			}).then((new_role) => {
+				this.setTimeoutRolePermissions(guild, new_role);
+			});
+		} else {
+			this.setTimeoutRolePermissions(guild, role);
+		}
+	}
+
+	removeTimeoutRole(guild) {
+		// Get the Timeout role in the guild.
+		let roles = guild.roles.findAll('name', timeout_role_name);
+
+		if (!_.isEmpty(roles)) {
+			roles.every((role) => {
+				role.delete()
+					.then(r => console.log(`Deleted role ${r}`))
+					.catch(console.error);
+				return true;
+			});
+		}
+	}
+
+	setTimeoutRolePermissions(guild, role) {
+		// In every channel of the guild, set SEND_MESSAGES permissions for this new role to DENY.
+		guild.channels.every((channel) => {
+			channel.overwritePermissions(role, {'SEND_MESSAGES': false, 'ATTACH_FILES': false, })
+				.then(() => {
+					// Do nothing.
+				}).catch(console.error);
+			return true;
 		});
 	}
 }
