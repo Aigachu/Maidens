@@ -326,7 +326,7 @@ class Watchdog {
                     guild.createRole({
                         name: timeout_role_name,
                         color: '#36393F',
-                        mentionable: true,
+                        mentionable: false,
                         permissions: 1049600,
                     }).then((new_role) => {
                         // In every channel of the guild, set SEND_MESSAGES permissions for this new role to DENY.
