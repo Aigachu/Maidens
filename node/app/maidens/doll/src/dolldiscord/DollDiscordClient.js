@@ -1,35 +1,35 @@
 /**
- * Doll's Discord class. 
+ * Doll's Discord class.
  */
 class DollDiscordClient extends MaidenDiscordClient {
-
-  /**
-   * === Class constructor ===
-   */
-  constructor(settings) {
-
-    // Call the constructor of the Discord Client parent Class.
-    super(settings);
-
-    // Customize welcome message.
-    this.welcome = `Hello good hunter...What is it you desire?`;
-
-    // Event: When the Plain Doll connects to Discord and is ready.
-    this.on('ready', () => {
-
-      // Logs connection event in console.
-      console.log("\nDawn will soon break... This night, and this dream, will end.");
-
-      // Set status to DND!
-      this.user.setStatus('dnd')
-        .then((status) => {
-          // Do nothing.
-        }).catch(console.error);
-
-    });
-
-  }
-
+    
+    /**
+     * === Class constructor ===
+     */
+    constructor(settings) {
+        
+        // Call the constructor of the Discord Client parent Class.
+        super(settings);
+        
+        // Customize welcome message.
+        this.welcome = `Hello good hunter...What is it you desire?`;
+        
+        // Event: When the Plain Doll connects to Discord and is ready.
+        this.on('ready', () => {
+            
+            // Logs connection event in console.
+            console.log("\nDawn will soon break... This night, and this dream, will end.");
+            
+            // Set status to DND!
+            this.user.setStatus('dnd')
+                .then((status) => {
+                    // Do nothing.
+                }).catch(console.error);
+            
+        });
+        
+    }
+    
 }
 
 module.exports = DollDiscordClient;
