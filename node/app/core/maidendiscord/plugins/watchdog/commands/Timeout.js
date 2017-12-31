@@ -108,6 +108,7 @@ class Timeout extends Command {
         // If a member could not be obtained, we can't do anything. Return.
         if (member === null) {
             // @TODO - Error message or something.
+            data.msg.channel.send(`Errr....Something went wrong. :(`);
             return false;
         }
         

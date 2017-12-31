@@ -103,6 +103,7 @@ class Purge extends Command {
         // If he can't be found, we can't do anything.
         // @TODO - Throw an error or something.
         if (member === null) {
+            data.msg.channel.send(`Errr....Something went wrong. :(`);
             return false;
         }
         
