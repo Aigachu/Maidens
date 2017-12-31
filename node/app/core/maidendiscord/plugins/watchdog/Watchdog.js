@@ -4,25 +4,25 @@ const timeout_role_name = 'Colette::Timeout';
 /**
  * Class [Watchdog]
  *
- * This class defines the properties of the [Watchdog] plugin. 
+ * This class defines the properties of the [Watchdog] plugin.
  *
  * The Watchdog is a functionality that's used for security and moderation in a guild.
  * Every message is watched by the watchdog, and it implements anti-spam protection in a server
  * by default.
  *
  * It implements the following commands:
- * 	-- Watchdog 	: 	Enable and disable the watchdog in a guild. Check status of watchdog in a guild.
- * 	-- Timeout 		: 	Timeout a user for a given time.
- * 	-- Purge 			: 	Delete last messages sent by a user.
- * 	-- Roulette 	: 	A game where a user plays russian roulette and can get timed out if they die.
- * 	-- Seppuku 		: 	Commit suicide.
+ *    -- Watchdog    :    Enable and disable the watchdog in a guild. Check status of watchdog in a guild.
+ *    -- Timeout        :    Timeout a user for a given time.
+ *    -- Purge            :    Delete last messages sent by a user.
+ *    -- Roulette    :    A game where a user plays russian roulette and can get timed out if they die.
+ *    -- Seppuku        :    Commit suicide.
  *
  *
  * === Properties ===
  * - {client}     : The Discord Bot client.
- * - {timeouts}		:	Users that are timed out. This is stored so it can be removed later.
- * - {logs}				: Message logs for users. Each message is stored in a log for a given time.
- * - {maxSpree}		: Brute force attacks configuration. The max amount of messages that can be machine-gunned.
+ * - {timeouts}        :    Users that are timed out. This is stored so it can be removed later.
+ * - {logs}                : Message logs for users. Each message is stored in a log for a given time.
+ * - {maxSpree}        : Brute force attacks configuration. The max amount of messages that can be machine-gunned.
  */
 class Watchdog {
 
