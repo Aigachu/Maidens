@@ -47,7 +47,7 @@ class Ping extends Command {
         
         this.cooldown = {
             global: 5,
-            user: 0,
+            user: 10,
         };
         
     }

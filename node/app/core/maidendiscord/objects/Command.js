@@ -85,7 +85,7 @@ class Command {
         
         // Using the cooldown manager, we check if the command is on cooldown first.
         // Cooldowns are individual per user. So if a user uses a command, it's not on cooldown for everyone.
-        if (this.client.cooldownManager.check('command', this.key, 'global')) {
+        if (this.client.cooldownManager.check('command', this.key, 0)) {
             this.client.im(msg.author, `That command is on global cooldown. :) Please wait!`);
             return false;
         }
@@ -103,13 +103,14 @@ class Command {
             msg: msg,
             input: input
         };
+        
         this.tasks(data);
         
         // Cools the command globally after usage.
-        if (this.cooldown.global !== 0) this.client.cooldownManager.set('command', this.key, 'global', this.cooldown * 1000);
+        if (this.cooldown.global !== 0) this.client.cooldownManager.set('command', this.key, 0, this.cooldown.global * 1000);
         
         // Cools the command after usage for the user.
-        if (this.cooldown.user !== 0) this.client.cooldownManager.set('command', this.key, msg.author.id, this.cooldown * 1000);
+        if (this.cooldown.user !== 0) this.client.cooldownManager.set('command', this.key, msg.author.id, this.cooldown.user * 1000);
     }
     
     /**
