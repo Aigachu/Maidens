@@ -129,6 +129,10 @@ class TTVAnn extends Command {
             data.input.full = data.input.full.replace('<#', '');
             data.input.full = data.input.full.replace('>', '');
             data.input.full = data.input.full.replace('!', '');
+            
+            if (data.input.full === "@here")
+                data.input.full = data.msg.channel.id;
+            
             this.client.twitch.ttvannSetAnnChannel(data.msg.guild.id, data.input.full);
             data.msg.channel.send(`Set the announcement channel to **${channel_tag}** for this server!`);
             return;
@@ -150,7 +154,7 @@ class TTVAnn extends Command {
         
         if (_.isEmpty(data.input.full)) {
             // Toggle the watchdog status.
-            let toggle = this.client.twitch.status('ttvann', data.msg.guild) ? this.client.watchdog.disable('ttvann', data.msg.guild) : this.client.watchdog.enable('ttvann', data.msg.guild);
+            let toggle = this.client.twitch.status('ttvann', data.msg.guild) ? this.client.twitch.disable('ttvann', data.msg.guild) : this.client.twitch.enable('ttvann', data.msg.guild);
     
             // Get the new status.
             let status = toggle ? `Enabled` : `Disabled`;

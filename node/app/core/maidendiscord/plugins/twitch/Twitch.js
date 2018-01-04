@@ -82,7 +82,12 @@ class Twitch {
             return;
         
         let announcement_channel = this.client.channels.find('id', guild.ann_channel);
-        announcement_channel.send(`Announcing ${stream_data.channel.display_name}`);
+        
+        let name = stream_data.channel.display_name;
+        let game = stream_data.game;
+        let url = stream_data.channel.url;
+        
+        announcement_channel.send(`Hey @here! ${name} is streaming ${game} on Twitch! Come take a look! :eyes: ${url}`);
         this.ttvannAddStreamLive(guild.id, stream_user);
         this.save();
     }
