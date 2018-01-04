@@ -1,7 +1,7 @@
 /**
- * Doll's Discord class.
+ * Monika's Discord class.
  */
-class DollDiscordClient extends MaidenDiscordClient {
+class MonikaDiscordClient extends MaidenDiscordClient {
     
     /**
      * === Class constructor ===
@@ -12,13 +12,13 @@ class DollDiscordClient extends MaidenDiscordClient {
         super(settings);
         
         // Customize welcome message.
-        this.welcome = `Hello good hunter...What is it you desire?`;
+        this.welcome = `Hi Aiga! :)`;
         
         // Event: When the Plain Doll connects to Discord and is ready.
         this.on('ready', () => {
             
             // Logs connection event in console.
-            console.log("\nDawn will soon break... This night, and this dream, will end.");
+            console.log("\nWelcome to my Literature Club!");
             
             // Set status to DND!
             this.user.setStatus('dnd')
@@ -32,4 +32,4 @@ class DollDiscordClient extends MaidenDiscordClient {
     
 }
 
-module.exports = DollDiscordClient;
+module.exports = MonikaDiscordClient;

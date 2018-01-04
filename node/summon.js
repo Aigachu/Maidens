@@ -12,8 +12,8 @@
  * {Lady Maria - Lady Death}
  * https://discordapp.com/oauth2/authorize?&client_id=344885267808911360&scope=bot&permissions=1546959939
  *
- * {Plain Doll - Robo}
- * https://discordapp.com/oauth2/authorize?&client_id=352563648398360576&scope=bot&permissions=1546959939
+ * {Monika - Club President}
+ * https://discordapp.com/oauth2/authorize?&client_id=398515117358055434&scope=bot&permissions=1546959939
  *
  * Current valid permission bit: 1546959939
  * To calculate the permissions bit, go here: https://discordapi.com/permissions.html
@@ -40,5 +40,5 @@ global.colette = require('./app/maidens/colette');
 // Core JS file with all of Maria's Components.
 global.maria = require('./app/maidens/maria');
 
-// Core JS file with all of the Plain Doll's Components.
-global.doll = require('./app/maidens/doll');
+// Core JS file with all of the Monika's Components.
+global.monika = require('./app/maidens/monika');
