@@ -1,5 +1,5 @@
 // Set a constant for the timeout role that will be used by the Watchdog.
-const timeout_role_name = 'Colette::Timeout';
+const timeout_role_name = 'Maiden::Timeout';
 
 /**
  * Class [Watchdog]
@@ -390,7 +390,7 @@ class Watchdog {
             guild.createRole({
                 name: timeout_role_name,
                 color: '#36393F',
-                mentionable: true,
+                mentionable: false,
                 permissions: 1049600,
             }).then((new_role) => {
                 this.setTimeoutRolePermissions(guild, new_role);
