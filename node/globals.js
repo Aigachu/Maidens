@@ -50,6 +50,10 @@ global.google = require('google');
 // Moment - Time management
 global.moment = require('moment');
 
+// Twitch API (V5)
+global.twitch = require('twitch-api-v5');
+twitch.clientID = require('./core-settings.js').twitch_api_client_id;
+
 /**
  * === Custom Modules ===
  * Modules that aren't available via NPM, but obtained online or coded by hand.
