@@ -53,7 +53,7 @@ class MaidenCommandManager {
     detectCommand(msg) {
         
         // If the member is any bot, we don't want to fire a command.
-        if (msg.member.user.bot === true) {
+        if (msg.author.bot === true) {
             // Do nothing and return.
             return false;
         }
