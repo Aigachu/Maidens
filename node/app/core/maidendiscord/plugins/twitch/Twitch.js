@@ -68,6 +68,7 @@ class Twitch {
                 }
                return true;
             });
+            return true;
         });
     }
     
