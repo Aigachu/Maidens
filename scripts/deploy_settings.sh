@@ -2,6 +2,8 @@
 #
 # Copy settings for all maidens to the live environnement.
 
+scp -r ../node/core-settings.js aigachu@138.197.174.254:~/nodejs/apps/discord-maidens/node/core-settings.js
+
 for maiden in ../node/app/maidens/*/ ; do
 	m=$(basename ${maiden})
 	echo "Deploying settings for ${m}..."
