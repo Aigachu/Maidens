@@ -27,7 +27,7 @@ class Twitch {
         // fired. This is intensive, I know, but it's the best (first) way I thought of doing this.
         setInterval(() => {
             this.ping();
-        }, 5000);
+        }, 60000);
         
     }
     
