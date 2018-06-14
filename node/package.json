@@ -4,17 +4,17 @@
   "description": "Discord bots with a collection of cool commands!",
   "main": "summon.js",
   "dependencies": {
-    "discord.js": "^11.2.1",
+    "discord.js": "^11.3.2",
     "fs": "^0.0.1-security",
     "glob": "^7.1.1",
     "google": "^2.1.0",
     "jsonfile": "^2.4.0",
-    "moment": "^2.19.2",
+    "moment": "^2.22.2",
     "path": "^0.12.7",
     "prism-media": "0.0.1",
     "tmi.js": "^1.2.1",
-    "twitch-api-v5": "^2.0.2",
-    "underscore": "^1.8.3"
+    "twitch-api-v5": "^2.0.3",
+    "underscore": "^1.9.1"
   },
   "devDependencies": {},
   "scripts": {
