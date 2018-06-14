@@ -89,7 +89,7 @@ class Twitch {
         let game = stream_data.game;
         let url = stream_data.channel.url;
 
-        announcement_channel.send(`@here **${name}** is streaming **${game}** on Twitch!\n\nCome take a look! :eyes:\n\n${url}`);
+        announcement_channel.send(`Psst...**${name}** is streaming **${game}** on Twitch!\n\nCome take a look! :eyes:\n\n${url}`);
         this.ttvannAddStreamLive(guild.id, stream_user);
         this.save();
     }
