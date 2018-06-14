@@ -149,7 +149,7 @@ class MaidenDiscordClient extends DiscordClient {
             
             // Set game text.
             // @TODO - I set the URL to google because without it, it mysteriously doesn't work...
-            this.user.setGame(this.game)
+            this.user.setActivity(this.game)
                 .then((client_user) => {
                     // Do nothing.
                 }).catch(console.error);

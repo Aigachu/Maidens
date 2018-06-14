@@ -102,7 +102,7 @@ class TTVAnn extends Command {
     
         data.input.full = data.input.full.trim();
         
-        // If the "e" option is used, Enable the watchdog in this guild.
+        // If the "e" option is used, Enable twitch announcements in this guild.
         if ("e" in data.input.options) {
             this.client.twitch.enable('ttvann', data.msg.guild);
             data.msg.channel.send('Enabled Twitch Announcements in this server!');
@@ -145,7 +145,7 @@ class TTVAnn extends Command {
             return;
         }
     
-        // If the "r" option is used, add a stream to the list of announcements in the server.
+        // If the "a" option is used, add a stream to the list of announcements in the server.
         if ("a" in data.input.options) {
             this.client.twitch.ttvannAddStream(data.msg.guild.id, data.input.full);
             data.msg.channel.send(`Added **${data.input.full}** to the list of Twitch Announcements in this server!`);

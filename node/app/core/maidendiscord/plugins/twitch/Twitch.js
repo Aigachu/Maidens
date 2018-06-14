@@ -59,7 +59,6 @@ class Twitch {
      */
     ttvann(guild) {
         guild.streams.every((stream_user) => {
-            console.log(stream_user);
             this.getUserStream(stream_user).then((data) => {
                 if (data.stream !== null) {
                     this.ttvannFire(guild, data.stream, stream_user);
@@ -90,7 +89,7 @@ class Twitch {
         let game = stream_data.game;
         let url = stream_data.channel.url;
 
-        announcement_channel.send(`Hey @here! ${name} is streaming ${game} on Twitch! Come take a look! :eyes: ${url}`);
+        announcement_channel.send(`@here **${name}** is streaming **${game}** on Twitch!\n\nCome take a look! :eyes:\n\n${url}`);
         this.ttvannAddStreamLive(guild.id, stream_user);
         this.save();
     }
